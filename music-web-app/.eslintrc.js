@@ -16,6 +16,7 @@ module.exports = {
     'indent': 0,
     'space-before-function-paren': 0,
     'no-multiple-empty-lines': 'off',
+    "vue/multi-word-component-names": "off",
     'comma-dangle': ['error', {
       // 默认的comma-dangle规则配置
       arrays: 'always-multiline', // 或其他配置
