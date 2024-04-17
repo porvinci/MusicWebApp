@@ -1,0 +1,116 @@
+@font-face {
+  font-family: 'music-icon';
+  src: url('../fonts/music-icon.eot?2qevqt');
+  src: url('../fonts/music-icon.eot?2qevqt#iefix') format('embedded-opentype'),
+  url('../fonts/music-icon.ttf?2qevqt') format('truetype'),
+  url('../fonts/music-icon.woff?2qevqt') format('woff'),
+  url('../fonts/music-icon.svg?2qevqt#music-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// 这两种选择器通常用于为一套图标库或者含特定前缀的类名的元素设置样式。
+// 在实际应用中，如果你有一套基于类名的图标系统，其中每个图标类名都以 "icon-" 开头
+// 或包含 " icon-"，则这个选择器可以帮助你快速为所有这类图标元素应用统一的样式
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'music-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ok:before {
+  content: "\e900";
+}
+
+.icon-close:before {
+  content: "\e901";
+}
+
+.icon-add:before {
+  content: "\e902";
+}
+
+.icon-play-mini:before {
+  content: "\e903";
+}
+
+.icon-playlist:before {
+  content: "\e904";
+}
+
+.icon-music:before {
+  content: "\e905";
+}
+
+.icon-search:before {
+  content: "\e906";
+}
+
+.icon-clear:before {
+  content: "\e907";
+}
+
+.icon-delete:before {
+  content: "\e908";
+}
+
+.icon-favorite:before {
+  content: "\e909";
+}
+
+.icon-not-favorite:before {
+  content: "\e90a";
+}
+
+.icon-pause:before {
+  content: "\e90b";
+}
+
+.icon-play:before {
+  content: "\e90c";
+}
+
+.icon-prev:before {
+  content: "\e90d";
+}
+
+.icon-loop:before {
+  content: "\e90e";
+}
+
+.icon-sequence:before {
+  content: "\e90f";
+}
+
+.icon-random:before {
+  content: "\e910";
+}
+
+.icon-back:before {
+  content: "\e911";
+}
+
+.icon-mine:before {
+  content: "\e912";
+}
+
+.icon-next:before {
+  content: "\e913";
+}
+
+.icon-dismiss:before {
+  content: "\e914";
+}
+
+.icon-pause-mini:before {
+  content: "\e915";
+}
