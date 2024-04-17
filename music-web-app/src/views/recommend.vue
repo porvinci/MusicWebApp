@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  // import { getRecommend } from '@/service/recommend'
+  import { getRecommend } from '@/service/recommend'
   // import Slider from '@/components/base/slider/slider'
   // import Scroll from '@/components/wrap-scroll'
   // import storage from 'good-storage'
@@ -67,11 +67,12 @@
   //       return !this.sliders.length && !this.albums.length
   //     }
   //   },
-  //   async created() {
-  //     const result = await getRecommend()
-  //     this.sliders = result.sliders
-  //     this.albums = result.albums
-  //   },
+    async created() {
+      const result = await getRecommend()
+      console.log(result)
+      // this.sliders = result.sliders
+      // this.albums = result.albums
+    },
   //   methods: {
   //     selectItem(album) {
   //       this.selectedAlbum = album

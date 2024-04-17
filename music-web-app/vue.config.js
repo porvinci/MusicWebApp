@@ -1,4 +1,5 @@
 // const { defineConfig } = require('@vue/cli-service')
+const registerRouter = require('./backend/router')
 module.exports = {
   css: {
     loaderOptions: {
@@ -11,11 +12,12 @@ module.exports = {
       }
     }
   },
-  // devServer: {
-  //   before(app) {
-  //     registerRouter(app)
-  //   }
-  // },
+  devServer: {
+    setupMiddlewares(middlewares, devServer) {
+      registerRouter(devServer)
+      return middlewares
+    }
+  },
   // configureWebpack: (config) => {
   //   if (process.env.npm_config_report) {
   //     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
