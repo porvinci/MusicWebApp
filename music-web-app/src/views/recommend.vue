@@ -1,7 +1,11 @@
 <template>
   <!--  v-loading="loading" -->
   <div class="recommend">
-    推荐页面
+    <div class="slider-wrapper">
+          <div class="slider-content">
+            <slider v-if="sliders.length" :sliders="sliders"></slider>
+          </div>
+    </div>
     <!-- <scroll class="recommend-content">
       <div>
         <div class="slider-wrapper">
@@ -44,24 +48,24 @@
 
 <script>
   import { getRecommend } from '@/service/recommend'
-  // import Slider from '@/components/base/slider/slider'
+  import Slider from '@/components/base/slider/slider'
   // import Scroll from '@/components/wrap-scroll'
   // import storage from 'good-storage'
   // import { ALBUM_KEY } from '@/assets/js/constant'
 
   export default {
     name: 'recommend',
-  //   components: {
-  //     Slider,
-  //     Scroll
-  //   },
-  //   data() {
-  //     return {
-  //       sliders: [],
-  //       albums: [],
-  //       selectedAlbum: null
-  //     }
-  //   },
+    components: {
+      Slider,
+      // Scroll
+    },
+    data() {
+      return {
+        sliders: [],
+        // albums: [],
+        // selectedAlbum: null
+      }
+    },
   //   computed: {
   //     loading() {
   //       return !this.sliders.length && !this.albums.length
@@ -69,8 +73,8 @@
   //   },
     async created() {
       const result = await getRecommend()
-      console.log(result)
-      // this.sliders = result.sliders
+      // console.log(result)
+      this.sliders = result.sliders
       // this.albums = result.albums
     },
   //   methods: {
@@ -89,29 +93,29 @@
 </script>
 
 <style lang="scss" scoped>
-  // .recommend {
-  //   position: fixed;
-  //   width: 100%;
-  //   top: 88px;
-  //   bottom: 0;
-  //   overflow: scroll;
+  .recommend {
+    position: fixed;
+    width: 100%;
+    top: 88px;
+    bottom: 0;
+    overflow: scroll;
   //   .recommend-content {
   //     height: 100%;
   //     overflow: hidden;
-  //     .slider-wrapper {
-  //       position: relative;
-  //       width: 100%;
-  //       height: 0;
-  //       padding-top: 40%;
-  //       overflow: hidden;
-  //       .slider-content {
-  //         position: absolute;
-  //         left: 0;
-  //         top: 0;
-  //         width: 100%;
-  //         height: 100%;
-  //       }
-  //     }
+      .slider-wrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: 40%;
+        overflow: hidden;
+        .slider-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
   //     .recommend-list {
   //       .list-title {
   //         height: 65px;
@@ -150,5 +154,5 @@
   //       }
   //     }
   //   }
-  // }
+  }
 </style>

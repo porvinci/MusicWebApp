@@ -156,6 +156,7 @@ function registerRecommend(devServer) {
       data
     }).then((response) => {
       const data = response.data
+      // console.log('------------', data.focus.data.shelf.v_niche[0].v_card);
       if (data.code === ERR_OK) {
         // 处理轮播图数据
         const focusList = data.focus.data.shelf.v_niche[0].v_card
@@ -183,6 +184,7 @@ function registerRecommend(devServer) {
         }
 
         // 处理推荐歌单数据
+        // console.log('------------', data.recomPlaylist.data.v_hot);
         const albumList = data.recomPlaylist.data.v_hot
         const albums = []
         for (let i = 0; i < albumList.length; i++) {
