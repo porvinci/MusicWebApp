@@ -52,7 +52,7 @@
   .slider {
     min-height: 1px;
     font-size: 0;
-    touch-action: pan-y;
+    touch-action: pan-x;
     .slider-group {
       position: relative;
       overflow: hidden;
