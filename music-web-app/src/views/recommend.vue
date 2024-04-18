@@ -23,8 +23,8 @@
             >
             <!-- @click="selectItem(item)" -->
               <div class="icon">
-                <!-- v-lazy="item.pic"-->
-                <img width="60" height="60"  :src="item.pic">
+                <!-- :src="item.pic"-->
+                <img width="60" height="60"  v-lazy="item.pic">
               </div>
               <div class="text">
                 <h2 class="name">
