@@ -1,12 +1,10 @@
 <template>
-  <!-- v-loading="!singers.length" -->
-  <div class="singer" >
-    歌手页
-    <!-- <index-list
+  <div class="singer" v-loading="!singers.length">
+    <index-list
       :data="singers"
-      @select="selectSinger"
     ></index-list>
-    <router-view v-slot="{ Component }">
+    <!--@select="selectSinger"  -->
+    <!-- <router-view v-slot="{ Component }">
       <transition appear name="slide">
         <component :is="Component" :data="selectedSinger"/>
       </transition>
@@ -16,25 +14,25 @@
 
 <script>
   import { getSingerList } from '@/service/singer'
-  // import IndexList from '@/components/index-list/index-list'
+  import IndexList from '@/components/index-list/index-list'
   // import storage from 'good-storage'
   // import { SINGER_KEY } from '@/assets/js/constant'
 
   export default {
     name: 'singer',
-  //   components: {
-  //     IndexList
-  //   },
-  //   data() {
-  //     return {
-  //       singers: [],
-  //       selectedSinger: null
-  //     }
-  //   },
+    components: {
+      IndexList
+    },
+    data() {
+      return {
+        singers: [],
+        // selectedSinger: null
+      }
+    },
     async created() {
       const result = await getSingerList()
-      console.log(result)
-      // this.singers = result.singers
+      // console.log(result)
+      this.singers = result.singers
     },
   //   methods: {
   //     selectSinger(singer) {
@@ -52,10 +50,10 @@
 </script>
 
 <style lang="scss" scoped>
-  // .singer {
-  //   position: fixed;
-  //   width: 100%;
-  //   top: 88px;
-  //   bottom: 0;
-  // }
+  .singer {
+    position: fixed;
+    width: 100%;
+    top: 88px;
+    bottom: 0;
+  }
 </style>

@@ -244,7 +244,7 @@ function registerSingerList(devServer) {
       if (data.code === ERR_OK) {
         // 处理歌手列表数据
         const singerList = data.singerList.data.singerlist
-        console.log(singerList);
+        // console.log(singerList.length); // 80
         // 构造歌手 Map 数据结构
         const singerMap = {
           hot: {
@@ -252,7 +252,7 @@ function registerSingerList(devServer) {
             list: map(singerList.slice(0, 10))
           }
         }
-        console.log(singerMap.hot.list);
+        // console.log(singerMap.hot.list);
         singerList.forEach((item) => {
           // 把歌手名转成拼音
           const p = pinyin(item.singer_name)

@@ -63,7 +63,7 @@
       return {
         sliders: [],
         albums: [],
-        loadingText: '正在...'
+        loadingText: '正在加载...'
         // selectedAlbum: null
       }
     },
