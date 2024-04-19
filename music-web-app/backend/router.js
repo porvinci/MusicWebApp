@@ -200,6 +200,7 @@ function registerRecommend(devServer) {
         }
 
         // 往前端发送一个标准格式的响应数据，包括成功错误码和数据
+        // setTimeout(() => {
         res.json({
           code: ERR_OK,
           result: {
@@ -207,6 +208,8 @@ function registerRecommend(devServer) {
             albums
           }
         })
+        // }, 100000);
+
       } else {
         res.json(data)
       }

@@ -15,11 +15,11 @@
         title: '正在载入...'
       }
     },
-    // methods: {
-    //   setTitle(title) {
-    //     this.title = title
-    //   }
-    // }
+    methods: {
+      setTitle(title) {
+        this.title = title
+      }
+    }
   }
 </script>
 

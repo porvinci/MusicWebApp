@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend" v-loading="loading">
+  <div class="recommend" v-loading:[loadingText]="loading">
     <!-- <div class="slider-wrapper">
           <div class="slider-content">
             <slider v-if="sliders.length" :sliders="sliders"></slider>
@@ -63,6 +63,7 @@
       return {
         sliders: [],
         albums: [],
+        loadingText: '正在...'
         // selectedAlbum: null
       }
     },
