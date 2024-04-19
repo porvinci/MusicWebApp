@@ -1,6 +1,5 @@
 <template>
-  <!--  v-loading="loading" -->
-  <div class="recommend">
+  <div class="recommend" v-loading="loading">
     <!-- <div class="slider-wrapper">
           <div class="slider-content">
             <slider v-if="sliders.length" :sliders="sliders"></slider>
@@ -67,11 +66,11 @@
         // selectedAlbum: null
       }
     },
-  //   computed: {
-  //     loading() {
-  //       return !this.sliders.length && !this.albums.length
-  //     }
-  //   },
+    computed: {
+      loading() {
+        return !this.sliders.length && !this.albums.length
+      }
+    },
     async created() {
       const result = await getRecommend()
       this.sliders = result.sliders
