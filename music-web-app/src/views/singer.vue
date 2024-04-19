@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  // import { getSingerList } from '@/service/singer'
+  import { getSingerList } from '@/service/singer'
   // import IndexList from '@/components/index-list/index-list'
   // import storage from 'good-storage'
   // import { SINGER_KEY } from '@/assets/js/constant'
@@ -31,10 +31,11 @@
   //       selectedSinger: null
   //     }
   //   },
-  //   async created() {
-  //     const result = await getSingerList()
-  //     this.singers = result.singers
-  //   },
+    async created() {
+      const result = await getSingerList()
+      console.log(result)
+      // this.singers = result.singers
+    },
   //   methods: {
   //     selectSinger(singer) {
   //       this.selectedSinger = singer
