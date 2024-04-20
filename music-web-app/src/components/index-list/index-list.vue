@@ -1,10 +1,11 @@
 <template>
-  <scroll class="index-list">
-  <!--:probe-type="3"
+  <scroll
+    class="index-list"
+    :probe-type="3"
     @scroll="onScroll"
-    ref="scrollRef" -->
-  <!-- ref="groupRef" -->
-    <ul >
+    ref="scrollRef"
+  >
+    <ul ref="groupRef">
       <li
         v-for="group in data"
         :key="group.title"
@@ -25,13 +26,13 @@
         </ul>
       </li>
     </ul>
-    <!-- <div
+    <div
       class="fixed"
       v-show="fixedTitle"
-      :style="fixedStyle"
     >
+    <!-- :style="fixedStyle" -->
       <div class="fixed-title">{{fixedTitle}}</div>
-    </div> -->
+    </div>
     <!-- <div
       class="shortcut"
       @touchstart.stop.prevent="onShortcutTouchStart"
@@ -55,7 +56,7 @@
 <script>
   import Scroll from '@/components/base/scroll/scroll'
   // import Scroll from '@/components/wrap-scroll/index'
-  // import useFixed from './use-fixed'
+  import useFixed from './use-fixed'
   // import useShortcut from './use-shortcut'
 
   export default {
@@ -70,29 +71,30 @@
       }
     },
     // emits: ['select'],
-    // setup(props, { emit }) {
-    //   const { groupRef, onScroll, fixedTitle, fixedStyle, currentIndex } = useFixed(props)
-    //   const { shortcutList, scrollRef, onShortcutTouchStart, onShortcutTouchMove } = useShortcut(props, groupRef)
+    setup(props, { emit }) {
+      // , fixedStyle, currentIndex
+      const { groupRef, onScroll, fixedTitle } = useFixed(props)
+      // const { shortcutList, scrollRef, onShortcutTouchStart, onShortcutTouchMove } = useShortcut(props, groupRef)
 
-    //   function onItemClick(item) {
-    //     emit('select', item)
-    //   }
+      // function onItemClick(item) {
+      //   emit('select', item)
+      // }
 
-    //   return {
-    //     onItemClick,
-    //     // fixed
-    //     groupRef,
-    //     onScroll,
-    //     fixedTitle,
-    //     fixedStyle,
-    //     currentIndex,
-    //     // shortcut
-    //     shortcutList,
-    //     scrollRef,
-    //     onShortcutTouchStart,
-    //     onShortcutTouchMove
-    //   }
-    // }
+      return {
+        // onItemClick,
+        // fixed
+        groupRef,
+        onScroll,
+        fixedTitle,
+        // fixedStyle,
+        // currentIndex,
+        // shortcut
+        // shortcutList,
+        // scrollRef,
+        // onShortcutTouchStart,
+        // onShortcutTouchMove
+      }
+    }
   }
 </script>
 
@@ -129,20 +131,20 @@
         }
       }
     }
-    // .fixed {
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100%;
-    //   .fixed-title {
-    //     height: 30px;
-    //     line-height: 30px;
-    //     padding-left: 20px;
-    //     font-size: $font-size-small;
-    //     color: $color-text-l;
-    //     background: $color-highlight-background;
-    //   }
-    // }
+    .fixed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      .fixed-title {
+        height: 30px;
+        line-height: 30px;
+        padding-left: 20px;
+        font-size: $font-size-small;
+        color: $color-text-l;
+        background: $color-highlight-background;
+      }
+    }
     // .shortcut {
     //   position: absolute;
     //   right: 4px;
