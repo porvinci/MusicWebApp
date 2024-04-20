@@ -1,8 +1,8 @@
-import { computed } from 'vue'
-// ref,
+import { ref, computed } from 'vue'
+
 export default function useShortcut(props, groupRef) {
   // const ANCHOR_HEIGHT = 18
-  // const scrollRef = ref(null)
+  const scrollRef = ref(null)
 
   const shortcutList = computed(() => {
     return props.data.map((group) => {
@@ -12,13 +12,18 @@ export default function useShortcut(props, groupRef) {
 
   // const touch = {}
 
-  // function onShortcutTouchStart(e) {
-  //   const anchorIndex = parseInt(e.target.dataset.index)
-  //   touch.y1 = e.touches[0].pageY
-  //   touch.anchorIndex = anchorIndex
+  function onShortcutTouchStart(e) {
+    const anchorIndex = parseInt(e.target.dataset.index)
+    const targetEl = groupRef.value.children[anchorIndex]
+    console.log(groupRef.value)
+    // console.log(typeof scrollRef.value.scroll.scroll.value.scrollToElement === 'function')
+    // console.log(e, anchorIndex, scrollRef, scrollRef.value.scroll.scroll.value)
+    scrollRef.value.scroll.scroll.value.scrollToElement(targetEl, 0)
+    // touch.y1 = e.touches[0].pageY
+    // touch.anchorIndex = anchorIndex
 
-  //   scrollTo(anchorIndex)
-  // }
+    // scrollTo(anchorIndex)
+  }
 
   // function onShortcutTouchMove(e) {
   //   touch.y2 = e.touches[0].pageY
@@ -40,8 +45,8 @@ export default function useShortcut(props, groupRef) {
 
   return {
     shortcutList,
-    // scrollRef,
-    // onShortcutTouchStart,
+    scrollRef,
+    onShortcutTouchStart,
     // onShortcutTouchMove
   }
 }

@@ -35,16 +35,18 @@
     </div>
     <div
       class="shortcut"
+      @touchstart.stop.prevent="onShortcutTouchStart"
+      @touchmove.stop.prevent
+      @touchend.stop.prevent
     >
-    <!--  @touchstart.stop.prevent="onShortcutTouchStart"
-      @touchmove.stop.prevent="onShortcutTouchMove"
-      @touchend.stop.prevent -->
+    <!--  ="onShortcutTouchMove"-->
       <ul>
-        <!-- :data-index="index" -->
+        <!--  -->
         <li
           v-for="(item, index) in shortcutList"
           :key="item"
           class="item"
+          :data-index="index"
           :class="{'current':currentIndex===index}">
           {{item}}
         </li>
@@ -73,8 +75,8 @@
     // emits: ['select'],
     setup(props, { emit }) {
       const { groupRef, onScroll, fixedTitle, fixedStyle, currentIndex } = useFixed(props)
-      // , scrollRef, onShortcutTouchStart, onShortcutTouchMove       , groupRef
-      const { shortcutList } = useShortcut(props)
+      // onShortcutTouchMove
+      const { shortcutList, scrollRef, onShortcutTouchStart } = useShortcut(props, groupRef)
 
       // function onItemClick(item) {
       //   emit('select', item)
@@ -90,8 +92,8 @@
         currentIndex,
         // shortcut
         shortcutList,
-        // scrollRef,
-        // onShortcutTouchStart,
+        scrollRef,
+        onShortcutTouchStart,
         // onShortcutTouchMove
       }
     }
