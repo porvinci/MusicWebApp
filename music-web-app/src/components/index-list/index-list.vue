@@ -29,8 +29,8 @@
     <div
       class="fixed"
       v-show="fixedTitle"
+      :style="fixedStyle"
     >
-    <!-- :style="fixedStyle" -->
       <div class="fixed-title">{{fixedTitle}}</div>
     </div>
     <!-- <div
@@ -72,8 +72,8 @@
     },
     // emits: ['select'],
     setup(props, { emit }) {
-      // , fixedStyle, currentIndex
-      const { groupRef, onScroll, fixedTitle } = useFixed(props)
+      // , currentIndex
+      const { groupRef, onScroll, fixedTitle, fixedStyle } = useFixed(props)
       // const { shortcutList, scrollRef, onShortcutTouchStart, onShortcutTouchMove } = useShortcut(props, groupRef)
 
       // function onItemClick(item) {
@@ -86,7 +86,7 @@
         groupRef,
         onScroll,
         fixedTitle,
-        // fixedStyle,
+        fixedStyle,
         // currentIndex,
         // shortcut
         // shortcutList,
