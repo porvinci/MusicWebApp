@@ -2,13 +2,14 @@
   <div class="singer" v-loading="!singers.length">
     <index-list
       :data="singers"
+      @select="selectSinger"
     ></index-list>
-    <!--@select="selectSinger"  -->
     <!-- <router-view v-slot="{ Component }">
       <transition appear name="slide">
         <component :is="Component" :data="selectedSinger"/>
       </transition>
     </router-view> -->
+    <router-view :singer="selectedSinger"></router-view>
   </div>
 </template>
 
@@ -26,26 +27,25 @@
     data() {
       return {
         singers: [],
-        // selectedSinger: null
+        selectedSinger: null
       }
     },
     async created() {
       const result = await getSingerList()
-      // console.log(result)
       this.singers = result.singers
     },
-  //   methods: {
-  //     selectSinger(singer) {
-  //       this.selectedSinger = singer
-  //       this.cacheSinger(singer)
-  //       this.$router.push({
-  //         path: `/singer/${singer.mid}`
-  //       })
-  //     },
-  //     cacheSinger(singer) {
-  //       storage.session.set(SINGER_KEY, singer)
-  //     }
-  //   }
+    methods: {
+      selectSinger(singer) {
+        this.selectedSinger = singer
+        // this.cacheSinger(singer)
+        this.$router.push({
+          path: `/singer/${singer.mid}`
+        })
+      },
+      // cacheSinger(singer) {
+      //   storage.session.set(SINGER_KEY, singer)
+      // }
+    }
   }
 </script>
 

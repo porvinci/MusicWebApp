@@ -12,14 +12,6 @@ export default function useShortcut(props, groupRef) {
 
   const touch = {}
 
-  // const sleep = async function (time) {
-  //   new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       resolve()
-  //     }, time)
-  //   })
-  // }
-
   function onShortcutTouchStart(e) {
     const anchorIndex = parseInt(e.target.dataset.index)
     // const targetEl = groupRef.value.children[anchorIndex]
@@ -35,8 +27,6 @@ export default function useShortcut(props, groupRef) {
     // 当前触摸点相对于整个页面的 Y 坐标
     touch.y2 = e.touches[0].pageY
     const delta = (touch.y2 - touch.y1) / ANCHOR_HEIGHT | 0
-    console.log(touch.y1, touch.y2, touch.y2 - touch.y1, delta)
-    // await sleep(10000)
     const anchorIndex = touch.anchorIndex + delta
 
     scrollTo(anchorIndex)
