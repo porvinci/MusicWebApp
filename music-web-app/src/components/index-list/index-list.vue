@@ -19,7 +19,6 @@
             class="item"
           >
           <!--  @click="onItemClick(item)"-->
-          <!-- v-lazy="item.pic" -->
             <img class="avatar" v-lazy="item.pic">
             <span class="name">{{item.name}}</span>
           </li>
@@ -36,10 +35,9 @@
     <div
       class="shortcut"
       @touchstart.stop.prevent="onShortcutTouchStart"
-      @touchmove.stop.prevent
+      @touchmove.stop.prevent="onShortcutTouchMove"
       @touchend.stop.prevent
     >
-    <!--  ="onShortcutTouchMove"-->
       <ul>
         <!--  -->
         <li
@@ -75,8 +73,8 @@
     // emits: ['select'],
     setup(props, { emit }) {
       const { groupRef, onScroll, fixedTitle, fixedStyle, currentIndex } = useFixed(props)
-      // onShortcutTouchMove
-      const { shortcutList, scrollRef, onShortcutTouchStart } = useShortcut(props, groupRef)
+
+      const { shortcutList, scrollRef, onShortcutTouchStart, onShortcutTouchMove } = useShortcut(props, groupRef)
 
       // function onItemClick(item) {
       //   emit('select', item)
@@ -94,7 +92,7 @@
         shortcutList,
         scrollRef,
         onShortcutTouchStart,
-        // onShortcutTouchMove
+        onShortcutTouchMove
       }
     }
   }
@@ -159,7 +157,7 @@
        background: $color-background-d;
        font-family: Helvetica;
        .item {
-         padding: 3px;
+        padding: 3px;
         line-height: 1;
         color: $color-text-l;
         font-size: $font-size-small;
