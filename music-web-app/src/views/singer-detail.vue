@@ -12,6 +12,7 @@
 <script>
   // import createDetailComponent from '@/assets/js/create-detail-component'
   import { getSingerDetail } from '@/service/singer'
+  import { processSongs } from '@/service/song'
   // import { SINGER_KEY } from '@/assets/js/constant'
 
   // export default createDetailComponent('singer-detail', SINGER_KEY, getSingerDetail)
@@ -23,7 +24,8 @@
     async created () {
       // const result = await getSingerDetail(this.$route.params.id)
       const result = await getSingerDetail(this.singer.mid)
-      console.log(result)
+      const songs = await processSongs(result.songs)
+      console.log(songs)
       // console.log(this.$route.params.id)
     }
   }
