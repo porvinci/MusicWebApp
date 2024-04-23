@@ -1,11 +1,11 @@
 <template>
   <div class="singer-detail">
-    <!-- <music-list
+    <music-list
       :songs="songs"
       :title="title"
       :pic="pic"
       :loading="loading"
-    ></music-list> -->
+    ></music-list>
   </div>
 </template>
 
@@ -13,6 +13,7 @@
   // import createDetailComponent from '@/assets/js/create-detail-component'
   import { getSingerDetail } from '@/service/singer'
   import { processSongs } from '@/service/song'
+  import MusicList from '@/components/music-list/music-list'
   // import { SINGER_KEY } from '@/assets/js/constant'
 
   // export default createDetailComponent('singer-detail', SINGER_KEY, getSingerDetail)
@@ -21,12 +22,28 @@
     props: {
       singer: Object,
     },
+    data() {
+      return {
+        songs: [],
+        loading: true,
+      }
+    },
+    components: {
+      MusicList,
+    },
+    computed: {
+      title() {
+        return this.singer && this.singer.name
+      },
+      pic() {
+        return this.singer && this.singer.pic
+      }
+    },
     async created () {
       // const result = await getSingerDetail(this.$route.params.id)
       const result = await getSingerDetail(this.singer.mid)
-      const songs = await processSongs(result.songs)
-      console.log(songs)
-      // console.log(this.$route.params.id)
+      this.songs = await processSongs(result.songs)
+      this.loading = false
     }
   }
 </script>
