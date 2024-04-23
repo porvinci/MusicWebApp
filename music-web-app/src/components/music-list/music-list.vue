@@ -27,17 +27,17 @@
       </div> -->
       <div
         class="filter"
+        :style="filterStyle"
       ></div>
-      <!-- :style="filterStyle" -->
     </div>
     <scroll
       class="list"
       :style="scrollStyle"
       v-loading="loading"
+      :probe-type="3"
+      @scroll="onScroll"
     >
-    <!-- @scroll="onScroll"
-      v-no-result:[noResultText]="noResult"
-      :probe-type="3"-->
+    <!-- v-no-result:[noResultText]="noResult"-->
       <div class="song-list-wrapper">
         <song-list
           :songs="songs"
@@ -56,7 +56,7 @@
   // import Scroll from '@/components/wrap-scroll'
   // import { mapActions, mapState } from 'vuex'
 
-  // const RESERVED_HEIGHT = 40
+  const RESERVED_HEIGHT = 40
 
   export default {
     name: 'music-list',
@@ -79,13 +79,6 @@
       //   default: '抱歉，没有找到可播放的歌曲'
       // },
       // rank: Boolean
-    },
-    data() {
-      return {
-        imageHeight: 0,
-        // scrollY: 0,
-        // maxTranslateY: 0
-      }
     },
     // computed: {
     //   // noResult() {
@@ -150,32 +143,69 @@
     //   //   'playlist'
     //   // ])
     // },
+    data() {
+      return {
+        imageHeight: 0,
+        scrollY: 0,
+        maxTranslateY: 0,
+      }
+    },
     computed: {
       bgImageStyle() {
         // console.log('url', this.pic, 'title', this.title)
+        let height = 0
+        let paddingTop = '70%'
+        let zIndex = 0
+        let translateZ = 0
+        if (this.scrollY > this.maxTranslateY) {
+          height = `${RESERVED_HEIGHT}px`
+          paddingTop = 0
+          zIndex = 10
+          translateZ = 1
+        }
+        let scale = 1
+        if (this.scrollY < 0) {
+          scale = 1 + Math.abs(this.scrollY / this.imageHeight)
+        }
         return {
+          height,
+          paddingTop,
+          zIndex,
           backgroundImage: `url(${this.pic})`,
+          transform: `scale(${scale})translateZ(${translateZ}px`
+          // transform: `scale(${scale}))`
         }
       },
       scrollStyle() {
         return {
           top: `${this.imageHeight}px`,
         }
-      }
+      },
+      filterStyle() {
+        let blur = 1
+        const scrollY = this.scrollY
+        const imageHeight = this.imageHeight
+        if (scrollY >= 0) {
+          blur = Math.min(this.maxTranslateY / imageHeight, scrollY / imageHeight) * 25
+        }
+        return {
+          backdropFilter: `blur(${blur}px)`
+        }
+      },
     },
     mounted() {
       // console.log('mounted')
       this.imageHeight = this.$refs.bgImage.clientHeight
       // console.log('height', this.$refs.bgImage)
-      // this.maxTranslateY = this.imageHeight - RESERVED_HEIGHT
+      this.maxTranslateY = this.imageHeight - RESERVED_HEIGHT
     },
     methods: {
       goBack() {
         this.$router.back()
       },
-      // onScroll(pos) {
-      //   this.scrollY = -pos.y
-      // },
+      onScroll(pos) {
+        this.scrollY = -pos.y
+      },
       // selectItem({ song, index }) {
       //   this.selectPlay({
       //     list: this.songs,
@@ -235,7 +265,7 @@
       width: 100%;
       transform-origin: top;
       background-size: cover;
-      padding-top: 70%;
+      // padding-top: 70%;
       // .play-btn-wrapper {
       //   position: absolute;
       //   bottom: 20px;
@@ -278,7 +308,7 @@
       bottom: 0;
       width: 100%;
       z-index: 0;
-      overflow: hidden;
+      // overflow: hidden;
       .song-list-wrapper {
         padding: 20px 30px;
         background: $color-background;

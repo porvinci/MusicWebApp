@@ -14,7 +14,8 @@
   import { getSingerDetail } from '@/service/singer'
   import { processSongs } from '@/service/song'
   import MusicList from '@/components/music-list/music-list'
-  // import { SINGER_KEY } from '@/assets/js/constant'
+  import { SINGER_KEY } from '@/assets/js/constant'
+  import storage from 'good-storage'
 
   // export default createDetailComponent('singer-detail', SINGER_KEY, getSingerDetail)
   export default {
@@ -33,16 +34,36 @@
     },
     computed: {
       title() {
-        return this.singer && this.singer.name
+        return this.computedSinger && this.computedSinger.name
       },
       pic() {
-        return this.singer && this.singer.pic
+        return this.computedSinger && this.computedSinger.pic
+      },
+      computedSinger() {
+        let ret = null
+        const singer = this.singer
+        if (singer) {
+          ret = singer
+        } else {
+          const sessionSinger = storage.session.get(SINGER_KEY)
+          if (sessionSinger && sessionSinger.mid === this.$route.params.id) {
+            ret = sessionSinger
+          }
+        }
+        return ret
       }
     },
     async created () {
+      if (!this.computedSinger) {
+        this.$router.push({
+          path: this.$route.matched[0].path
+        })
+        return
+      }
       // const result = await getSingerDetail(this.$route.params.id)
-      const result = await getSingerDetail(this.singer.mid)
+      const result = await getSingerDetail(this.computedSinger.mid)
       this.songs = await processSongs(result.songs)
+
       this.loading = false
     }
   }
