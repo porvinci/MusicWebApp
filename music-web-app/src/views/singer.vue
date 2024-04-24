@@ -4,12 +4,18 @@
       :data="singers"
       @select="selectSinger"
     ></index-list>
+    <router-view v-slot="{ Component }" >
+      <transition name="slide">
+        <!-- :singer="selectedSinger"要放在component这个路由改变时的新组件上 -->
+        <component :is="Component" :singer="selectedSinger"/>
+      </transition>
+    </router-view>
     <!-- <router-view v-slot="{ Component }">
       <transition appear name="slide">
         <component :is="Component" :data="selectedSinger"/>
       </transition>
     </router-view> -->
-    <router-view :singer="selectedSinger"></router-view>
+    <!-- <router-view :singer="selectedSinger"></router-view> -->
   </div>
 </template>
 
