@@ -34,10 +34,11 @@
       class="list"
       :style="scrollStyle"
       v-loading="loading"
+      v-no-result:[noResultText]="noResult"
       :probe-type="3"
       @scroll="onScroll"
     >
-    <!-- v-no-result:[noResultText]="noResult"-->
+    <!-- -->
       <div class="song-list-wrapper">
         <song-list
           :songs="songs"
@@ -74,10 +75,10 @@
       title: String,
       pic: String,
       loading: Boolean,
-      // noResultText: {
-      //   type: String,
-      //   default: '抱歉，没有找到可播放的歌曲'
-      // },
+      noResultText: {
+        type: String,
+        default: '抱歉，无可播放歌曲'
+      },
       // rank: Boolean
     },
     // computed: {
@@ -151,6 +152,9 @@
       }
     },
     computed: {
+      noResult() {
+        return !this.loading && !this.songs.length
+      },
       bgImageStyle() {
         // console.log('url', this.pic, 'title', this.title)
         let height = 0

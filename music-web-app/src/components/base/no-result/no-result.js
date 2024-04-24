@@ -1,14 +1,15 @@
 import { createApp } from 'vue'
-import loading from './loading.vue'
+import noResult from './no-result.vue'
 import { addClass, removeClass } from '@/assets/js/dom'
 const relativeCls = 'g-relative'
 
-const loadingDirective = {
+const noResultDirective = {
   mounted(el, binding) {
+    console.log('el', el, 'binding', binding)
     // 创建组件对应的DOM对象
-    const app = createApp(loading)
+    const app = createApp(noResult)
     const instance = app.mount(document.createElement('div'))
-    el.instanceLoading = instance
+    el.instanceNoResult = instance
     const title = binding.arg
     if (typeof title !== 'undefined') {
       instance.setTitle(title)
@@ -20,7 +21,7 @@ const loadingDirective = {
   updated(el, binding) {
     const title = binding.arg
     if (typeof title !== 'undefined') {
-      el.instanceLoading.setTitle(title)
+      el.instanceNoResult.setTitle(title)
     }
     if (binding.value !== binding.oldValue) {
       binding.value ? append(el) : remove(el)
@@ -33,12 +34,12 @@ function append(el) {
   if (['absolute', 'relative', 'fixed'].indexOf(style.position) === -1) {
     addClass(el, relativeCls)
   }
-  el.appendChild(el.instanceLoading.$el)
+  el.appendChild(el.instanceNoResult.$el)
 }
 
 function remove(el) {
   removeClass(el, relativeCls)
-  el.removeChild(el.instanceLoading.$el)
+  el.removeChild(el.instanceNoResult.$el)
 }
 
-export default loadingDirective
+export default noResultDirective
