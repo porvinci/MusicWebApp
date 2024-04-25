@@ -65,7 +65,7 @@
       this.songs = await processSongs(result.songs)
 
       this.loading = false
-    }
+    },
   }
 </script>
 

@@ -12,7 +12,7 @@
       :style="bgImageStyle"
       ref="bgImage"
     >
-      <!-- <div
+      <div
         class="play-btn-wrapper"
         :style="playBtnStyle"
       >
@@ -24,7 +24,7 @@
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
-      </div> -->
+      </div>
       <div
         class="filter"
         :style="filterStyle"
@@ -42,6 +42,7 @@
       <div class="song-list-wrapper">
         <song-list
           :songs="songs"
+          @select="selectSong"
         ></song-list>
         <!-- @select="selectItem"
           :rank="rank" -->
@@ -53,6 +54,9 @@
 <script>
   import SongList from '@/components/base/song-list/song-list'
   import Scroll from '@/components/base/scroll/scroll'
+  import { useMusicPlayStore } from '@/store/musicPlay'
+  import { shuffle } from '@/assets/js/util'
+  import { PLAY_MODE } from '@/assets/js/constant'
   // import useMusicList from './useMusicList'
   // import Scroll from '@/components/wrap-scroll'
   // import { mapActions, mapState } from 'vuex'
@@ -81,69 +85,6 @@
       },
       // rank: Boolean
     },
-    // computed: {
-    //   // noResult() {
-    //   //   return !this.loading && !this.songs.length
-    //   // },
-    //   // playBtnStyle() {
-    //   //   let display = ''
-    //   //   if (this.scrollY >= this.maxTranslateY) {
-    //   //     display = 'none'
-    //   //   }
-    //   //   return {
-    //   //     display
-    //   //   }
-    //   // },
-
-    //   // bgImageStyle() {
-    //   //   const scrollY = this.scrollY
-    //   //   let zIndex = 0
-    //   //   let paddingTop = '70%'
-    //   //   let height = 0
-    //   //   let translateZ = 0
-
-    //   //   if (scrollY > this.maxTranslateY) {
-    //   //     zIndex = 10
-    //   //     paddingTop = 0
-    //   //     height = `${RESERVED_HEIGHT}px`
-    //   //     translateZ = 1
-    //   //   }
-
-    //   //   let scale = 1
-    //   //   if (scrollY < 0) {
-    //   //     scale = 1 + Math.abs(scrollY / this.imageHeight)
-    //   //   }
-
-    //   //   return {
-    //   //     zIndex,
-    //   //     paddingTop,
-    //   //     height,
-    //   //     backgroundImage: `url(${this.pic})`,
-    //   //     transform: `scale(${scale})translateZ(${translateZ}px)`
-    //   //   }
-    //   // },
-    //   // scrollStyle() {
-    //   //   const bottom = this.playlist.length ? '60px' : '0'
-    //   //   return {
-    //   //     top: `${this.imageHeight}px`,
-    //   //     bottom
-    //   //   }
-    //   // },
-    //   // filterStyle() {
-    //   //   let blur = 0
-    //   //   const scrollY = this.scrollY
-    //   //   const imageHeight = this.imageHeight
-    //   //   if (scrollY >= 0) {
-    //   //     blur = Math.min(this.maxTranslateY / imageHeight, scrollY / imageHeight) * 20
-    //   //   }
-    //   //   return {
-    //   //     backdropFilter: `blur(${blur}px)`
-    //   //   }
-    //   // },
-    //   // ...mapState([
-    //   //   'playlist'
-    //   // ])
-    // },
     data() {
       return {
         imageHeight: 0,
@@ -196,9 +137,17 @@
           backdropFilter: `blur(${blur}px)`
         }
       },
+      playBtnStyle() {
+        let display = ''
+        if (this.scrollY >= this.maxTranslateY) {
+          display = 'none'
+        }
+        return {
+          display
+        }
+      },
     },
     mounted() {
-      // console.log('mounted')
       this.imageHeight = this.$refs.bgImage.clientHeight
       // console.log('height', this.$refs.bgImage)
       this.maxTranslateY = this.imageHeight - RESERVED_HEIGHT
@@ -210,19 +159,22 @@
       onScroll(pos) {
         this.scrollY = -pos.y
       },
-      // selectItem({ song, index }) {
-      //   this.selectPlay({
-      //     list: this.songs,
-      //     index
-      //   })
-      // },
-      // random() {
-      //   this.randomPlay(this.songs)
-      // },
-      // ...mapActions([
-      //   'selectPlay',
-      //   'randomPlay'
-      // ])
+      selectSong({ song, index }) {
+        const musicPlayStore = useMusicPlayStore()
+        musicPlayStore.setPlayList(this.songs)
+        // console.log('current index', index)
+        musicPlayStore.setCurrentIndex(index)
+        musicPlayStore.setCurrentSong(song)
+        // console.log('current song', song)
+      },
+      random() {
+        const musicPlayStore = useMusicPlayStore()
+        const arr = shuffle(this.songs)
+        musicPlayStore.setPlayList(arr)
+        musicPlayStore.setCurrentIndex(0)
+        musicPlayStore.setCurrentSong(arr[0])
+        musicPlayStore.setPlayMode(PLAY_MODE.random)
+      }
     },
   // setup() {
   //   const { bgImage } = useMusicList()
@@ -270,34 +222,34 @@
       transform-origin: top;
       background-size: cover;
       // padding-top: 70%;
-      // .play-btn-wrapper {
-      //   position: absolute;
-      //   bottom: 20px;
-      //   z-index: 10;
-      //   width: 100%;
-      //   .play-btn {
-      //     box-sizing: border-box;
-      //     width: 135px;
-      //     padding: 7px 0;
-      //     margin: 0 auto;
-      //     text-align: center;
-      //     border: 1px solid $color-theme;
-      //     color: $color-theme;
-      //     border-radius: 100px;
-      //     font-size: 0;
-      //   }
-      //   .icon-play {
-      //     display: inline-block;
-      //     vertical-align: middle;
-      //     margin-right: 6px;
-      //     font-size: $font-size-medium-x;
-      //   }
-      //   .text {
-      //     display: inline-block;
-      //     vertical-align: middle;
-      //     font-size: $font-size-small;
-      //   }
-      // }
+      .play-btn-wrapper {
+        position: absolute;
+        bottom: 20px;
+        z-index: 10;
+        width: 100%;
+        .play-btn {
+          box-sizing: border-box;
+          width: 135px;
+          padding: 7px 0;
+          margin: 0 auto;
+          text-align: center;
+          border: 1px solid $color-theme;
+          color: $color-theme;
+          border-radius: 100px;
+          font-size: 0;
+        }
+        .icon-play {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 6px;
+          font-size: $font-size-medium-x;
+        }
+        .text {
+          display: inline-block;
+          vertical-align: middle;
+          font-size: $font-size-small;
+        }
+      }
       .filter {
         position: absolute;
         top: 0;
