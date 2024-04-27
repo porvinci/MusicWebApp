@@ -105,14 +105,23 @@ function mergeSinger(singer) {
 
 // 注册后端路由
 function registerRouter(devServer) {
-  const app = process.env.NODE_ENV === 'production' ? devServer : devServer.app
-  registerRecommend(app)
+  if (process.env.NODE_ENV === 'production') {
+    registerRecommend(devServer)
 
-  registerSingerList(app)
+    registerSingerList(devServer)
+  
+    registerSingerDetail(devServer)
+  
+    registerSongsUrl(devServer)
+  } else {
+    registerRecommend(devServer.app)
 
-  registerSingerDetail(app)
-
-  registerSongsUrl(app)
+    registerSingerList(devServer.app)
+  
+    registerSingerDetail(devServer.app)
+  
+    registerSongsUrl(devServer.app)
+  }
 
   // registerLyric(app)
 
