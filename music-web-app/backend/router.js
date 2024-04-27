@@ -105,13 +105,14 @@ function mergeSinger(singer) {
 
 // 注册后端路由
 function registerRouter(devServer) {
-  registerRecommend(devServer)
+  const app = process.env.NODE_ENV === 'production' ? devServer : devServer.app
+  registerRecommend(app)
 
-  registerSingerList(devServer)
+  registerSingerList(app)
 
-  registerSingerDetail(devServer)
+  registerSingerDetail(app)
 
-  registerSongsUrl(devServer)
+  registerSongsUrl(app)
 
   // registerLyric(app)
 
@@ -127,9 +128,9 @@ function registerRouter(devServer) {
 }
 
 // 注册推荐列表接口路由
-function registerRecommend(devServer) {
+function registerRecommend(app) {
   // console.log('-------------', devServer);
-  devServer.app.get('/api/getRecommend', (req, res) => {
+  app.get('/api/getRecommend', (req, res) => {
     // 第三方服务接口 url
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
@@ -218,8 +219,8 @@ function registerRecommend(devServer) {
 }
 
 // 注册歌手列表接口路由
-function registerSingerList(devServer) {
-  devServer.app.get('/api/getSingerList', (req, res) => {
+function registerSingerList(app) {
+  app.get('/api/getSingerList', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
     const HOT_NAME = '热'
 
@@ -318,8 +319,8 @@ function registerSingerList(devServer) {
 }
 
 // // 注册歌手详情接口路由
-function registerSingerDetail(devServer) {
-  devServer.app.get('/api/getSingerDetail', (req, res) => {
+function registerSingerDetail(app) {
+  app.get('/api/getSingerDetail', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
     const data = JSON.stringify({
@@ -360,8 +361,8 @@ function registerSingerDetail(devServer) {
 
 // // 注册歌曲 url 获取接口路由
 // // 因为歌曲的 url 每天都在变化，所以需要单独的接口根据歌曲的 mid 获取
-function registerSongsUrl(devServer) {
-  devServer.app.get('/api/getSongsUrl', (req, res) => {
+function registerSongsUrl(app) {
+  app.get('/api/getSongsUrl', (req, res) => {
     const mid = req.query.mid
 
     let midGroup = []
