@@ -161,9 +161,17 @@
       },
       selectSong({ song, index }) {
         const musicPlayStore = useMusicPlayStore()
-        musicPlayStore.setPlayList(this.songs)
+        if (!musicPlayStore.playlist.length) {
+          // 第一次唤醒播放器
+          musicPlayStore.setPlayList(this.songs)
+          musicPlayStore.setSequenceList(this.songs)
+          musicPlayStore.setCurrentIndex(index)
+        } else {
+          const mid = musicPlayStore.sequenceList[index].mid
+          const x = musicPlayStore.playlist.findIndex(item => item.mid === mid)
+          musicPlayStore.setCurrentIndex(x)
+        }
         console.log('current index', index)
-        musicPlayStore.setCurrentIndex(index)
         musicPlayStore.setFullScreen(true)
         // musicPlayStore.setPlayingState(true)
         // console.log('current song', song)

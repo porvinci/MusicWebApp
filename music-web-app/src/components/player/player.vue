@@ -96,7 +96,7 @@
           </div> -->
           <div class="operators">
             <div class="icon i-left">
-              <i class="icon-sequence"></i>
+              <i @click="changeMode" :class="modeIcon"></i>
             </div>
             <div class="icon i-left" :class="disableCls">
               <i @click="prev" class="icon-prev"></i>
@@ -123,6 +123,7 @@
       @pause="pause"
       @canplay="ready"
       @error="error"
+      @ended="ended"
     ></audio>
     <!-- @pause="pause"
       @canplay="ready"
@@ -136,7 +137,8 @@
   // import { useStore } from 'vuex'
   import { useMusicPlayStore } from '@/store/musicPlay'
   import { computed, watch, ref, nextTick } from 'vue'
-  // import useMode from './use-mode'
+  import useMode from './use-mode'
+  import { PLAY_MODE } from '@/assets/js/constant'
   // import useFavorite from './use-favorite'
   // import useCd from './use-cd'
   // import useLyric from './use-lyric'
@@ -167,12 +169,13 @@
       // pinia
       const musicPlayStore = useMusicPlayStore()
       const playlist = computed(() => musicPlayStore.playlist)
+      const playMode = computed(() => musicPlayStore.playMode)
       const playing = computed(() => musicPlayStore.playing)
       const currentIndex = computed(() => musicPlayStore.currentIndex)
       const fullScreen = computed(() => musicPlayStore.fullScreen)
       const currentSong = computed(() => musicPlayStore.currentSong)
       // hooks
-      // const { modeIcon, changeMode } = useMode()
+      const { modeIcon, changeMode } = useMode()
       // const { getFavoriteIcon, toggleFavorite } = useFavorite()
       // const { cdCls, cdRef, cdImageRef } = useCd()
       // const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
@@ -185,7 +188,6 @@
 
       // computed
       const playIcon = computed(() => {
-        console.log('playing', playing.value)
         return playing.value ? 'icon-pause' : 'icon-play'
       })
 
@@ -194,7 +196,6 @@
       // })
 
       const disableCls = computed(() => {
-        console.log('no disable', songReady.value)
         return songReady.value ? '' : 'disable'
       })
 
@@ -206,7 +207,6 @@
         }
         // currentTime.value = 0
         songReady.value = false
-        console.log('ready no')
         await nextTick()
         const audioEl = audioRef.value
         audioEl.src = newSong.url
@@ -217,9 +217,8 @@
         await nextTick()
         const audioEl = audioRef.value
         if (newV) {
-          console.log('可播放')
           audioEl.play()
-        } else console.log('不可播放')
+        }
       })
       // watch(playing, (newPlaying) => {
       //   if (!songReady.value) {
@@ -277,7 +276,6 @@
 
       function ready() {
         if (songReady.value) return
-        console.log('ready yes')
         songReady.value = true
       }
 
@@ -285,6 +283,10 @@
         songReady.value = true
       }
 
+      function ended() {
+        if (playMode.value !== PLAY_MODE.loop) next()
+        else togglePlay()
+      }
       // function updateTime(e) {
       //   if (!progressChanging) {
       //     currentTime.value = e.target.currentTime
@@ -333,14 +335,15 @@
         next,
         ready,
         error,
+        ended,
         // updateTime,
         // formatTime,
         // onProgressChanging,
         // onProgressChanged,
         // end,
         // mode
-        // modeIcon,
-        // changeMode,
+        modeIcon,
+        changeMode,
         // favorite
         // getFavoriteIcon,
         // toggleFavorite,

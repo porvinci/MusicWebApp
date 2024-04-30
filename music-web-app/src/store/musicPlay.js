@@ -12,12 +12,16 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   let currentSong = ref({})
 
   currentSong = computed(() => {
-    // console.log('currentSong', playlist.value[currentIndex.value])
+    console.log('playlist', playlist, 'currentIndex', currentIndex)
     return playlist.value[currentIndex.value] || {}
   })
   // const setCurrentSong = (item) => { currentSong.value = item }
-  const setSequenceList = (list) => { sequenceList.value = list }
-  const setPlayList = (list) => { playlist.value = list }
+  const setSequenceList = (list) => {
+    sequenceList.value = list
+  }
+  const setPlayList = (list) => {
+    playlist.value = list
+  }
   const setPlayMode = (mode) => { playMode.value = mode } // ; console.log('mode', playMode.value)
   const setPlayingState = (state) => { playing.value = state }
   const setCurrentIndex = (index) => {
@@ -27,7 +31,9 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const setFullScreen = (state) => { fullScreen.value = state }
 
   return {
+    sequenceList,
     playlist,
+    playMode,
     playing,
     currentIndex,
     fullScreen,
