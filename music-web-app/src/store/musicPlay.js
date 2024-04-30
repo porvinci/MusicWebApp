@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { PLAY_MODE } from '@/assets/js/constant'
 
 export const useMusicPlayStore = defineStore('musicPlay', () => {
@@ -9,13 +9,13 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const playing = ref(false) // 播放器的当前播放状态
   const currentIndex = ref(0) // 当前播放歌曲的index
   const fullScreen = ref(false) // 播放器是否要全屏
-  const currentSong = ref(null)
+  let currentSong = ref({})
 
-  // const currentSong = computed(() => {
-  //   console.log('currentSong', playlist.value[currentIndex.value])
-  //   return playlist.value[currentIndex.value]
-  // })
-  const setCurrentSong = (item) => { currentSong.value = item }
+  currentSong = computed(() => {
+    console.log('currentSong', playlist.value[currentIndex.value])
+    return playlist.value[currentIndex.value] || {}
+  })
+  // const setCurrentSong = (item) => { currentSong.value = item }
   const setSequenceList = (list) => { sequenceList.value = list }
   const setPlayList = (list) => { playlist.value = list }
   const setPlayMode = (mode) => { playMode.value = mode } // ; console.log('mode', playMode.value)
@@ -27,7 +27,12 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const setFullScreen = (state) => { fullScreen.value = state }
 
   return {
-    setCurrentSong,
+    playlist,
+    playing,
+    currentIndex,
+    fullScreen,
+    currentSong,
+    // setCurrentSong,
     setSequenceList,
     setPlayList,
     setPlayMode,

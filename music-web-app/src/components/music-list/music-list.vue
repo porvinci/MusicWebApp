@@ -162,9 +162,10 @@
       selectSong({ song, index }) {
         const musicPlayStore = useMusicPlayStore()
         musicPlayStore.setPlayList(this.songs)
-        // console.log('current index', index)
+        console.log('current index', index)
         musicPlayStore.setCurrentIndex(index)
-        musicPlayStore.setCurrentSong(song)
+        musicPlayStore.setFullScreen(true)
+        // musicPlayStore.setPlayingState(true)
         // console.log('current song', song)
       },
       random() {
