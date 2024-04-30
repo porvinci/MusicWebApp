@@ -98,13 +98,13 @@
             <div class="icon i-left">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left">
+            <div class="icon i-left" :class="disableCls">
               <i @click="prev" class="icon-prev"></i>
             </div>
-            <div class="icon i-center">
+            <div class="icon i-center" :class="disableCls">
               <i @click="togglePlay" :class="playIcon"></i>
             </div>
-            <div class="icon i-right">
+            <div class="icon i-right" :class="disableCls">
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
@@ -122,6 +122,7 @@
       ref="audioRef"
       @pause="pause"
       @canplay="ready"
+      @error="error"
     ></audio>
     <!-- @pause="pause"
       @canplay="ready"
@@ -192,9 +193,10 @@
       //   return currentTime.value / currentSong.value.duration
       // })
 
-      // const disableCls = computed(() => {
-      //   return songReady.value ? '' : 'disable'
-      // })
+      const disableCls = computed(() => {
+        console.log('no disable', songReady.value)
+        return songReady.value ? '' : 'disable'
+      })
 
       // watch
       watch(currentSong, async (newSong) => {
@@ -203,15 +205,22 @@
           return
         }
         // currentTime.value = 0
-        // songReady.value = false
+        songReady.value = false
+        console.log('ready no')
         await nextTick()
         const audioEl = audioRef.value
         audioEl.src = newSong.url
-        audioEl.play()
         musicPlayStore.setPlayingState(true)
       })
 
-
+      watch(songReady, async (newV) => {
+        await nextTick()
+        const audioEl = audioRef.value
+        if (newV) {
+          console.log('可播放')
+          audioEl.play()
+        } else console.log('不可播放')
+      })
       // watch(playing, (newPlaying) => {
       //   if (!songReady.value) {
       //     return
@@ -268,27 +277,13 @@
 
       function ready() {
         if (songReady.value) return
+        console.log('ready yes')
         songReady.value = true
       }
-      // function loop() {
-      //   const audioEl = audioRef.value
-      //   audioEl.currentTime = 0
-      //   audioEl.play()
-      //   store.commit('setPlayingState', true)
-      // }
 
-      // function ready() {
-      //   if (songReady.value) {
-      //     return
-      //   }
-      //   songReady.value = true
-      //   playLyric()
-      //   savePlay(currentSong.value)
-      // }
-
-      // function error() {
-      //   songReady.value = true
-      // }
+      function error() {
+        songReady.value = true
+      }
 
       // function updateTime(e) {
       //   if (!progressChanging) {
@@ -329,7 +324,7 @@
         currentSong,
         playlist,
         playIcon,
-        // disableCls,
+        disableCls,
         // progress,
         goBack,
         togglePlay,
@@ -337,7 +332,7 @@
         prev,
         next,
         ready,
-        // error,
+        error,
         // updateTime,
         // formatTime,
         // onProgressChanging,
@@ -567,9 +562,9 @@
           .icon {
             flex: 1;
             color: $color-theme;
-            // &.disable {
-            //   color: $color-theme-d;
-            // }
+            &.disable {
+              color: $color-theme-d;
+            }
             i {
               font-size: 30px;
             }

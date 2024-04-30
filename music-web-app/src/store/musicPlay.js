@@ -12,7 +12,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   let currentSong = ref({})
 
   currentSong = computed(() => {
-    console.log('currentSong', playlist.value[currentIndex.value])
+    // console.log('currentSong', playlist.value[currentIndex.value])
     return playlist.value[currentIndex.value] || {}
   })
   // const setCurrentSong = (item) => { currentSong.value = item }
