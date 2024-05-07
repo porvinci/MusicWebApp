@@ -108,7 +108,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon-not-favorite"></i>
+              <i @click="toggleFavorite" :class="iconFavoriteStyle()"></i>
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@
   import { computed, watch, ref, nextTick } from 'vue'
   import useMode from './use-mode'
   import { PLAY_MODE } from '@/assets/js/constant'
-  // import useFavorite from './use-favorite'
+  import useFavorite from './use-favorite'
   // import useCd from './use-cd'
   // import useLyric from './use-lyric'
   // import useMiddleInteractive from './use-middle-interactive'
@@ -176,7 +176,7 @@
       const currentSong = computed(() => musicPlayStore.currentSong)
       // hooks
       const { modeIcon, changeMode } = useMode()
-      // const { getFavoriteIcon, toggleFavorite } = useFavorite()
+      const { iconFavoriteStyle, toggleFavorite } = useFavorite()
       // const { cdCls, cdRef, cdImageRef } = useCd()
       // const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
       //   songReady,
@@ -345,8 +345,8 @@
         modeIcon,
         changeMode,
         // favorite
-        // getFavoriteIcon,
-        // toggleFavorite,
+        iconFavoriteStyle,
+        toggleFavorite,
         // cd
         // cdCls,
         // cdRef,

@@ -9,6 +9,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const playing = ref(false) // 播放器的当前播放状态
   const currentIndex = ref(0) // 当前播放歌曲的index
   const fullScreen = ref(false) // 播放器是否要全屏
+  const favList = ref([])
   let currentSong = ref({})
 
   currentSong = computed(() => {
@@ -29,6 +30,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     // console.log('set index', currentIndex.value)
   }
   const setFullScreen = (state) => { fullScreen.value = state }
+  const setFavList = (list) => { favList.value = list }
 
   return {
     sequenceList,
@@ -38,12 +40,14 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     currentIndex,
     fullScreen,
     currentSong,
+    favList,
     // setCurrentSong,
     setSequenceList,
     setPlayList,
     setPlayMode,
     setPlayingState,
     setCurrentIndex,
-    setFullScreen
+    setFullScreen,
+    setFavList,
   }
 })
