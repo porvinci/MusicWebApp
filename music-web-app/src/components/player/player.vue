@@ -89,10 +89,9 @@
               <progress-bar
                 ref="barRef"
                 :progress="progress"
-              ></progress-bar>
-              <!-- :progress="progress"
                 @progress-changing="onProgressChanging"
-                @progress-changed="onProgressChanged" -->
+                @progress-changed="onProgressChanged"
+              ></progress-bar>
             </div>
             <span class="time time-r">{{formatTime(currentSong.duration)}}</span>
           </div>
@@ -128,11 +127,6 @@
       @ended="ended"
       @timeupdate="timeUpdate"
     ></audio>
-    <!-- @pause="pause"
-      @canplay="ready"
-      @error="error"
-      @timeupdate="updateTime"
-      @ended="end" -->
   </div>
 </template>
 
@@ -295,21 +289,13 @@
         currentTime.value = e.target.currentTime
       }
 
-      // function onProgressChanging(progress) {
-      //   progressChanging = true
-      //   currentTime.value = currentSong.value.duration * progress
-      //   playLyric()
-      //   stopLyric()
-      // }
+      function onProgressChanging(progress) {
+        audioRef.value.currentTime = currentTime.value = progress * currentSong.value.duration
+      }
 
-      // function onProgressChanged(progress) {
-      //   progressChanging = false
-      //   audioRef.value.currentTime = currentTime.value = currentSong.value.duration * progress
-      //   if (!playing.value) {
-      //     store.commit('setPlayingState', true)
-      //   }
-      //   playLyric()
-      // }
+      function onProgressChanged(progress) {
+        audioRef.value.currentTime = currentTime.value = progress * currentSong.value.duration
+      }
 
       // function end() {
       //   currentTime.value = 0
@@ -340,8 +326,8 @@
         ended,
         timeUpdate,
         formatTime,
-        // onProgressChanging,
-        // onProgressChanged,
+        onProgressChanging,
+        onProgressChanged,
         // end,
         // mode
         modeIcon,

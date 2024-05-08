@@ -1,8 +1,8 @@
 <template>
   <div
     class="progress-bar"
+    @click="onClick"
   >
-  <!-- @click="onClick" -->
     <div class="bar-inner">
       <div
         class="progress"
@@ -12,10 +12,10 @@
       <div
         class="progress-btn-wrapper"
         :style="btnStyle"
+        @touchstart="onTouchStart"
+        @touchmove="onTouchMove"
+        @touchend="onTouchEnd"
       >
-      <!-- @touchstart.prevent="onTouchStart"
-        @touchmove.prevent="onTouchMove"
-        @touchend.prevent="onTouchEnd" -->
         <div class="progress-btn"></div>
       </div>
     </div>
@@ -32,6 +32,7 @@
         default: 0,
       }
     },
+    emits: ['progress-changing', 'progress-changed'],
     data() {
       return {
         offset: 0,
@@ -49,6 +50,38 @@
       btnStyle() {
         return `transform: translate3d(${this.offset}px, 0, 0)`
       },
+    },
+    created() {
+      // 共享对象
+      this.touch = {}
+    },
+    methods: {
+      onTouchStart(e) {
+        this.touch.x1 = e.touches[0].pageX
+        this.touch.startWidth = this.$refs.progress.clientWidth
+        console.log(this.touch.startWidth)
+      },
+      onTouchMove(e) {
+        this.touch.x2 = e.touches[0].pageX
+        const delta = this.touch.x2 - this.touch.x1
+        const tmpWidth = this.touch.startWidth + delta
+        const p = Math.min(1, Math.max(0, tmpWidth / (this.$el.clientWidth - btnWidth)))
+        this.offset = p * (this.$el.clientWidth - btnWidth)
+        this.$emit('progress-changing', p)
+      },
+      onTouchEnd() {
+        const p = this.$refs.progress.clientWidth / (this.$el.clientWidth - btnWidth)
+        this.offset = p * (this.$el.clientWidth - btnWidth)
+        this.$emit('progress-changed', p)
+      },
+      onClick(e) {
+        console.log(e)
+        const clickX = e.pageX
+        const offsetLeft = this.$el.getBoundingClientRect().left
+        const p = (clickX - offsetLeft) / (this.$el.clientWidth - btnWidth)
+        this.offset = p * (this.$el.clientWidth - btnWidth)
+        this.$emit('progress-changed', p)
+      }
     }
   }
 </script>
