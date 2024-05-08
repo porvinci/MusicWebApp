@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { PLAY_MODE } from '@/assets/js/constant'
+import { PLAY_MODE, SONG_KEY } from '@/assets/js/constant'
+import storage from 'good-storage'
 
 export const useMusicPlayStore = defineStore('musicPlay', () => {
   const sequenceList = ref([]) // 歌手详情页中歌曲的顺序
@@ -9,7 +10,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const playing = ref(false) // 播放器的当前播放状态
   const currentIndex = ref(0) // 当前播放歌曲的index
   const fullScreen = ref(false) // 播放器是否要全屏
-  const favList = ref([])
+  const favList = ref(storage.get(SONG_KEY, []))
   let currentSong = ref({})
 
   currentSong = computed(() => {

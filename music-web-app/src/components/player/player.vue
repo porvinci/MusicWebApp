@@ -81,19 +81,21 @@
           <!-- <div class="dot-wrapper">
             <span class="dot" :class="{'active':currentShow==='cd'}"></span>
             <span class="dot" :class="{'active':currentShow==='lyric'}"></span>
-          </div>
+          </div> -->
           <div class="progress-wrapper">
             <span class="time time-l">{{formatTime(currentTime)}}</span>
+            <!-- {{formatTime(currentTime)}} -->
             <div class="progress-bar-wrapper">
               <progress-bar
                 ref="barRef"
                 :progress="progress"
-                @progress-changing="onProgressChanging"
-                @progress-changed="onProgressChanged"
               ></progress-bar>
+              <!-- :progress="progress"
+                @progress-changing="onProgressChanging"
+                @progress-changed="onProgressChanged" -->
             </div>
             <span class="time time-r">{{formatTime(currentSong.duration)}}</span>
-          </div> -->
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i @click="changeMode" :class="modeIcon"></i>
@@ -124,6 +126,7 @@
       @canplay="ready"
       @error="error"
       @ended="ended"
+      @timeupdate="timeUpdate"
     ></audio>
     <!-- @pause="pause"
       @canplay="ready"
@@ -145,25 +148,25 @@
   // import useMiddleInteractive from './use-middle-interactive'
   // import useAnimation from './use-animation'
   // import usePlayHistory from './use-play-history'
-  // import ProgressBar from './progress-bar'
+  import ProgressBar from './progress-bar'
   // import Scroll from '@/components/base/scroll/scroll'
   // import MiniPlayer from './mini-player'
-  // import { formatTime } from '@/assets/js/util'
+  import { formatTime } from '@/assets/js/util'
   // import { PLAY_MODE } from '@/assets/js/constant'
 
   export default {
     name: 'player',
-    // components: {
-    //   MiniPlayer,
-    //   ProgressBar,
-    //   Scroll
-    // },
+    components: {
+      // MiniPlayer,
+      ProgressBar,
+      // Scroll
+    },
     setup() {
       // data
       const audioRef = ref(null)
       // const barRef = ref(null)
       const songReady = ref(false)
-      // const currentTime = ref(0)
+      const currentTime = ref(0)
       // let progressChanging = false
 
       // pinia
@@ -191,9 +194,9 @@
         return playing.value ? 'icon-pause' : 'icon-play'
       })
 
-      // const progress = computed(() => {
-      //   return currentTime.value / currentSong.value.duration
-      // })
+      const progress = computed(() => {
+        return currentTime.value / currentSong.value.duration
+      })
 
       const disableCls = computed(() => {
         return songReady.value ? '' : 'disable'
@@ -287,11 +290,10 @@
         if (playMode.value !== PLAY_MODE.loop) next()
         else togglePlay()
       }
-      // function updateTime(e) {
-      //   if (!progressChanging) {
-      //     currentTime.value = e.target.currentTime
-      //   }
-      // }
+
+      function timeUpdate(e) {
+        currentTime.value = e.target.currentTime
+      }
 
       // function onProgressChanging(progress) {
       //   progressChanging = true
@@ -322,12 +324,12 @@
         audioRef,
         // barRef,
         fullScreen,
-        // currentTime,
+        currentTime,
         currentSong,
         playlist,
         playIcon,
         disableCls,
-        // progress,
+        progress,
         goBack,
         togglePlay,
         pause,
@@ -336,8 +338,8 @@
         ready,
         error,
         ended,
-        // updateTime,
-        // formatTime,
+        timeUpdate,
+        formatTime,
         // onProgressChanging,
         // onProgressChanged,
         // end,
@@ -536,29 +538,29 @@
       //       }
       //     }
       //   }
-      //   .progress-wrapper {
-      //     display: flex;
-      //     align-items: center;
-      //     width: 80%;
-      //     margin: 0px auto;
-      //     padding: 10px 0;
-      //     .time {
-      //       color: $color-text;
-      //       font-size: $font-size-small;
-      //       flex: 0 0 40px;
-      //       line-height: 30px;
-      //       width: 40px;
-      //       &.time-l {
-      //         text-align: left;
-      //       }
-      //       &.time-r {
-      //         text-align: right;
-      //       }
-      //     }
-      //     .progress-bar-wrapper {
-      //       flex: 1;
-      //     }
-      //   }
+        .progress-wrapper {
+          display: flex;
+          align-items: center;
+          width: 80%;
+          margin: 0px auto;
+          padding: 10px 0;
+          .time {
+            color: $color-text;
+            font-size: $font-size-small;
+            flex: 0 0 40px;
+            line-height: 30px;
+            width: 40px;
+            &.time-l {
+              text-align: left;
+            }
+            &.time-r {
+              text-align: right;
+            }
+          }
+          .progress-bar-wrapper {
+            flex: 1;
+          }
+        }
         .operators {
           display: flex;
           align-items: center;
@@ -585,9 +587,9 @@
           .i-right {
             text-align: left
           }
-          // .icon-favorite {
-          //   color: $color-sub-theme;
-          // }
+          .icon-favorite {
+            color: $color-sub-theme;
+          }
         }
       }
       // &.normal-enter-active, &.normal-leave-active {

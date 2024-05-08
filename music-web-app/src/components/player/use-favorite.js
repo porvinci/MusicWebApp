@@ -22,7 +22,6 @@ export default function useFavorite() {
     else stoList.push(curSong.value)
     musicPlayStore.setFavList(stoList)
     storage.set(SONG_KEY, stoList)
-    console.log('fav', idx, stoList)
   }
 
   return {
