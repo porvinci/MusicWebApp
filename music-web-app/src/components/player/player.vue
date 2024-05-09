@@ -131,7 +131,7 @@
   import { PLAY_MODE } from '@/assets/js/constant'
   import useFavorite from './use-favorite'
   import useCd from './use-cd'
-  // import useLyric from './use-lyric'
+  import useLyric from './use-lyric'
   // import useMiddleInteractive from './use-middle-interactive'
   // import useAnimation from './use-animation'
   // import usePlayHistory from './use-play-history'
@@ -168,6 +168,8 @@
       const { modeIcon, changeMode } = useMode()
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
       const { cdImageRef } = useCd()
+      const { lyric } = useLyric()
+      console.log('lyric', lyric)
       // const { cdCls, cdRef, cdImageRef } = useCd()
       // const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
       //   songReady,

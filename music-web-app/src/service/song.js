@@ -20,9 +20,11 @@ export function processSongs(songs) {
   })
 }
 
+// 大概保存时间为一刷新就全没了
 const lyricMap = {}
 
 export function getLyric(song) {
+  console.log('lyricMap', lyricMap)
   if (song.lyric) {
     return Promise.resolve(song.lyric)
   }
