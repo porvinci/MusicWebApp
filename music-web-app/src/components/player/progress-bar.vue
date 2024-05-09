@@ -12,9 +12,9 @@
       <div
         class="progress-btn-wrapper"
         :style="btnStyle"
-        @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
-        @touchend="onTouchEnd"
+        @touchstart.prevent="onTouchStart"
+        @touchmove.prevent="onTouchMove"
+        @touchend.prevent="onTouchEnd"
       >
         <div class="progress-btn"></div>
       </div>
@@ -59,7 +59,6 @@
       onTouchStart(e) {
         this.touch.x1 = e.touches[0].pageX
         this.touch.startWidth = this.$refs.progress.clientWidth
-        console.log(this.touch.startWidth)
       },
       onTouchMove(e) {
         this.touch.x2 = e.touches[0].pageX
@@ -75,7 +74,6 @@
         this.$emit('progress-changed', p)
       },
       onClick(e) {
-        console.log(e)
         const clickX = e.pageX
         const offsetLeft = this.$el.getBoundingClientRect().left
         const p = (clickX - offsetLeft) / (this.$el.clientWidth - btnWidth)

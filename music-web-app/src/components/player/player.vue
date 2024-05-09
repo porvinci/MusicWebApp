@@ -26,36 +26,29 @@
           <h1 class="title">{{currentSong.name}}</h1>
           <h2 class="subtitle">{{currentSong.singer}}</h2>
         </div>
-        <!-- <div
+        <div
           class="middle"
-          @touchstart.prevent="onMiddleTouchStart"
-          @touchmove.prevent="onMiddleTouchMove"
-          @touchend.prevent="onMiddleTouchEnd"
         >
           <div
             class="middle-l"
-            :style="middleLStyle"
           >
             <div
-              ref="cdWrapperRef"
               class="cd-wrapper"
             >
               <div
-                ref="cdRef"
                 class="cd"
               >
                 <img
                   ref="cdImageRef"
                   class="image"
-                  :class="cdCls"
                   :src="currentSong.pic">
               </div>
             </div>
-            <div class="playing-lyric-wrapper">
+            <!-- <div class="playing-lyric-wrapper">
               <div class="playing-lyric">{{playingLyric}}</div>
-            </div>
+            </div> -->
           </div>
-          <scroll
+          <!-- <scroll
             class="middle-r"
             ref="lyricScrollRef"
             :style="middleRStyle"
@@ -75,8 +68,8 @@
                 <p>{{pureMusicLyric}}</p>
               </div>
             </div>
-          </scroll>
-        </div> -->
+          </scroll> -->
+        </div>
         <div class="bottom">
           <!-- <div class="dot-wrapper">
             <span class="dot" :class="{'active':currentShow==='cd'}"></span>
@@ -137,7 +130,7 @@
   import useMode from './use-mode'
   import { PLAY_MODE } from '@/assets/js/constant'
   import useFavorite from './use-favorite'
-  // import useCd from './use-cd'
+  import useCd from './use-cd'
   // import useLyric from './use-lyric'
   // import useMiddleInteractive from './use-middle-interactive'
   // import useAnimation from './use-animation'
@@ -174,6 +167,7 @@
       // hooks
       const { modeIcon, changeMode } = useMode()
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
+      const { cdImageRef } = useCd()
       // const { cdCls, cdRef, cdImageRef } = useCd()
       // const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
       //   songReady,
@@ -217,26 +211,6 @@
           audioEl.play()
         }
       })
-      // watch(playing, (newPlaying) => {
-      //   if (!songReady.value) {
-      //     return
-      //   }
-      //   const audioEl = audioRef.value
-      //   if (newPlaying) {
-      //     audioEl.play()
-      //     playLyric()
-      //   } else {
-      //     audioEl.pause()
-      //     stopLyric()
-      //   }
-      // })
-
-      // watch(fullScreen, async (newFullScreen) => {
-      //   if (newFullScreen) {
-      //     await nextTick()
-      //     barRef.value.setOffset(progress.value)
-      //   }
-      // })
 
       // methods
       function goBack() {
@@ -297,15 +271,6 @@
         audioRef.value.currentTime = currentTime.value = progress * currentSong.value.duration
       }
 
-      // function end() {
-      //   currentTime.value = 0
-      //   if (playMode.value === PLAY_MODE.loop) {
-      //     loop()
-      //   } else {
-      //     next()
-      //   }
-      // }
-
       return {
         audioRef,
         // barRef,
@@ -336,9 +301,7 @@
         iconFavoriteStyle,
         toggleFavorite,
         // cd
-        // cdCls,
-        // cdRef,
-        // cdImageRef,
+        cdImageRef,
         // lyric
         // currentLyric,
         // currentLineNum,
@@ -421,46 +384,46 @@
           color: $color-text;
         }
       }
-      // .middle {
-      //   position: fixed;
-      //   width: 100%;
-      //   top: 80px;
-      //   bottom: 170px;
-      //   white-space: nowrap;
-      //   font-size: 0;
-      //   .middle-l {
-      //     display: inline-block;
-      //     vertical-align: top;
-      //     position: relative;
-      //     width: 100%;
-      //     height: 0;
-      //     padding-top: 80%;
-      //     .cd-wrapper {
-      //       position: absolute;
-      //       left: 10%;
-      //       top: 0;
-      //       width: 80%;
-      //       box-sizing: border-box;
-      //       height: 100%;
-      //       .cd {
-      //         width: 100%;
-      //         height: 100%;
-      //         border-radius: 50%;
-      //         img {
-      //           position: absolute;
-      //           left: 0;
-      //           top: 0;
-      //           width: 100%;
-      //           height: 100%;
-      //           box-sizing: border-box;
-      //           border-radius: 50%;
-      //           border: 10px solid rgba(255, 255, 255, 0.1);
-      //         }
-      //         .playing {
-      //           animation: rotate 20s linear infinite
-      //         }
-      //       }
-      //     }
+      .middle {
+        position: fixed;
+        width: 100%;
+        top: 80px;
+        bottom: 170px;
+        white-space: nowrap;
+        font-size: 0;
+        .middle-l {
+          display: inline-block;
+          vertical-align: top;
+          position: relative;
+          width: 100%;
+          height: 0;
+          padding-top: 80%;
+          .cd-wrapper {
+            position: absolute;
+            left: 10%;
+            top: 0;
+            width: 80%;
+            box-sizing: border-box;
+            height: 100%;
+            .cd {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              img {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                border-radius: 50%;
+                border: 10px solid rgba(255, 255, 255, 0.1);
+              }
+              .image {
+                animation: rotate 20s linear infinite
+              }
+            }
+          }
       //     .playing-lyric-wrapper {
       //       width: 80%;
       //       margin: 30px auto 0 auto;
@@ -500,8 +463,8 @@
       //         font-size: $font-size-medium;
       //       }
       //     }
-      //   }
-      // }
+        }
+      }
       .bottom {
         position: absolute;
         bottom: 50px;
