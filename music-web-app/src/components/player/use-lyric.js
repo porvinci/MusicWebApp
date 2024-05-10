@@ -3,7 +3,7 @@ import { ref, computed, watch, } from 'vue'
 import { getLyric } from '@/service/song'
 import Lyric from 'lyric-parser'
 
-export default function useLyric(currentTime) {
+export default function useLyric() {
   const lyricScrollRef = ref(null)
   const lyricListRef = ref(null)
   const musicPlayStore = useMusicPlayStore()
@@ -12,14 +12,18 @@ export default function useLyric(currentTime) {
   const lyric = ref(null)
   const lineSerialNum = ref(0)
   const lyricTimeList = ref([])
+  const pureMusicLyric = ref('')
+  const singleLineLyric = ref('')
   watch(currentSong, async (newSong) => {
     const originLyric = await getLyric(newSong)
     lyric.value = new Lyric(originLyric)
-    lyricTimeList.value = lyric.value.lines.map(item => item.time * 0.001)
-    // console.log(originLyric, lyric.value, lyricTimeList.value)
+    if (lyric.value.lines.length) lyricTimeList.value = lyric.value.lines.map(item => item.time * 0.001)
+    else singleLineLyric.value = pureMusicLyric.value = originLyric.replace(/\[(\d{2}):(\d{2}):(\d{2})\]/g, '')
+    console.log(originLyric, lyric.value, lyricTimeList.value)
   })
   watch(curTime, (newV) => {
     lineSerialNum.value = lyricTimeList.value.findIndex(item => item > newV) - 1
+    singleLineLyric.value = lyric.value.lines[lineSerialNum.value]?.txt
     const targetEl = lyricListRef.value.children[Math.max(lineSerialNum.value - 7, 0)]
     lyricScrollRef.value.scroll.scroll.value.scrollToElement(targetEl, 0)
   })
@@ -29,5 +33,7 @@ export default function useLyric(currentTime) {
     lineSerialNum,
     lyricScrollRef,
     lyricListRef,
+    pureMusicLyric,
+    singleLineLyric,
   }
 }

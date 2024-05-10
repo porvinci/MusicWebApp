@@ -31,7 +31,7 @@
         >
           <div
             class="middle-l"
-            v-show="false"
+            v-show="true"
           >
             <div
               class="cd-wrapper"
@@ -45,13 +45,14 @@
                   :src="currentSong.pic">
               </div>
             </div>
-            <!-- <div class="playing-lyric-wrapper">
-              <div class="playing-lyric">{{playingLyric}}</div>
-            </div> -->
+            <div class="playing-lyric-wrapper">
+              <div class="playing-lyric">{{singleLineLyric}}</div>
+            </div>
           </div>
           <scroll
             class="middle-r"
             ref="lyricScrollRef"
+            v-show="false"
           >
             <div class="lyric-wrapper">
               <div v-if="lyric" ref="lyricListRef">
@@ -64,9 +65,9 @@
                   {{line.txt}}
                 </p>
               </div>
-              <!-- <div class="pure-music" v-show="pureMusicLyric">
+              <div class="pure-music" v-show="pureMusicLyric">
                 <p>{{pureMusicLyric}}</p>
-              </div> -->
+              </div>
             </div>
           </scroll>
         </div>
@@ -168,7 +169,7 @@
       const { modeIcon, changeMode } = useMode()
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
       const { cdImageRef } = useCd()
-      const { lyric, lineSerialNum, lyricScrollRef, lyricListRef } = useLyric(currentTime)
+      const { lyric, lineSerialNum, lyricScrollRef, lyricListRef, pureMusicLyric, singleLineLyric } = useLyric(currentTime)
       console.log('lyric', lyric)
       // const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
       // const { cdWrapperRef, enter, afterEnter, leave, afterLeave } = useAnimation()
@@ -306,8 +307,8 @@
         // lyric
         lyric,
         lineSerialNum,
-        // pureMusicLyric,
-        // playingLyric,
+        pureMusicLyric,
+        singleLineLyric,
         lyricScrollRef,
         lyricListRef,
         // middle-interactive
@@ -425,18 +426,18 @@
               }
             }
           }
-      //     .playing-lyric-wrapper {
-      //       width: 80%;
-      //       margin: 30px auto 0 auto;
-      //       overflow: hidden;
-      //       text-align: center;
-      //       .playing-lyric {
-      //         height: 20px;
-      //         line-height: 20px;
-      //         font-size: $font-size-medium;
-      //         color: $color-text-l;
-      //       }
-      //     }
+          .playing-lyric-wrapper {
+            width: 80%;
+            margin: 30px auto 0 auto;
+            overflow: hidden;
+            text-align: center;
+            .playing-lyric {
+              height: 20px;
+              line-height: 20px;
+              font-size: $font-size-medium;
+              color: $color-text-l;
+            }
+          }
         }
         .middle-r {
           display: inline-block;
@@ -457,12 +458,12 @@
                 color: $color-text;
               }
             }
-      //       .pure-music {
-      //         padding-top: 50%;
-      //         line-height: 32px;
-      //         color: $color-text-l;
-      //         font-size: $font-size-medium;
-      //       }
+            .pure-music {
+              padding-top: 50%;
+              line-height: 32px;
+              color: $color-text-l;
+              font-size: $font-size-medium;
+            }
           }
         }
       }
