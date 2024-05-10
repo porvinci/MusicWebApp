@@ -171,7 +171,6 @@
           const x = musicPlayStore.playlist.findIndex(item => item.mid === mid)
           musicPlayStore.setCurrentIndex(x)
         }
-        console.log('current index', index)
         musicPlayStore.setFullScreen(true)
         // musicPlayStore.setPlayingState(true)
         // console.log('current song', song)

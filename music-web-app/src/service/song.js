@@ -24,10 +24,6 @@ export function processSongs(songs) {
 const lyricMap = {}
 
 export function getLyric(song) {
-  console.log('lyricMap', lyricMap)
-  if (song.lyric) {
-    return Promise.resolve(song.lyric)
-  }
   const mid = song.mid
   const lyric = lyricMap[mid]
   if (lyric) {

@@ -31,6 +31,7 @@
         >
           <div
             class="middle-l"
+            v-show="false"
           >
             <div
               class="cd-wrapper"
@@ -48,27 +49,26 @@
               <div class="playing-lyric">{{playingLyric}}</div>
             </div> -->
           </div>
-          <!-- <scroll
+          <scroll
             class="middle-r"
             ref="lyricScrollRef"
-            :style="middleRStyle"
           >
             <div class="lyric-wrapper">
-              <div v-if="currentLyric" ref="lyricListRef">
+              <div v-if="lyric" ref="lyricListRef">
                 <p
                   class="text"
-                  :class="{'current': currentLineNum ===index}"
-                  v-for="(line,index) in currentLyric.lines"
+                  :class="{'current': lineSerialNum ===index}"
+                  v-for="(line,index) in lyric.lines"
                   :key="line.num"
                 >
                   {{line.txt}}
                 </p>
               </div>
-              <div class="pure-music" v-show="pureMusicLyric">
+              <!-- <div class="pure-music" v-show="pureMusicLyric">
                 <p>{{pureMusicLyric}}</p>
-              </div>
+              </div> -->
             </div>
-          </scroll> -->
+          </scroll>
         </div>
         <div class="bottom">
           <!-- <div class="dot-wrapper">
@@ -136,7 +136,7 @@
   // import useAnimation from './use-animation'
   // import usePlayHistory from './use-play-history'
   import ProgressBar from './progress-bar'
-  // import Scroll from '@/components/base/scroll/scroll'
+  import Scroll from '@/components/base/scroll/scroll'
   // import MiniPlayer from './mini-player'
   import { formatTime } from '@/assets/js/util'
   // import { PLAY_MODE } from '@/assets/js/constant'
@@ -146,7 +146,7 @@
     components: {
       // MiniPlayer,
       ProgressBar,
-      // Scroll
+      Scroll
     },
     setup() {
       // data
@@ -168,13 +168,8 @@
       const { modeIcon, changeMode } = useMode()
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
       const { cdImageRef } = useCd()
-      const { lyric } = useLyric()
+      const { lyric, lineSerialNum, lyricScrollRef, lyricListRef } = useLyric(currentTime)
       console.log('lyric', lyric)
-      // const { cdCls, cdRef, cdImageRef } = useCd()
-      // const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
-      //   songReady,
-      //   currentTime
-      // })
       // const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
       // const { cdWrapperRef, enter, afterEnter, leave, afterLeave } = useAnimation()
       // const { savePlay } = usePlayHistory()
@@ -212,6 +207,10 @@
         if (newV) {
           audioEl.play()
         }
+      })
+
+      watch(currentTime, (newV) => {
+        musicPlayStore.setCurrentTime(newV)
       })
 
       // methods
@@ -305,12 +304,12 @@
         // cd
         cdImageRef,
         // lyric
-        // currentLyric,
-        // currentLineNum,
+        lyric,
+        lineSerialNum,
         // pureMusicLyric,
         // playingLyric,
-        // lyricScrollRef,
-        // lyricListRef,
+        lyricScrollRef,
+        lyricListRef,
         // middle-interactive
         // currentShow,
         // middleLStyle,
@@ -438,33 +437,33 @@
       //         color: $color-text-l;
       //       }
       //     }
-      //   }
-      //   .middle-r {
-      //     display: inline-block;
-      //     vertical-align: top;
-      //     width: 100%;
-      //     height: 100%;
-      //     overflow: hidden;
-      //     .lyric-wrapper {
-      //       width: 80%;
-      //       margin: 0 auto;
-      //       overflow: hidden;
-      //       text-align: center;
-      //       .text {
-      //         line-height: 32px;
-      //         color: $color-text-l;
-      //         font-size: $font-size-medium;
-      //         &.current {
-      //           color: $color-text;
-      //         }
-      //       }
+        }
+        .middle-r {
+          display: inline-block;
+          vertical-align: top;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          .lyric-wrapper {
+           width: 80%;
+            margin: 0 auto;
+            overflow: hidden;
+            text-align: center;
+           .text {
+              line-height: 32px;
+              color: $color-text-l;
+              font-size: $font-size-medium;
+              &.current {
+                color: $color-text;
+              }
+            }
       //       .pure-music {
       //         padding-top: 50%;
       //         line-height: 32px;
       //         color: $color-text-l;
       //         font-size: $font-size-medium;
       //       }
-      //     }
+          }
         }
       }
       .bottom {
