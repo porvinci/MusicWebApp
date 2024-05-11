@@ -28,10 +28,13 @@
         </div>
         <div
           class="middle"
+          @touchstart.prevent="onTouchStart"
+          @touchmove.prevent="onTouchMove"
+          @touchend.prevent="onTouchEnd"
         >
           <div
             class="middle-l"
-            v-show="true"
+            :style="middleLStyle"
           >
             <div
               class="cd-wrapper"
@@ -52,7 +55,7 @@
           <scroll
             class="middle-r"
             ref="lyricScrollRef"
-            v-show="false"
+            :style="middleRStyle"
           >
             <div class="lyric-wrapper">
               <div v-if="lyric" ref="lyricListRef">
@@ -72,10 +75,10 @@
           </scroll>
         </div>
         <div class="bottom">
-          <!-- <div class="dot-wrapper">
-            <span class="dot" :class="{'active':currentShow==='cd'}"></span>
-            <span class="dot" :class="{'active':currentShow==='lyric'}"></span>
-          </div> -->
+          <div class="dot-wrapper">
+            <span class="dot" :class="{'active':currentView==='cd'}"></span>
+            <span class="dot" :class="{'active':currentView==='lyric'}"></span>
+          </div>
           <div class="progress-wrapper">
             <span class="time time-l">{{formatTime(currentTime)}}</span>
             <!-- {{formatTime(currentTime)}} -->
@@ -133,7 +136,7 @@
   import useFavorite from './use-favorite'
   import useCd from './use-cd'
   import useLyric from './use-lyric'
-  // import useMiddleInteractive from './use-middle-interactive'
+  import useMiddleInteractive from './use-middle-interactive'
   // import useAnimation from './use-animation'
   // import usePlayHistory from './use-play-history'
   import ProgressBar from './progress-bar'
@@ -169,9 +172,9 @@
       const { modeIcon, changeMode } = useMode()
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
       const { cdImageRef } = useCd()
-      const { lyric, lineSerialNum, lyricScrollRef, lyricListRef, pureMusicLyric, singleLineLyric } = useLyric(currentTime)
-      console.log('lyric', lyric)
-      // const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
+      const { lyric, lineSerialNum, lyricScrollRef, lyricListRef, pureMusicLyric, singleLineLyric } = useLyric()
+      const { currentView, onTouchStart, onTouchMove, onTouchEnd, middleLStyle, middleRStyle } = useMiddleInteractive()
+      // const { currentShow, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
       // const { cdWrapperRef, enter, afterEnter, leave, afterLeave } = useAnimation()
       // const { savePlay } = usePlayHistory()
 
@@ -312,12 +315,12 @@
         lyricScrollRef,
         lyricListRef,
         // middle-interactive
-        // currentShow,
-        // middleLStyle,
-        // middleRStyle,
-        // onMiddleTouchStart,
-        // onMiddleTouchMove,
-        // onMiddleTouchEnd,
+        currentView,
+        middleLStyle,
+        middleRStyle,
+        onTouchStart,
+        onTouchMove,
+        onTouchEnd,
         // animation
         // cdWrapperRef,
         // enter,
@@ -471,24 +474,24 @@
         position: absolute;
         bottom: 50px;
         width: 100%;
-      //   .dot-wrapper {
-      //     text-align: center;
-      //     font-size: 0;
-      //     .dot {
-      //       display: inline-block;
-      //       vertical-align: middle;
-      //       margin: 0 4px;
-      //       width: 8px;
-      //       height: 8px;
-      //       border-radius: 50%;
-      //       background: $color-text-l;
-      //       &.active {
-      //         width: 20px;
-      //         border-radius: 5px;
-      //         background: $color-text-ll;
-      //       }
-      //     }
-      //   }
+        .dot-wrapper {
+          text-align: center;
+          font-size: 0;
+          .dot {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $color-text-l;
+            &.active {
+              width: 20px;
+              border-radius: 5px;
+              background: $color-text-ll;
+            }
+          }
+        }
         .progress-wrapper {
           display: flex;
           align-items: center;
