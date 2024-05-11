@@ -8,7 +8,6 @@ export default function useMiddleInteractive() {
 
   const touch = {}
   function onTouchStart(e) {
-    // if (currentView.value === 'lyric') middleRStyle.value = `transform: translate3d(${-window.innerWidth}px, 0px, 0px)`
     touch.x1 = e.touches[0].pageX
     touch.y1 = e.touches[0].pageY
     direction = ''
@@ -17,7 +16,6 @@ export default function useMiddleInteractive() {
   function onTouchMove(e) {
     const deltaX = e.touches[0].pageX - touch.x1
     const deltaY = e.touches[0].pageY - touch.y1
-    // console.log(deltaY)
     if (!direction) direction = Math.abs(deltaY) > Math.abs(deltaX) ? 'vertical' : 'horizontally'
     if (direction === 'vertical') return
     touch.percent = deltaX / window.innerWidth
@@ -30,7 +28,6 @@ export default function useMiddleInteractive() {
       middleRStyle.value = `transform: translate3d(${-window.innerWidth + deltaX}px, 0px, 0px)`
       if (touch.percent > 0.2) currentView.value = 'cd'
     }
-    // console.log(deltaX, touch.percent)
   }
 
   const duration = 300

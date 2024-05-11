@@ -1,14 +1,8 @@
 <template>
   <div
     class="player"
+    v-show="playlist.length"
   >
-    <!-- <transition
-      name="normal"
-      @enter="enter"
-      @after-enter="afterEnter"
-      @leave="leave"
-      @after-leave="afterLeave"
-    > -->
       <div
         class="normal-player"
         v-show="fullScreen"
@@ -81,7 +75,6 @@
           </div>
           <div class="progress-wrapper">
             <span class="time time-l">{{formatTime(currentTime)}}</span>
-            <!-- {{formatTime(currentTime)}} -->
             <div class="progress-bar-wrapper">
               <progress-bar
                 ref="barRef"
@@ -112,10 +105,7 @@
         </div>
       </div>
     <!-- </transition> -->
-    <!-- <mini-player
-      :progress="progress"
-      :toggle-play="togglePlay"
-    ></mini-player> -->
+    <mini-player></mini-player>
     <audio
       ref="audioRef"
       @pause="pause"
@@ -141,14 +131,14 @@
   // import usePlayHistory from './use-play-history'
   import ProgressBar from './progress-bar'
   import Scroll from '@/components/base/scroll/scroll'
-  // import MiniPlayer from './mini-player'
+  import MiniPlayer from './mini-player'
   import { formatTime } from '@/assets/js/util'
   // import { PLAY_MODE } from '@/assets/js/constant'
 
   export default {
     name: 'player',
     components: {
-      // MiniPlayer,
+      MiniPlayer,
       ProgressBar,
       Scroll
     },
