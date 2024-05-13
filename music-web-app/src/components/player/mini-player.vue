@@ -19,20 +19,22 @@
       </div>
       <div
         class="slider-wrapper"
+        ref="sliderRootRef"
       >
         <div class="slider-group">
           <div
             class="slider-page"
+            v-for="song in playlist"
+            :key="song.id"
           >
-            <h2 class="name">{{currentSong.name}}</h2>
-            <p class="desc">{{currentSong.singer}}</p>
+            <h2 class="name">{{song.name}}</h2>
+            <p class="desc">{{song.singer}}</p>
           </div>
         </div>
       </div>
-      <!-- <div class="control">
+      <div class="control">
         <progress-circle
           :radius="32"
-          :progress="progress"
         >
           <i
             class="icon-mini"
@@ -40,11 +42,11 @@
             @click.stop="togglePlay"
           ></i>
         </progress-circle>
-      </div> -->
+      </div>
       <!-- <div class="control" @click.stop="showPlaylist">
         <i class="icon-playlist"></i>
-      </div>
-      <playlist ref="playlistRef"></playlist> -->
+      </div> -->
+      <!-- <playlist ref="playlistRef"></playlist> -->
     </div>
   </transition>
 </template>
@@ -53,25 +55,50 @@
   import { computed } from 'vue'
   import { useMusicPlayStore } from '@/store/musicPlay'
   import useCd from './use-cd'
+  import useMiniSlider from './use-mini-slider'
+  import ProgressCircle from './progress-circle'
 
   export default {
     name: 'mini-player',
-    setup() {
+    components: {
+      ProgressCircle,
+    },
+    props: {
+      togglePlay: {
+        type: Function,
+      },
+      prev: {
+        type: Function,
+      },
+      next: {
+        type: Function,
+      },
+    },
+    setup(props) {
      const musicPlayStore = useMusicPlayStore()
      const fullScreen = computed(() => musicPlayStore.fullScreen)
      const currentSong = computed(() => musicPlayStore.currentSong)
-
+     const playlist = computed(() => musicPlayStore.playlist)
      const { cdImageRef } = useCd()
+
+     const { sliderRootRef } = useMiniSlider(props.prev, props.next)
 
      function swiftToFullScreen() {
       musicPlayStore.setFullScreen(true)
      }
+
+     const miniPlayIcon = computed(() => {
+      return musicPlayStore.playing ? 'icon-pause-mini' : 'icon-play-mini'
+     })
 
      return {
       fullScreen,
       currentSong,
       swiftToFullScreen,
       cdImageRef,
+      miniPlayIcon,
+      playlist,
+      sliderRootRef,
      }
     }
   }
@@ -132,24 +159,24 @@
         }
       }
     }
-    // .control {
-    //   flex: 0 0 30px;
-    //   width: 30px;
-    //   padding: 0 10px;
-    //   .icon-playlist {
-    //     position: relative;
-    //     top: -2px;
-    //     font-size: 28px;
-    //     color: $color-theme-d;
-    //   }
-    //   .icon-mini {
-    //     position: absolute;
-    //     left: 0;
-    //     top: 0;
-    //     color: $color-theme-d;
-    //     font-size: 32px;
-    //   }
-    // }
+    .control {
+      flex: 0 0 30px;
+      width: 30px;
+      padding: 0 10px;
+      // .icon-playlist {
+      //   position: relative;
+      //   top: -2px;
+      //   font-size: 28px;
+      //   color: $color-theme-d;
+      // }
+      .icon-mini {
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: $color-theme-d;
+        font-size: 32px;
+      }
+    }
     &.mini-enter-active, &.mini-leave-active {
       transition: all 0.6s cubic-bezier(0.45, 0, 0.55, 1);
     }

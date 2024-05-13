@@ -33,7 +33,6 @@ export default function useMiddleInteractive() {
   const duration = 300
   function onTouchEnd() {
     if (currentView.value === 'cd') {
-      console.log('cd')
       startView = 'cd'
       middleLStyle.value = {
         opacity: 1,
@@ -41,7 +40,6 @@ export default function useMiddleInteractive() {
       }
       middleRStyle.value = 'transform: translate3d(0px, 0px, 0px)'
     } else {
-      console.log('lyric')
       startView = 'lyric'
       middleLStyle.value = 'opacity: 0'
       middleRStyle.value = {

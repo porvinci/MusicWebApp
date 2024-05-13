@@ -23,7 +23,8 @@ export default function useLyric() {
     // console.log(originLyric, lyric.value, lyricTimeList.value)
   })
   watch(curTime, (newV) => {
-    lineSerialNum.value = lyricTimeList.value.findIndex(item => item > newV) - 1
+    const idx = lyricTimeList.value.findIndex(item => item > newV)
+    lineSerialNum.value = idx === -1 ? lyricTimeList.value.length - 1 : idx - 1
     singleLineLyric.value = lyric.value.lines[lineSerialNum.value]?.txt
     const targetEl = lyricListRef.value.children[Math.max(lineSerialNum.value - 7, 0)]
     lyricScrollRef.value.scroll.scroll.value.scrollToElement(targetEl, 0)

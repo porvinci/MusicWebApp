@@ -105,7 +105,11 @@
         </div>
       </div>
     <!-- </transition> -->
-    <mini-player></mini-player>
+    <mini-player
+      :togglePlay="togglePlay"
+      :prev="prev"
+      :next="next"
+    ></mini-player>
     <audio
       ref="audioRef"
       @pause="pause"
@@ -120,7 +124,7 @@
 <script>
   // import { useStore } from 'vuex'
   import { useMusicPlayStore } from '@/store/musicPlay'
-  import { computed, watch, ref, nextTick } from 'vue'
+  import { computed, watch, ref, nextTick, provide } from 'vue'
   import useMode from './use-mode'
   import { PLAY_MODE } from '@/assets/js/constant'
   import useFavorite from './use-favorite'
@@ -145,7 +149,7 @@
     setup() {
       // data
       const audioRef = ref(null)
-      // const barRef = ref(null)
+      const barRef = ref(null)
       const songReady = ref(false)
       const currentTime = ref(0)
       // let progressChanging = false
@@ -177,6 +181,9 @@
         return currentTime.value / currentSong.value.duration
       })
 
+      // 隔代父传孙
+      provide('progress', progress)
+
       const disableCls = computed(() => {
         return songReady.value ? '' : 'disable'
       })
@@ -205,6 +212,11 @@
 
       watch(currentTime, (newV) => {
         musicPlayStore.setCurrentTime(newV)
+      })
+
+      watch(fullScreen, async (newV) => {
+        await nextTick()
+        barRef.value.setOffset(progress)
       })
 
       // methods
@@ -268,7 +280,7 @@
 
       return {
         audioRef,
-        // barRef,
+        barRef,
         fullScreen,
         currentTime,
         currentSong,

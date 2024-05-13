@@ -79,6 +79,9 @@
         const p = (clickX - offsetLeft) / (this.$el.clientWidth - btnWidth)
         this.offset = p * (this.$el.clientWidth - btnWidth)
         this.$emit('progress-changed', p)
+      },
+      setOffset(progress) {
+        this.offset = progress.value * (this.$el.clientWidth - btnWidth)
       }
     }
   }
