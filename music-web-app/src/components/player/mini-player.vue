@@ -67,21 +67,15 @@
       togglePlay: {
         type: Function,
       },
-      prev: {
-        type: Function,
-      },
-      next: {
-        type: Function,
-      },
     },
-    setup(props) {
+    setup() {
      const musicPlayStore = useMusicPlayStore()
      const fullScreen = computed(() => musicPlayStore.fullScreen)
      const currentSong = computed(() => musicPlayStore.currentSong)
      const playlist = computed(() => musicPlayStore.playlist)
      const { cdImageRef } = useCd()
 
-     const { sliderRootRef } = useMiniSlider(props.prev, props.next)
+     const { sliderRootRef } = useMiniSlider()
 
      function swiftToFullScreen() {
       musicPlayStore.setFullScreen(true)

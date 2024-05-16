@@ -4,7 +4,7 @@ import Slide from '@better-scroll/slide'
 import { useMusicPlayStore } from '@/store/musicPlay'
 BScroll.use(Slide)
 
-export default function useMiniSlider(prev, next) {
+export default function useMiniSlider() {
   const sliderRootRef = ref(null)
   const miniSlider = ref(null)
   const musicPlayStore = useMusicPlayStore()

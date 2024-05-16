@@ -3,6 +3,13 @@
     class="player"
     v-show="playlist.length"
   >
+    <transition
+      name="normal"
+      @enter="onEnter"
+      @after-enter="onAfterEnter"
+      @leave="onLeave"
+      @leave-after="onLeaveAfter"
+    >
       <div
         class="normal-player"
         v-show="fullScreen"
@@ -31,6 +38,7 @@
             :style="middleLStyle"
           >
             <div
+              ref="cdWrapperRef"
               class="cd-wrapper"
             >
               <div
@@ -104,11 +112,9 @@
           </div>
         </div>
       </div>
-    <!-- </transition> -->
+    </transition>
     <mini-player
       :togglePlay="togglePlay"
-      :prev="prev"
-      :next="next"
     ></mini-player>
     <audio
       ref="audioRef"
@@ -131,7 +137,7 @@
   import useCd from './use-cd'
   import useLyric from './use-lyric'
   import useMiddleInteractive from './use-middle-interactive'
-  // import useAnimation from './use-animation'
+  import useAnimation from './use-animation'
   // import usePlayHistory from './use-play-history'
   import ProgressBar from './progress-bar'
   import Scroll from '@/components/base/scroll/scroll'
@@ -168,8 +174,7 @@
       const { cdImageRef } = useCd()
       const { lyric, lineSerialNum, lyricScrollRef, lyricListRef, pureMusicLyric, singleLineLyric } = useLyric()
       const { currentView, onTouchStart, onTouchMove, onTouchEnd, middleLStyle, middleRStyle } = useMiddleInteractive()
-      // const { currentShow, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
-      // const { cdWrapperRef, enter, afterEnter, leave, afterLeave } = useAnimation()
+      const { cdWrapperRef, onEnter, onAfterEnter, onLeave, onAfterLeave } = useAnimation()
       // const { savePlay } = usePlayHistory()
 
       // computed
@@ -324,11 +329,11 @@
         onTouchMove,
         onTouchEnd,
         // animation
-        // cdWrapperRef,
-        // enter,
-        // afterEnter,
-        // leave,
-        // afterLeave
+        cdWrapperRef,
+        onEnter,
+        onAfterEnter,
+        onLeave,
+        onAfterLeave
       }
     }
   }
@@ -548,21 +553,21 @@
           }
         }
       }
-      // &.normal-enter-active, &.normal-leave-active {
-      //   transition: all .6s;
-      //   .top, .bottom {
-      //     transition: all .6s cubic-bezier(0.45, 0, 0.55, 1);
-      //   }
-      // }
-      // &.normal-enter-from, &.normal-leave-to {
-      //   opacity: 0;
-      //   .top {
-      //     transform: translate3d(0, -100px, 0);
-      //   }
-      //   .bottom {
-      //     transform: translate3d(0, 100px, 0)
-      //   }
-      // }
+    }
+    .normal-enter-from, .normal-leave-to{
+      opacity: 0;
+      .top {
+        transform: translate3d(0, -100px, 0);
+      }
+      .bottom {
+        transform: translate3d(0, 100px, 0);
+      }
+    }
+    .normal-enter-active, .normal-leave-active{
+      transition: all 2s;
+      .top, .bottom {
+        transition: all 2s cubic-bezier(0.45, 0, 0.55, 1);
+      }
     }
   }
 </style>
