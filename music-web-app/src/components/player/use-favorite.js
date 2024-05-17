@@ -5,21 +5,21 @@ import { SONG_KEY } from '@/assets/js/constant'
 
 export default function useFavorite() {
   const musicPlayStore = useMusicPlayStore()
-  const curSong = computed(() => musicPlayStore.currentSong)
+  // const curSong = computed(() => musicPlayStore.currentSong)
   const favList = computed(() => musicPlayStore.favList)
-  function iconFavoriteStyle () {
-    return favList.value.some(item => item.id === curSong.value.id) ? 'icon-favorite' : 'icon-not-favorite'
+  function iconFavoriteStyle(song) {
+    return favList.value.some(item => item.id === song.id) ? 'icon-favorite' : 'icon-not-favorite'
   }
 
-  function toggleFavorite() {
+  function toggleFavorite(song) {
     const stoList = storage.get(SONG_KEY, [])
     let idx = -1
     stoList.forEach((item, index) => {
-      if (item.id === curSong.value.id) idx = index
+      if (item.id === song.id) idx = index
     })
     // 如果有则需要取消收藏; 如果没有则需要添加进列表stoList并存储到本地中
     if (idx !== -1) stoList.splice(idx, 1)
-    else stoList.push(curSong.value)
+    else stoList.push(song)
     musicPlayStore.setFavList(stoList)
     storage.set(SONG_KEY, stoList)
   }

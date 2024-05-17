@@ -14,6 +14,12 @@ export default function useMode() {
     else return 'icon-random'
   })
 
+  const modeText = computed(() => {
+    if (playMode.value === PLAY_MODE.sequence) return '顺序播放'
+    else if (playMode.value === PLAY_MODE.loop) return '单曲循环'
+    else return '随机播放'
+  })
+
   function changeMode() {
     if (playMode.value === PLAY_MODE.sequence) {
       musicPlayStore.setPlayMode(PLAY_MODE.loop)
@@ -32,5 +38,6 @@ export default function useMode() {
   return {
     modeIcon,
     changeMode,
+    modeText,
   }
 }

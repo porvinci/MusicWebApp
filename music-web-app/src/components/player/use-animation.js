@@ -22,7 +22,7 @@ export default function useAnimation() {
       name: 'move',
       animation,
       presets: {
-        duration: 2000,
+        duration: 600,
         easing: 'cubic-bezier(0.45, 0, 0.55, 1)',
       }
     })
@@ -40,7 +40,7 @@ export default function useAnimation() {
     leaving = true
     const { x, y, scale } = calMiniXYandScale()
     cdWrapperRef.value.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
-    cdWrapperRef.value.style.transition = 'all 2s cubic-bezier(0.45, 0, 0.55, 1)'
+    cdWrapperRef.value.style.transition = 'all .6s cubic-bezier(0.45, 0, 0.55, 1)'
     cdWrapperRef.value.addEventListener('transitionend', next)
     function next() {
       cdWrapperRef.value.removeEventListener('transitionend', next)

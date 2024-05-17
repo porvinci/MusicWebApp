@@ -107,7 +107,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i @click="toggleFavorite" :class="iconFavoriteStyle()"></i>
+              <i @click="toggleFavorite(currentSong)" :class="iconFavoriteStyle(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -564,9 +564,9 @@
       }
     }
     .normal-enter-active, .normal-leave-active{
-      transition: all 2s;
+      transition: all .6s;
       .top, .bottom {
-        transition: all 2s cubic-bezier(0.45, 0, 0.55, 1);
+        transition: all .6s cubic-bezier(0.45, 0, 0.55, 1);
       }
     }
   }

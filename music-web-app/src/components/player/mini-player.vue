@@ -43,25 +43,27 @@
           ></i>
         </progress-circle>
       </div>
-      <!-- <div class="control" @click.stop="showPlaylist">
+      <div class="control" @click.stop="showPlayList">
         <i class="icon-playlist"></i>
-      </div> -->
-      <!-- <playlist ref="playlistRef"></playlist> -->
+      </div>
+      <playListComponent ref="playlistRef"></playListComponent>
     </div>
   </transition>
 </template>
 
 <script>
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { useMusicPlayStore } from '@/store/musicPlay'
   import useCd from './use-cd'
   import useMiniSlider from './use-mini-slider'
   import ProgressCircle from './progress-circle'
+  import PlayListComponent from './playlist.vue'
 
   export default {
     name: 'mini-player',
     components: {
       ProgressCircle,
+      PlayListComponent,
     },
     props: {
       togglePlay: {
@@ -69,6 +71,7 @@
       },
     },
     setup() {
+     const playlistRef = ref(null)
      const musicPlayStore = useMusicPlayStore()
      const fullScreen = computed(() => musicPlayStore.fullScreen)
      const currentSong = computed(() => musicPlayStore.currentSong)
@@ -81,14 +84,21 @@
       musicPlayStore.setFullScreen(true)
      }
 
+     function showPlayList() {
+      console.log('1')
+      playlistRef.value.show()
+     }
+
      const miniPlayIcon = computed(() => {
       return musicPlayStore.playing ? 'icon-pause-mini' : 'icon-play-mini'
      })
 
      return {
+      playlistRef,
       fullScreen,
       currentSong,
       swiftToFullScreen,
+      showPlayList,
       cdImageRef,
       miniPlayIcon,
       playlist,
@@ -157,12 +167,12 @@
       flex: 0 0 30px;
       width: 30px;
       padding: 0 10px;
-      // .icon-playlist {
-      //   position: relative;
-      //   top: -2px;
-      //   font-size: 28px;
-      //   color: $color-theme-d;
-      // }
+      .icon-playlist {
+        position: relative;
+        top: -2px;
+        font-size: 28px;
+        color: $color-theme-d;
+      }
       .icon-mini {
         position: absolute;
         left: 0;
