@@ -29,7 +29,6 @@
           return []
         }
       },
-      // rank: Boolean
     },
     emits: ['select'],
     methods: {
@@ -39,22 +38,7 @@
       selectSong(song, index) {
         this.$emit('select', { song, index })
       }
-      // selectItem(song, index) {
-      //   this.$emit('select', { song, index })
-      // },
-      // getRankCls(index) {
-      //   if (index <= 2) {
-      //     return `icon icon${index}`
-      //   } else {
-      //     return 'text'
-      //   }
-      // },
-      // getRankText(index) {
-      //   if (index > 2) {
-      //     return index + 1
-      //   }
-      // }
-    }
+    },
   }
 </script>
 

@@ -15,22 +15,23 @@
               >
               </i>
               <span class="text">{{modeText}}</span>
-              <!-- <span class="clear">
+              <span class="clear" @click.stop="popConfirmBox">
                 <i class="icon-clear"></i>
-              </span> -->
+              </span>
             </h1>
           </div>
           <scroll
             class="list-content"
             ref="scrollListRef"
           >
-            <ul
+            <transition-group
               ref="ulListRef"
               name="list"
+              tag="ul"
             >
               <li
                 class="item"
-                v-for="song in sequenceList"
+                v-for="song in playlist"
                 :key="song.id"
                 @click="selectSong(song)"
               >
@@ -42,17 +43,28 @@
                 <span class="favorite">
                   <i :class="iconFavoriteStyle(song)"></i>
                 </span>
-                <!-- <span
+                <span
                   class="delete"
+                  @click.stop="deleteSong(song)"
+                  :class="{'disable': !deleting}"
                 >
-                  <i class="icon-delete"></i>
-                </span> -->
+                  <i
+                    class="icon-delete"
+                  ></i>
+                </span>
               </li>
-            </ul>
+            </transition-group>
           </scroll>
           <div class="list-footer" @click.stop="hidden">
             <span>关闭</span>
           </div>
+          <confirm
+            ref="confirmRef"
+            text="是否清空播放列表？"
+            confirmBtnText="清空"
+            cancelBtnText="取消"
+            @confirm="close"
+          ></confirm>
         </div>
       </div>
     </transition>
@@ -63,6 +75,7 @@
   import { useMusicPlayStore } from '@/store/musicPlay'
   import { computed, ref, watch, nextTick } from 'vue'
   import Scroll from '@/components/base/scroll/scroll.vue'
+  import Confirm from '@/components/base/confirm/confirm'
   import useMode from './use-mode'
   import useFavorite from './use-favorite'
 
@@ -70,12 +83,16 @@
     name: 'playlist',
     components: {
       Scroll,
+      Confirm,
     },
     setup() {
+      const deleting = ref(false)
       const visible = ref(false)
       const ulListRef = ref(null)
       const scrollListRef = ref(null)
+      const confirmRef = ref(null)
       const musicPlayStore = useMusicPlayStore()
+      const currentIndex = computed(() => musicPlayStore.currentIndex)
       const currentSong = computed(() => musicPlayStore.currentSong)
       const playlist = computed(() => musicPlayStore.playlist)
       const sequenceList = computed(() => musicPlayStore.sequenceList)
@@ -83,8 +100,7 @@
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
 
       watch(currentSong, async newV => {
-        console.log('3')
-        if (!visible.value) return
+        if (!visible.value || !newV.id) return
         scrollToTargetEI(currentSong)
       })
 
@@ -92,22 +108,23 @@
         if (newV) {
           await nextTick()
           refresh()
-          console.log('4')
           scrollToTargetEI(currentSong)
         }
       })
 
+      watch(() => playlist.value, newV => {
+        if (!playlist.value.length) visible.value = false
+      }, { deep: true })
+
       async function scrollToTargetEI(song) {
-        console.log('song', song)
-        const index = sequenceList.value.findIndex(item => item.id === song.value.id)
-        console.log('index', index)
+        const index = playlist.value.findIndex(item => item.id === song.value.id)
+        if (index === -1) return
         await nextTick()
-        const targetEI = ulListRef.value.children[index]
+        const targetEI = ulListRef.value.$el.children[index]
         scrollListRef.value.scroll.scroll.value.scrollToElement(targetEI, 0)
       }
 
       function show() {
-        console.log('2')
         visible.value = true
       }
 
@@ -116,7 +133,6 @@
       }
 
       function refresh() {
-        console.log('fresh')
         scrollListRef.value.scroll.scroll.value.refresh()
       }
 
@@ -125,8 +141,32 @@
       }
 
       function selectSong(song) {
-        const index = sequenceList.value.findIndex(item => item.id === song.id)
+        const index = playlist.value.findIndex(item => item.id === song.id)
         musicPlayStore.setCurrentIndex(index)
+      }
+
+      function deleteSong(song) {
+        if (deleting.value) return
+        deleting.value = true
+        const idx = playlist.value.findIndex(item => item.id === song.id)
+        if (idx === -1) return
+        if (idx < currentIndex.value || idx === playlist.value.length - 1) {
+          console.log('末端', idx === playlist.value.length - 1)
+          musicPlayStore.setCurrentIndex(currentIndex.value - 1)
+        }
+        musicPlayStore.deleteSong(song)
+        setTimeout(() => { deleting.value = false }, 300)
+        // refresh()
+      }
+
+      function popConfirmBox() {
+        console.log('1')
+        confirmRef.value.show()
+      }
+
+      function close() {
+        console.log('close')
+        visible.value = false
       }
 
       return {
@@ -137,6 +177,7 @@
         hidden,
         getCurrentIcon,
         selectSong,
+        deleteSong,
         // mode
         modeIcon,
         changeMode,
@@ -147,6 +188,10 @@
         // scroll
         scrollListRef,
         ulListRef,
+        // confirm
+        confirmRef,
+        popConfirmBox,
+        close,
       }
     }
   }

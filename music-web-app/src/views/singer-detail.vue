@@ -1,5 +1,5 @@
 <template>
-  <div class="singer-detail">
+  <div class="singer-detail" :style="{'padding-bottom': padBotVal}">
     <music-list
       :songs="songs"
       :title="title"
@@ -11,6 +11,8 @@
 
 <script>
   // import createDetailComponent from '@/assets/js/create-detail-component'
+  import { computed } from 'vue'
+  import { useMusicPlayStore } from '@/store/musicPlay'
   import { getSingerDetail } from '@/service/singer'
   import { processSongs } from '@/service/song'
   import MusicList from '@/components/music-list/music-list'
@@ -66,6 +68,19 @@
 
       this.loading = false
     },
+    setup() {
+      const musicPlayStore = useMusicPlayStore()
+      const fullScreen = computed(() => musicPlayStore.fullScreen)
+      const playlist = computed(() => musicPlayStore.playlist)
+
+      const padBotVal = computed(() => {
+        return (fullScreen.value === false) && (playlist.value.length > 0) ? '60px' : '0px'
+      })
+
+      return {
+        padBotVal
+      }
+    }
   }
 </script>
 

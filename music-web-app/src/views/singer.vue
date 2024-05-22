@@ -1,5 +1,9 @@
 <template>
-  <div class="singer" v-loading="!singers.length">
+  <div
+    class="singer"
+    v-loading="!singers.length"
+  >
+  <!-- :style="{'padding-bottom': padBotVal}" -->
     <index-list
       :data="singers"
       @select="selectSinger"
@@ -20,10 +24,12 @@
 </template>
 
 <script>
+  // import { computed } from 'vue'
   import { getSingerList } from '@/service/singer'
   import IndexList from '@/components/index-list/index-list'
   import storage from 'good-storage'
   import { SINGER_KEY } from '@/assets/js/constant'
+  // import { useMusicPlayStore } from '@/store/musicPlay'
 
   export default {
     name: 'singer',
@@ -48,7 +54,20 @@
           path: `/singer/${singer.mid}`
         })
       },
-    }
+    },
+    // setup() {
+    //   const musicPlayStore = useMusicPlayStore()
+    //   const fullScreen = computed(() => musicPlayStore.fullScreen)
+    //   const playlist = computed(() => musicPlayStore.playlist)
+
+    //   const padBotVal = computed(() => {
+    //     return (fullScreen.value === false) && (playlist.value.length > 0) ? '60px' : '0px'
+    //   })
+
+    //   return {
+    //     padBotVal
+    //   }
+    // }
   }
 </script>
 

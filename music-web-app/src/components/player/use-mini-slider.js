@@ -47,6 +47,13 @@ export default function useMiniSlider() {
         miniSliderVal.goToPage(newV, 0, 0)
       }
     })
+
+    watch(playlist, async () => {
+      if (showSlider.value && miniSliderVal) {
+        await nextTick()
+        miniSliderVal.value.refresh()
+      }
+    })
   })
 
   onUnmounted(() => {

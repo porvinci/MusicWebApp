@@ -128,7 +128,6 @@
 </template>
 
 <script>
-  // import { useStore } from 'vuex'
   import { useMusicPlayStore } from '@/store/musicPlay'
   import { computed, watch, ref, nextTick, provide } from 'vue'
   import useMode from './use-mode'
@@ -224,6 +223,19 @@
         barRef.value.setOffset(progress)
       })
 
+      watch(playing, newV => {
+        const taregtEI = audioRef.value
+        if (newV) taregtEI.play()
+        else taregtEI.pause()
+      })
+
+      watch(() => playlist.value, newV => {
+        // console.log('111')
+        if (!newV || newV.length === 0) {
+          // console.log('222')
+          musicPlayStore.setPlayingState(false)
+        }
+      }, { deep: true })
       // methods
       function goBack() {
         musicPlayStore.setFullScreen(false)
@@ -232,9 +244,9 @@
       function togglePlay() {
         const state = playing.value
         musicPlayStore.setPlayingState(!state)
-        const taregtEI = audioRef.value
-        if (state) taregtEI.pause()
-        else taregtEI.play()
+        // const taregtEI = audioRef.value
+        // if (state) taregtEI.pause()
+        // else taregtEI.play()
       }
 
       function pause() {

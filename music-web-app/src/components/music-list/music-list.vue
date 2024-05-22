@@ -38,14 +38,11 @@
       :probe-type="3"
       @scroll="onScroll"
     >
-    <!-- -->
       <div class="song-list-wrapper">
         <song-list
           :songs="songs"
           @select="selectSong"
         ></song-list>
-        <!-- @select="selectItem"
-          :rank="rank" -->
       </div>
     </scroll>
   </div>
@@ -163,8 +160,9 @@
         const musicPlayStore = useMusicPlayStore()
         if (!musicPlayStore.playlist.length) {
           // 第一次唤醒播放器
-          musicPlayStore.setPlayList(this.songs)
-          musicPlayStore.setSequenceList(this.songs)
+          // console.log('1st', this.songs)
+          musicPlayStore.setPlayList(JSON.parse(JSON.stringify(this.songs)))
+          musicPlayStore.setSequenceList(JSON.parse(JSON.stringify(this.songs)))
           musicPlayStore.setCurrentIndex(index)
         } else {
           const mid = musicPlayStore.sequenceList[index].mid
@@ -177,20 +175,13 @@
       },
       random() {
         const musicPlayStore = useMusicPlayStore()
-        const arr = shuffle(this.songs)
+        const arr = shuffle(JSON.parse(JSON.stringify(this.songs)))
         musicPlayStore.setPlayList(arr)
         musicPlayStore.setCurrentIndex(0)
         musicPlayStore.setCurrentSong(arr[0])
         musicPlayStore.setPlayMode(PLAY_MODE.random)
       }
     },
-  // setup() {
-  //   const { bgImage } = useMusicList()
-  //   return {
-  //     bgImage
-  //   }
-  // }
-
   }
 </script>
 

@@ -85,7 +85,6 @@
      }
 
      function showPlayList() {
-      console.log('1')
       playlistRef.value.show()
      }
 

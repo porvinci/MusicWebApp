@@ -33,6 +33,17 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const setFullScreen = (state) => { fullScreen.value = state }
   const setFavList = (list) => { favList.value = list }
   const setCurrentTime = (time) => { currentTime.value = time }
+  const deleteSong = (song) => {
+    // 删除playlist中的歌曲
+    console.log('333')
+    const idx = playlist.value.findIndex(item => item.id === song.id)
+    console.log('444')
+    if (idx === -1) return
+    console.log('555')
+    playlist.value.splice(idx, 1)
+    console.log('666', playlist.value)
+  }
+  const clearPlayList = () => { playlist.value = [] }
 
   return {
     sequenceList,
@@ -53,5 +64,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     setFullScreen,
     setFavList,
     setCurrentTime,
+    deleteSong,
+    clearPlayList,
   }
 })

@@ -1,5 +1,9 @@
 <template>
-  <div class="recommend" v-loading:[loadingText]="loading">
+  <div
+    class="recommend"
+    v-loading:[loadingText]="loading"
+  >
+  <!-- :style="{'padding-bottom': padBotVal}" -->
     <!-- <div class="slider-wrapper">
           <div class="slider-content">
             <slider v-if="sliders.length" :sliders="sliders"></slider>
@@ -47,9 +51,11 @@
 </template>
 
 <script>
+  // import { computed } from 'vue'
   import { getRecommend } from '@/service/recommend'
   import Slider from '@/components/base/slider/slider'
   import Scroll from '@/components/base/scroll/scroll'
+  // import { useMusicPlayStore } from '@/store/musicPlay'
   // import storage from 'good-storage'
   // import { ALBUM_KEY } from '@/assets/js/constant'
 
@@ -70,13 +76,26 @@
     computed: {
       loading() {
         return !this.sliders.length && !this.albums.length
-      }
+      },
     },
     async created() {
       const result = await getRecommend()
       this.sliders = result.sliders
       this.albums = result.albums
     },
+    // setup() {
+    //   const musicPlayStore = useMusicPlayStore()
+    //   const fullScreen = computed(() => musicPlayStore.fullScreen)
+    //   const playlist = computed(() => musicPlayStore.playlist)
+
+    //   const padBotVal = computed(() => {
+    //     return (fullScreen.value === false) && (playlist.value.length > 0) ? '60px' : '0px'
+    //   })
+
+    //   return {
+    //     padBotVal
+    //   }
+    // }
   //   methods: {
   //     selectItem(album) {
   //       this.selectedAlbum = album
