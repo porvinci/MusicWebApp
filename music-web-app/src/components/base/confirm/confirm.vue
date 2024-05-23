@@ -50,7 +50,6 @@
     emits: ['confirm'],
     methods: {
       show() {
-        console.log('2')
         this.visible = true
       },
       hidden() {
@@ -60,16 +59,11 @@
         this.visible = false
       },
       confirm() {
-        console.log('a')
         this.visible = false
         this.$emit('confirm')
-        console.log('b')
         const musicPlayStore = useMusicPlayStore()
-        console.log('c')
         musicPlayStore.setPlayingState(false)
-        console.log('d')
         musicPlayStore.clearPlayList()
-        console.log('e')
       }
     }
   }

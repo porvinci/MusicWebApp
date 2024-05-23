@@ -12,6 +12,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const fullScreen = ref(false) // 播放器是否要全屏
   const favList = ref(storage.get(SONG_KEY, []))
   const currentTime = ref(0)
+  const playlistPanelVisible = ref(false)
   let currentSong = ref({})
 
   currentSong = computed(() => {
@@ -35,15 +36,12 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const setCurrentTime = (time) => { currentTime.value = time }
   const deleteSong = (song) => {
     // 删除playlist中的歌曲
-    console.log('333')
     const idx = playlist.value.findIndex(item => item.id === song.id)
-    console.log('444')
     if (idx === -1) return
-    console.log('555')
     playlist.value.splice(idx, 1)
-    console.log('666', playlist.value)
   }
   const clearPlayList = () => { playlist.value = [] }
+  const setPlaylistPanelVisible = (state) => { playlistPanelVisible.value = state }
 
   return {
     sequenceList,
@@ -55,6 +53,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     currentSong,
     favList,
     currentTime,
+    playlistPanelVisible,
     // setCurrentSong,
     setSequenceList,
     setPlayList,
@@ -66,5 +65,6 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     setCurrentTime,
     deleteSong,
     clearPlayList,
+    setPlaylistPanelVisible,
   }
 })

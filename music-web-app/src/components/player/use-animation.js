@@ -7,7 +7,7 @@ export default function useAnimation() {
   let leaving = false
 
   function onEnter(el, done) {
-    if (leaving) onAfterLeave()
+    if (leaving) onLeaveAfter()
     entering = true
     const { x, y, scale } = calMiniXYandScale()
     const animation = {
@@ -48,7 +48,7 @@ export default function useAnimation() {
     }
   }
 
-  function onAfterLeave() {
+  function onLeaveAfter() {
     leaving = false
     cdWrapperRef.value.style.transform = ''
     cdWrapperRef.value.style.transition = ''
@@ -78,6 +78,6 @@ export default function useAnimation() {
     onEnter,
     onAfterEnter,
     onLeave,
-    onAfterLeave
+    onLeaveAfter
   }
 }

@@ -28,7 +28,6 @@
       },
       padBotStyle() {
         if (this.playlist.length > 0 && this.fullScreen === false) {
-          console.log('here')
           return { 'padding-bottom': '60px' }
         } else return { 'padding-bottom': '0px' }
       }

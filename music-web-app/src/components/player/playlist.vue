@@ -46,7 +46,7 @@
                 <span
                   class="delete"
                   @click.stop="deleteSong(song)"
-                  :class="{'disable': !deleting}"
+                  :class="{'disable': deleting}"
                 >
                   <i
                     class="icon-delete"
@@ -87,15 +87,15 @@
     },
     setup() {
       const deleting = ref(false)
-      const visible = ref(false)
       const ulListRef = ref(null)
       const scrollListRef = ref(null)
       const confirmRef = ref(null)
       const musicPlayStore = useMusicPlayStore()
       const currentIndex = computed(() => musicPlayStore.currentIndex)
       const currentSong = computed(() => musicPlayStore.currentSong)
-      const playlist = computed(() => musicPlayStore.playlist)
       const sequenceList = computed(() => musicPlayStore.sequenceList)
+      const playlist = computed(() => musicPlayStore.playlist)
+      const visible = computed(() => musicPlayStore.playlistPanelVisible)
       const { modeIcon, changeMode, modeText } = useMode()
       const { iconFavoriteStyle, toggleFavorite } = useFavorite()
 
@@ -113,23 +113,24 @@
       })
 
       watch(() => playlist.value, newV => {
-        if (!playlist.value.length) visible.value = false
+        if (!playlist.value.length) musicPlayStore.setPlaylistPanelVisible(false)
       }, { deep: true })
 
       async function scrollToTargetEI(song) {
         const index = playlist.value.findIndex(item => item.id === song.value.id)
         if (index === -1) return
         await nextTick()
+        // console.log('el', ulListRef.value.$el)  <ul>
         const targetEI = ulListRef.value.$el.children[index]
         scrollListRef.value.scroll.scroll.value.scrollToElement(targetEI, 0)
       }
 
       function show() {
-        visible.value = true
+        musicPlayStore.setPlaylistPanelVisible(true)
       }
 
       function hidden() {
-        visible.value = false
+        musicPlayStore.setPlaylistPanelVisible(false)
       }
 
       function refresh() {
@@ -160,13 +161,11 @@
       }
 
       function popConfirmBox() {
-        console.log('1')
         confirmRef.value.show()
       }
 
       function close() {
-        console.log('close')
-        visible.value = false
+        musicPlayStore.setPlaylistPanelVisible(false)
       }
 
       return {
@@ -192,6 +191,7 @@
         confirmRef,
         popConfirmBox,
         close,
+        deleting,
       }
     }
   }

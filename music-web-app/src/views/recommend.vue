@@ -3,7 +3,6 @@
     class="recommend"
     v-loading:[loadingText]="loading"
   >
-  <!-- :style="{'padding-bottom': padBotVal}" -->
     <!-- <div class="slider-wrapper">
           <div class="slider-content">
             <slider v-if="sliders.length" :sliders="sliders"></slider>
@@ -23,8 +22,8 @@
               v-for="item in albums"
               class="item"
               :key="item.id"
+              @click="selectAlbum(item)"
             >
-            <!-- @click="selectItem(item)" -->
               <div class="icon">
                 <!-- :src="item.pic"-->
                 <img width="60" height="60"  v-lazy="item.pic">
@@ -42,11 +41,11 @@
         </div>
       </div>
     </scroll>
-    <!-- <router-view v-slot="{ Component }">
-      <transition appear name="slide">
-        <component :is="Component" :data="selectedAlbum"/>
+    <router-view v-slot="{ Component }">
+      <transition name="slide">
+        <component :is="Component" :album="album"></component>
       </transition>
-    </router-view> -->
+    </router-view>
   </div>
 </template>
 
@@ -69,8 +68,8 @@
       return {
         sliders: [],
         albums: [],
-        loadingText: '正在加载...'
-        // selectedAlbum: null
+        loadingText: '正在加载...',
+        album: null,
       }
     },
     computed: {
@@ -83,31 +82,14 @@
       this.sliders = result.sliders
       this.albums = result.albums
     },
-    // setup() {
-    //   const musicPlayStore = useMusicPlayStore()
-    //   const fullScreen = computed(() => musicPlayStore.fullScreen)
-    //   const playlist = computed(() => musicPlayStore.playlist)
-
-    //   const padBotVal = computed(() => {
-    //     return (fullScreen.value === false) && (playlist.value.length > 0) ? '60px' : '0px'
-    //   })
-
-    //   return {
-    //     padBotVal
-    //   }
-    // }
-  //   methods: {
-  //     selectItem(album) {
-  //       this.selectedAlbum = album
-  //       this.cacheAlbum(album)
-  //       this.$router.push({
-  //         path: `/recommend/${album.id}`
-  //       })
-  //     },
-  //     cacheAlbum(album) {
-  //       storage.session.set(ALBUM_KEY, album)
-  //     }
-  //   }
+    methods: {
+      selectAlbum(album) {
+        this.album = album
+        console.log(album, (album.id + ''))
+        this.$router.push({ path: `/recommend/${album.id}` })
+        console.log('2')
+      }
+    }
   }
 </script>
 

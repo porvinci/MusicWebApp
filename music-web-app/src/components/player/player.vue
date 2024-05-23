@@ -173,7 +173,7 @@
       const { cdImageRef } = useCd()
       const { lyric, lineSerialNum, lyricScrollRef, lyricListRef, pureMusicLyric, singleLineLyric } = useLyric()
       const { currentView, onTouchStart, onTouchMove, onTouchEnd, middleLStyle, middleRStyle } = useMiddleInteractive()
-      const { cdWrapperRef, onEnter, onAfterEnter, onLeave, onAfterLeave } = useAnimation()
+      const { cdWrapperRef, onEnter, onAfterEnter, onLeave, onLeaveAfter } = useAnimation()
       // const { savePlay } = usePlayHistory()
 
       // computed
@@ -345,7 +345,7 @@
         onEnter,
         onAfterEnter,
         onLeave,
-        onAfterLeave
+        onLeaveAfter,
       }
     }
   }

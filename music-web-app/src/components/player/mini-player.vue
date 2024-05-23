@@ -2,7 +2,7 @@
   <transition name="mini">
     <div
       class="mini-player"
-      v-show="!fullScreen"
+      v-show="!fullScreen && !playlistPanelVisible"
       @click="swiftToFullScreen"
     >
       <div class="cd-wrapper">
@@ -76,6 +76,7 @@
      const fullScreen = computed(() => musicPlayStore.fullScreen)
      const currentSong = computed(() => musicPlayStore.currentSong)
      const playlist = computed(() => musicPlayStore.playlist)
+     const playlistPanelVisible = computed(() => musicPlayStore.playlistPanelVisible)
      const { cdImageRef } = useCd()
 
      const { sliderRootRef } = useMiniSlider()
@@ -95,6 +96,7 @@
      return {
       playlistRef,
       fullScreen,
+      playlistPanelVisible,
       currentSong,
       swiftToFullScreen,
       showPlayList,
