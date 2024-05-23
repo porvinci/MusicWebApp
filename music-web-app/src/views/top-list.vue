@@ -29,7 +29,7 @@
     </scroll>
     <router-view v-slot="{ Component }">
       <transition appear name="slide">
-        <component :is="Component" :data="selectedTop"/>
+        <component :is="Component" :topItem="selectedTop"/>
       </transition>
     </router-view>
   </div>
@@ -59,6 +59,8 @@
     methods: {
       selectItem(item) {
         this.selectedTop = item
+        this.$router.push({ path: `/top-list/${item.id}` })
+        console.log('1', this.selectedTop)
       }
     }
   }

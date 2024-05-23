@@ -6,10 +6,8 @@
       :key="song.id"
       @click="selectSong(song, index)"
     >
-    <!--, index @click="selectItem(song, index)" -->
-      <div class="rank" >
-        <!-- v-if="rank" -->
-        <!-- <span :class="getRankCls(index)">{{ getRankText(index) }}</span> -->
+      <div class="rank" v-if="rank">
+        <span :class="getRankClass(index)">{{ getRank(index) }}</span>
       </div>
       <div class="content">
         <h2 class="name">{{song.name}}</h2>
@@ -29,6 +27,10 @@
           return []
         }
       },
+      rank: {
+        type: Boolean,
+        default: false,
+      }
     },
     emits: ['select'],
     methods: {
@@ -37,6 +39,12 @@
       },
       selectSong(song, index) {
         this.$emit('select', { song, index })
+      },
+      getRank(index) {
+        if (index > 2) return index + 1
+      },
+      getRankClass(index) {
+        return index > 2 ? 'text' : `icon icon${index}`
       }
     },
   }
@@ -55,25 +63,25 @@
         width: 25px;
         margin-right: 20px;
         text-align: center;
-        // .icon {
-        //   display: inline-block;
-        //   width: 25px;
-        //   height: 24px;
-        //   background-size: 25px 24px;
-        //   &.icon0 {
-        //     @include bg-image('first');
-        //   }
-        //   &.icon1 {
-        //     @include bg-image('second');
-        //   }
-        //   &.icon2 {
-        //     @include bg-image('third');
-        //   }
-        // }
-        // .text {
-        //   color: $color-theme;
-        //   font-size: $font-size-large;
-        // }
+        .icon {
+          display: inline-block;
+          width: 25px;
+          height: 24px;
+          background-size: 25px 24px;
+          &.icon0 {
+            @include bg-image('first');
+          }
+          &.icon1 {
+            @include bg-image('second');
+          }
+          &.icon2 {
+            @include bg-image('third');
+          }
+        }
+        .text {
+          color: $color-theme;
+          font-size: $font-size-large;
+        }
       }
       .content {
         flex: 1;

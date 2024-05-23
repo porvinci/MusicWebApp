@@ -42,6 +42,7 @@
         <song-list
           :songs="songs"
           @select="selectSong"
+          :rank="rank"
         ></song-list>
       </div>
     </scroll>
@@ -80,7 +81,7 @@
         type: String,
         default: '抱歉，无可播放歌曲'
       },
-      // rank: Boolean
+      rank: Boolean
     },
     data() {
       return {
