@@ -127,7 +127,7 @@ function registerRouter(devServer) {
 
   registerAlbum(devServer.app)
 
-  // registerTopList(app)
+  registerTopList(devServer.app)
 
   // registerTopDetail(app)
 
@@ -520,58 +520,58 @@ function registerAlbum(app) {
 }
 
 // // 注册排行榜接口
-// function registerTopList(app) {
-//   app.get('/api/getTopList', (req, res) => {
-//     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
+function registerTopList(app) {
+  app.get('/api/getTopList', (req, res) => {
+    const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
-//     const data = JSON.stringify({
-//       comm: { ct: 24 },
-//       toplist: { module: 'musicToplist.ToplistInfoServer', method: 'GetAll', param: {} }
-//     })
+    const data = JSON.stringify({
+      comm: { ct: 24 },
+      toplist: { module: 'musicToplist.ToplistInfoServer', method: 'GetAll', param: {} }
+    })
 
-//     const randomKey = getRandomVal('recom')
-//     const sign = getSecuritySign(data)
+    const randomKey = getRandomVal('recom')
+    const sign = getSecuritySign(data)
 
-//     get(url, {
-//       sign,
-//       '-': randomKey,
-//       data
-//     }).then((response) => {
-//       const data = response.data
-//       if (data.code === ERR_OK) {
-//         const topList = []
-//         const group = data.toplist.data.group
+    get(url, {
+      sign,
+      '-': randomKey,
+      data
+    }).then((response) => {
+      const data = response.data
+      if (data.code === ERR_OK) {
+        const topList = []
+        const group = data.toplist.data.group
 
-//         group.forEach((item) => {
-//           item.toplist.forEach((listItem) => {
-//             topList.push({
-//               id: listItem.topId,
-//               pic: listItem.frontPicUrl,
-//               name: listItem.title,
-//               period: listItem.period,
-//               songList: listItem.song.map((songItem) => {
-//                 return {
-//                   id: songItem.songId,
-//                   singerName: songItem.singerName,
-//                   songName: songItem.title
-//                 }
-//               })
-//             })
-//           })
-//         })
+        group.forEach((item) => {
+          item.toplist.forEach((listItem) => {
+            topList.push({
+              id: listItem.topId,
+              pic: listItem.frontPicUrl,
+              name: listItem.title,
+              period: listItem.period,
+              songList: listItem.song.map((songItem) => {
+                return {
+                  id: songItem.songId,
+                  singerName: songItem.singerName,
+                  songName: songItem.title
+                }
+              })
+            })
+          })
+        })
 
-//         res.json({
-//           code: ERR_OK,
-//           result: {
-//             topList
-//           }
-//         })
-//       } else {
-//         res.json(data)
-//       }
-//     })
-//   })
-// }
+        res.json({
+          code: ERR_OK,
+          result: {
+            topList
+          }
+        })
+      } else {
+        res.json(data)
+      }
+    })
+  })
+}
 
 // // 注册排行榜详情接口
 // function registerTopDetail(app) {

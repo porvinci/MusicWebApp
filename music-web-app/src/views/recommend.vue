@@ -3,11 +3,6 @@
     class="recommend"
     v-loading:[loadingText]="loading"
   >
-    <!-- <div class="slider-wrapper">
-          <div class="slider-content">
-            <slider v-if="sliders.length" :sliders="sliders"></slider>
-          </div>
-    </div> -->
     <scroll class="recommend-content">
       <div>
         <div class="slider-wrapper">
@@ -85,9 +80,7 @@
     methods: {
       selectAlbum(album) {
         this.album = album
-        console.log(album, (album.id + ''))
         this.$router.push({ path: `/recommend/${album.id}` })
-        console.log('2')
       }
     }
   }

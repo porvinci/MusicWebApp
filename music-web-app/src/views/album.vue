@@ -10,7 +10,6 @@
 </template>
 
 <script>
-  // import createDetailComponent from '@/assets/js/create-detail-component'
   import { computed } from 'vue'
   import { useMusicPlayStore } from '@/store/musicPlay'
   import { getAlbum } from '@/service/recommend'
