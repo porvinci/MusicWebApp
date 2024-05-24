@@ -3,12 +3,12 @@
     <div class="search-input-wrapper">
       <search-input v-model="query"></search-input>
     </div>
-    <!-- <scroll
+    <scroll
       ref="scrollRef"
       class="search-content"
       v-show="!query"
     >
-      <div>
+      <div class="search-content">
         <div class="hot-keys">
           <h1 class="title">热门搜索</h1>
           <ul>
@@ -22,7 +22,7 @@
             </li>
           </ul>
         </div>
-        <div class="search-history" v-show="searchHistory.length">
+        <!-- <div class="search-history" v-show="searchHistory.length">
           <h1 class="title">
             <span class="text">搜索历史</span>
             <span class="clear" @click="showConfirm">
@@ -41,39 +41,45 @@
             @select="addQuery"
             @delete="deleteSearch"
           ></search-list>
-        </div>
+        </div> -->
       </div>
-    </scroll> -->
-    <!-- <div class="search-result" v-show="query">
+    </scroll>
+    <div class="search-result" v-show="query">
       <suggest
         :query="query"
-        @select-song="selectSong"
-        @select-singer="selectSinger"
       ></suggest>
-    </div> -->
+      <!--         @select-song="selectSong"
+        @select-singer="selectSinger" -->
+    </div>
   </div>
 </template>
 
 <script>
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
+  import { getHotKeys } from '@/service/search.js'
   import SearchInput from '@/components/search/search-input.vue'
+  import Suggest from '@/components/search/suggest.vue'
+  import Scroll from '@/components/base/scroll/scroll.vue'
+
   export default {
     name: 'search',
     components: {
-      SearchInput
+      SearchInput,
+      Suggest,
+      Scroll,
     },
-    // data() {
-    //   return {
-    //     query: 'hello',
-    //   }
-    // },
     setup() {
-      const query = ref('hello')
-      watch(query, newV => {
-        console.log('f', newV)
-      })
+      const query = ref('')
+      const hotKeys = ref([])
+      getHotKeys().then(res => { hotKeys.value = res.hotKeys })
+
+      function addQuery(item) {
+        query.value = item
+      }
       return {
-        query
+        query,
+        hotKeys,
+        addQuery,
       }
     }
   }
@@ -90,51 +96,51 @@
     .search-input-wrapper {
       margin: 20px;
     }
-    // .search-content {
-    //   flex: 1;
-    //   overflow: hidden;
-    //   .hot-keys {
-    //     margin: 0 20px 20px 20px;
-    //     .title {
-    //       margin-bottom: 20px;
-    //       font-size: $font-size-medium;
-    //       color: $color-text-l;
-    //     }
-    //     .item {
-    //       display: inline-block;
-    //       padding: 5px 10px;
-    //       margin: 0 20px 10px 0;
-    //       border-radius: 6px;
-    //       background: $color-highlight-background;
-    //       font-size: $font-size-medium;
-    //       color: $color-text-d;
-    //     }
-    //   }
-    //   .search-history {
-    //     position: relative;
-    //     margin: 0 20px;
-    //     .title {
-    //       display: flex;
-    //       align-items: center;
-    //       height: 40px;
-    //       font-size: $font-size-medium;
-    //       color: $color-text-l;
-    //       .text {
-    //         flex: 1;
-    //       }
-    //       .clear {
-    //         @include extend-click();
-    //         .icon-clear {
-    //           font-size: $font-size-medium;
-    //           color: $color-text-d;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // .search-result {
-    //   flex: 1;
-    //   overflow: hidden;
-    // }
+    .search-content {
+      flex: 1;
+      overflow: hidden;
+      .hot-keys {
+        margin: 0 20px 20px 20px;
+        .title {
+          margin-bottom: 20px;
+          font-size: $font-size-medium;
+          color: $color-text-l;
+        }
+        .item {
+          display: inline-block;
+          padding: 5px 10px;
+          margin: 0 20px 10px 0;
+          border-radius: 6px;
+          background: $color-highlight-background;
+          font-size: $font-size-medium;
+          color: $color-text-d;
+        }
+      }
+      // .search-history {
+      //   position: relative;
+      //   margin: 0 20px;
+      //   .title {
+      //     display: flex;
+      //     align-items: center;
+      //     height: 40px;
+      //     font-size: $font-size-medium;
+      //     color: $color-text-l;
+      //     .text {
+      //       flex: 1;
+      //     }
+      //     .clear {
+      //       @include extend-click();
+      //       .icon-clear {
+      //         font-size: $font-size-medium;
+      //         color: $color-text-d;
+      //       }
+      //     }
+      //   }
+      // }
+    }
+    .search-result {
+      flex: 1;
+      overflow: hidden;
+    }
   }
 </style>

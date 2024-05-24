@@ -4,6 +4,7 @@
     <input
       class="input-inner"
       v-model="newQuery"
+      :placeholder="placeholder"
     />
     <i
       class="icon-dismiss"
@@ -23,6 +24,10 @@
         type: String,
         default: '',
       },
+      placeholder: {
+        type: String,
+        default: '搜索歌手、歌曲',
+      }
     },
     data() {
       return {
