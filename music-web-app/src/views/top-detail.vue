@@ -59,7 +59,6 @@
         this.$router.push({ path: `${this.$route.matched[0].path}` })
         return
       }
-      console.log('2', this.topItem)
       const result = await getTopListDetail(this.topItemFromStorage)
       this.songs = await processSongs(result.songs)
       this.loading = false

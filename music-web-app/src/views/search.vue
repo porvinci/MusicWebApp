@@ -1,10 +1,9 @@
 <template>
   <div class="search">
-    搜索页面
-    <!-- <div class="search-input-wrapper">
+    <div class="search-input-wrapper">
       <search-input v-model="query"></search-input>
     </div>
-    <scroll
+    <!-- <scroll
       ref="scrollRef"
       class="search-content"
       v-show="!query"
@@ -44,176 +43,98 @@
           ></search-list>
         </div>
       </div>
-    </scroll>
-    <div class="search-result" v-show="query">
+    </scroll> -->
+    <!-- <div class="search-result" v-show="query">
       <suggest
         :query="query"
         @select-song="selectSong"
         @select-singer="selectSinger"
       ></suggest>
-    </div>
-    <router-view v-slot="{ Component }">
-      <transition appear name="slide">
-        <component :is="Component" :data="selectedSinger"/>
-      </transition>
-    </router-view> -->
+    </div> -->
   </div>
 </template>
 
 <script>
-  // import SearchInput from '@/components/search/search-input'
-  // import Suggest from '@/components/search/suggest'
-  // import SearchList from '@/components/base/search-list/search-list'
-  // import Scroll from '@/components/wrap-scroll'
-  // import Confirm from '@/components/base/confirm/confirm'
-  // import { ref, computed, watch, nextTick } from 'vue'
-  // import { getHotKeys } from '@/service/search'
-  // import { useStore } from 'vuex'
-  // import { useRouter } from 'vue-router'
-  // import storage from 'good-storage'
-  // import { SINGER_KEY } from '@/assets/js/constant'
-  // import useSearchHistory from '@/components/search/use-search-history'
-
+  import { ref, watch } from 'vue'
+  import SearchInput from '@/components/search/search-input.vue'
   export default {
     name: 'search',
-  //   components: {
-  //     Confirm,
-  //     Scroll,
-  //     SearchList,
-  //     SearchInput,
-  //     Suggest
-  //   },
-  //   setup() {
-  //     const query = ref('')
-  //     const hotKeys = ref([])
-  //     const selectedSinger = ref(null)
-  //     const scrollRef = ref(null)
-  //     const confirmRef = ref(null)
-
-  //     const store = useStore()
-  //     const searchHistory = computed(() => store.state.searchHistory)
-
-  //     const router = useRouter()
-
-  //     const { saveSearch, deleteSearch, clearSearch } = useSearchHistory()
-
-  //     getHotKeys().then((result) => {
-  //       hotKeys.value = result.hotKeys
-  //     })
-
-  //     watch(query, async (newQuery) => {
-  //       if (!newQuery) {
-  //         await nextTick()
-  //         refreshScroll()
-  //       }
-  //     })
-
-  //     function refreshScroll() {
-  //       scrollRef.value.scroll.refresh()
-  //     }
-
-  //     function addQuery(s) {
-  //       query.value = s
-  //     }
-
-  //     function selectSong(song) {
-  //       saveSearch(query.value)
-  //       store.dispatch('addSong', song)
-  //     }
-
-  //     function selectSinger(singer) {
-  //       saveSearch(query.value)
-  //       selectedSinger.value = singer
-  //       cacheSinger(singer)
-
-  //       router.push({
-  //         path: `/search/${singer.mid}`
-  //       })
-  //     }
-
-  //     function cacheSinger(singer) {
-  //       storage.session.set(SINGER_KEY, singer)
-  //     }
-
-  //     function showConfirm() {
-  //       confirmRef.value.show()
-  //     }
-
-  //     return {
-  //       scrollRef,
-  //       confirmRef,
-  //       query,
-  //       hotKeys,
-  //       selectedSinger,
-  //       searchHistory,
-  //       addQuery,
-  //       selectSong,
-  //       selectSinger,
-  //       showConfirm,
-  //       // searchHistory
-  //       deleteSearch,
-  //       clearSearch
-  //     }
-  //   }
+    components: {
+      SearchInput
+    },
+    // data() {
+    //   return {
+    //     query: 'hello',
+    //   }
+    // },
+    setup() {
+      const query = ref('hello')
+      watch(query, newV => {
+        console.log('f', newV)
+      })
+      return {
+        query
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-  // .search {
-  //   position: fixed;
-  //   width: 100%;
-  //   top: 88px;
-  //   bottom: 0;
-  //   display: flex;
-  //   flex-direction: column;
-  //   .search-input-wrapper {
-  //     margin: 20px;
-  //   }
-  //   .search-content {
-  //     flex: 1;
-  //     overflow: hidden;
-  //     .hot-keys {
-  //       margin: 0 20px 20px 20px;
-  //       .title {
-  //         margin-bottom: 20px;
-  //         font-size: $font-size-medium;
-  //         color: $color-text-l;
-  //       }
-  //       .item {
-  //         display: inline-block;
-  //         padding: 5px 10px;
-  //         margin: 0 20px 10px 0;
-  //         border-radius: 6px;
-  //         background: $color-highlight-background;
-  //         font-size: $font-size-medium;
-  //         color: $color-text-d;
-  //       }
-  //     }
-  //     .search-history {
-  //       position: relative;
-  //       margin: 0 20px;
-  //       .title {
-  //         display: flex;
-  //         align-items: center;
-  //         height: 40px;
-  //         font-size: $font-size-medium;
-  //         color: $color-text-l;
-  //         .text {
-  //           flex: 1;
-  //         }
-  //         .clear {
-  //           @include extend-click();
-  //           .icon-clear {
-  //             font-size: $font-size-medium;
-  //             color: $color-text-d;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   .search-result {
-  //     flex: 1;
-  //     overflow: hidden;
-  //   }
-  // }
+  .search {
+    position: fixed;
+    width: 100%;
+    top: 88px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    .search-input-wrapper {
+      margin: 20px;
+    }
+    // .search-content {
+    //   flex: 1;
+    //   overflow: hidden;
+    //   .hot-keys {
+    //     margin: 0 20px 20px 20px;
+    //     .title {
+    //       margin-bottom: 20px;
+    //       font-size: $font-size-medium;
+    //       color: $color-text-l;
+    //     }
+    //     .item {
+    //       display: inline-block;
+    //       padding: 5px 10px;
+    //       margin: 0 20px 10px 0;
+    //       border-radius: 6px;
+    //       background: $color-highlight-background;
+    //       font-size: $font-size-medium;
+    //       color: $color-text-d;
+    //     }
+    //   }
+    //   .search-history {
+    //     position: relative;
+    //     margin: 0 20px;
+    //     .title {
+    //       display: flex;
+    //       align-items: center;
+    //       height: 40px;
+    //       font-size: $font-size-medium;
+    //       color: $color-text-l;
+    //       .text {
+    //         flex: 1;
+    //       }
+    //       .clear {
+    //         @include extend-click();
+    //         .icon-clear {
+    //           font-size: $font-size-medium;
+    //           color: $color-text-d;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    // .search-result {
+    //   flex: 1;
+    //   overflow: hidden;
+    // }
+  }
 </style>
