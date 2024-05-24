@@ -1,7 +1,8 @@
 <template>
   <div
     class="suggest"
-    v-loading:[loadingText]="true"
+    v-loading:[loadingText]="loading"
+    v-no-result:[noResultText]="noResult"
   >
     <ul class="suggest-list">
       <li
@@ -55,12 +56,19 @@
       const songs = ref([])
       const loading = ref(true)
       const loadingText = ref('')
+      const noResult = ref(false)
+      const noResultText = ref('抱歉，找不到您想要的结果')
 
       watchEffect(() => {
         searchQuery(props.query, 0, true).then(async res => {
+          console.log(res)
           singer.value = res.singer
           songs.value = await processSongs(res.songs)
           loading.value = false
+          noResult.value = false
+          if (!res.singer && !res.songs.length) {
+            noResult.value = true
+          }
         })
       })
 
@@ -69,6 +77,8 @@
         songs,
         loading,
         loadingText,
+        noResult,
+        noResultText,
       }
     }
   }
