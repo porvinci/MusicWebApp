@@ -166,6 +166,8 @@
 
       function close() {
         musicPlayStore.setPlaylistPanelVisible(false)
+        musicPlayStore.setPlayingState(false)
+        musicPlayStore.clearPlayList()
       }
 
       return {

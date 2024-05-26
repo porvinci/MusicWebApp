@@ -25,7 +25,6 @@
 </template>
 
 <script>
-  import { useMusicPlayStore } from '@/store/musicPlay'
   export default {
     name: 'confirm',
     props: {
@@ -61,9 +60,6 @@
       confirm() {
         this.visible = false
         this.$emit('confirm')
-        const musicPlayStore = useMusicPlayStore()
-        musicPlayStore.setPlayingState(false)
-        musicPlayStore.clearPlayList()
       }
     }
   }

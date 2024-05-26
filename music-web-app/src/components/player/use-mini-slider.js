@@ -5,7 +5,6 @@ import { useMusicPlayStore } from '@/store/musicPlay'
 BScroll.use(Slide)
 
 export default function useMiniSlider() {
-  console.log('0')
   const sliderRootRef = ref(null)
   const miniSlider = ref(null)
   const musicPlayStore = useMusicPlayStore()
@@ -17,7 +16,6 @@ export default function useMiniSlider() {
   let miniSliderVal
   onMounted(() => {
     watch(() => playlist.value, async newV => {
-      console.log('00')
       if (newV.length > 0) {
         await nextTick()
         // playlist中有数据了，slider有page，此时可以初始化BScroll
@@ -39,7 +37,6 @@ export default function useMiniSlider() {
             musicPlayStore.setCurrentIndex(page.pageX)
           })
         } else miniSliderVal.refresh()
-        console.log('1', miniSliderVal)
       }
     }, { deep: true })
     // 当打开playlistPannel，mini播放器的showSlider会关闭，slider还是原来的只是不显示
@@ -54,7 +51,6 @@ export default function useMiniSlider() {
       // 该函数估计是有重新获取DOM的，所以要等待一个nextTick()
       // 更新完slider中的DOM之后跳转到对应的slider页
       await nextTick()
-      console.log('2', miniSliderVal)
       miniSliderVal.refresh()
       miniSliderVal.goToPage(currentIndex.value, 0, 0)
     })

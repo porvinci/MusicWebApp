@@ -22,7 +22,7 @@
             </li>
           </ul>
         </div>
-        <!-- <div class="search-history" v-show="searchHistory.length">
+        <div class="search-history" v-show="searchHistory.length">
           <h1 class="title">
             <span class="text">搜索历史</span>
             <span class="clear" @click="showConfirm">
@@ -33,6 +33,7 @@
             ref="confirmRef"
             text="是否清空所有搜索历史"
             confirm-btn-text="清空"
+            cancelBtnText="取消"
             @confirm="clearSearch"
           >
           </confirm>
@@ -41,7 +42,7 @@
             @select="addQuery"
             @delete="deleteSearch"
           ></search-list>
-        </div> -->
+        </div>
       </div>
     </scroll>
     <div class="search-result" v-show="query">
@@ -60,14 +61,16 @@
 </template>
 
 <script>
-  import { ref } from 'vue'
+  import { ref, watch, nextTick } from 'vue'
   import { useRouter } from 'vue-router'
   import storage from 'good-storage'
   import { getHotKeys } from '@/service/search.js'
-  import { SINGER_KEY } from '@/assets/js/constant'
+  import { SINGER_KEY, HISTORY_KEY } from '@/assets/js/constant'
   import SearchInput from '@/components/search/search-input.vue'
   import Suggest from '@/components/search/suggest.vue'
   import Scroll from '@/components/base/scroll/scroll.vue'
+  import SearchList from '@/components/base/search-list/search-list.vue'
+  import Confirm from '@/components/base/confirm/confirm.vue'
   import { useMusicPlayStore } from '@/store/musicPlay'
 
   export default {
@@ -76,13 +79,31 @@
       SearchInput,
       Suggest,
       Scroll,
+      SearchList,
+      Confirm,
     },
     setup() {
       const router = useRouter()
       const query = ref('')
       const hotKeys = ref([])
       const selectedSinger = ref(null)
+      const scrollRef = ref(null)
+      const confirmRef = ref(null)
+      const searchHistory = ref(storage.session.get(HISTORY_KEY, []))
       const musicPlayStore = useMusicPlayStore()
+
+      watch(query, async val => {
+        val = val.trim()
+        if (val) {
+          searchHistory.value = storage.session.get(HISTORY_KEY, [])
+          const idx = searchHistory.value.findIndex(item => item === val)
+          if (idx !== -1) return
+          searchHistory.value.unshift(val)
+          storage.session.set(HISTORY_KEY, searchHistory.value)
+        }
+        await nextTick()
+        scrollRef.value.scroll.scroll.value.refresh()
+      })
 
       getHotKeys().then(res => { hotKeys.value = res.hotKeys })
 
@@ -91,7 +112,6 @@
       }
 
       function selectSong(song) {
-        console.log('select song', song)
         musicPlayStore.addSongToPlaylist(song)
         musicPlayStore.setFullScreen(true)
       }
@@ -104,13 +124,35 @@
         })
       }
 
+      function deleteSearch(historyRecord) {
+        const idx = searchHistory.value.findIndex(item => item === historyRecord)
+        if (idx === -1) return
+        searchHistory.value.splice(idx, 1)
+        storage.session.set(HISTORY_KEY, searchHistory.value)
+      }
+
+      function showConfirm() {
+        confirmRef.value.show()
+      }
+
+      function clearSearch() {
+        searchHistory.value = []
+        storage.session.remove(HISTORY_KEY)
+      }
+
       return {
+        scrollRef,
         query,
         hotKeys,
         selectedSinger,
+        confirmRef,
         addQuery,
         selectSong,
         selectSinger,
+        searchHistory,
+        deleteSearch,
+        showConfirm,
+        clearSearch,
       }
     }
   }
@@ -147,27 +189,27 @@
           color: $color-text-d;
         }
       }
-      // .search-history {
-      //   position: relative;
-      //   margin: 0 20px;
-      //   .title {
-      //     display: flex;
-      //     align-items: center;
-      //     height: 40px;
-      //     font-size: $font-size-medium;
-      //     color: $color-text-l;
-      //     .text {
-      //       flex: 1;
-      //     }
-      //     .clear {
-      //       @include extend-click();
-      //       .icon-clear {
-      //         font-size: $font-size-medium;
-      //         color: $color-text-d;
-      //       }
-      //     }
-      //   }
-      // }
+      .search-history {
+        position: relative;
+        margin: 0 20px;
+        .title {
+          display: flex;
+          align-items: center;
+          height: 40px;
+          font-size: $font-size-medium;
+          color: $color-text-l;
+          .text {
+            flex: 1;
+          }
+          .clear {
+            @include extend-click();
+            .icon-clear {
+              font-size: $font-size-medium;
+              color: $color-text-d;
+            }
+          }
+        }
+      }
     }
     .search-result {
       flex: 1;
