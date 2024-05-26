@@ -27,7 +27,7 @@ export default function useLyric() {
     if (!fullScreen.value) return
     const idx = lyricTimeList.value.findIndex(item => item > newV)
     lineSerialNum.value = idx === -1 ? lyricTimeList.value.length - 1 : idx - 1
-    singleLineLyric.value = lyric.value.lines[lineSerialNum.value]?.txt
+    singleLineLyric.value = lyric.value?.lines[lineSerialNum.value]?.txt
     await nextTick()
     const targetEl = lyricListRef.value.children[Math.max(lineSerialNum.value - 7, 0)]
     if (!targetEl) return

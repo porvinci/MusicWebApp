@@ -47,19 +47,28 @@
     <div class="search-result" v-show="query">
       <suggest
         :query="query"
+        @select-song="selectSong"
+        @select-singer="selectSinger"
       ></suggest>
-      <!--         @select-song="selectSong"
-        @select-singer="selectSinger" -->
     </div>
+    <router-view v-slot='{ Component }'>
+      <transition name="slide">
+        <component :is="Component" :singer="selectedSinger"></component>
+      </transition>
+    </router-view>
   </div>
 </template>
 
 <script>
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import storage from 'good-storage'
   import { getHotKeys } from '@/service/search.js'
+  import { SINGER_KEY } from '@/assets/js/constant'
   import SearchInput from '@/components/search/search-input.vue'
   import Suggest from '@/components/search/suggest.vue'
   import Scroll from '@/components/base/scroll/scroll.vue'
+  import { useMusicPlayStore } from '@/store/musicPlay'
 
   export default {
     name: 'search',
@@ -69,17 +78,39 @@
       Scroll,
     },
     setup() {
+      const router = useRouter()
       const query = ref('')
       const hotKeys = ref([])
+      const selectedSinger = ref(null)
+      const musicPlayStore = useMusicPlayStore()
+
       getHotKeys().then(res => { hotKeys.value = res.hotKeys })
 
       function addQuery(item) {
         query.value = item
       }
+
+      function selectSong(song) {
+        console.log('select song', song)
+        musicPlayStore.addSongToPlaylist(song)
+        musicPlayStore.setFullScreen(true)
+      }
+
+      function selectSinger(singer) {
+        selectedSinger.value = singer
+        storage.session.set(SINGER_KEY, singer)
+        router.push({
+          path: `/search/${singer.mid}`
+        })
+      }
+
       return {
         query,
         hotKeys,
+        selectedSinger,
         addQuery,
+        selectSong,
+        selectSinger,
       }
     }
   }

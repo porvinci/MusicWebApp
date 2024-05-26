@@ -3,11 +3,13 @@
     class="suggest"
     v-loading:[loadingText]="loading"
     v-no-result:[noResultText]="noResult"
+    ref="suggestRef"
   >
-    <ul class="suggest-list">
+    <ul class="suggest-list" ref="ulRef">
       <li
         class="suggest-item"
         v-if="singer"
+        @click="selectSinger(singer)"
       >
         <div class="icon">
           <i class="icon-mine"></i>
@@ -20,6 +22,7 @@
         class="suggest-item"
         v-for="song in songs"
         :key="song.id"
+        @click="selectSong(song)"
       >
         <div class="icon">
           <i class="icon-music"></i>
@@ -30,18 +33,17 @@
           </p>
         </div>
       </li>
-      <!-- <div
+      <div
         class="suggest-item"
         v-loading:[loadingText]="pullUpLoading"
-      ></div> -->
+      ></div>
     </ul>
   </div>
 </template>
 
 <script>
-  import { ref, watchEffect } from 'vue'
-  import { searchQuery } from '@/service/search.js'
-  import { processSongs } from '@/service/song'
+  import { ref } from 'vue'
+  import usePullUp from './use-pull-up.js'
 
   export default {
     name: 'suggest',
@@ -51,26 +53,22 @@
         default: '',
       },
     },
-    setup(props) {
-      const singer = ref(null)
-      const songs = ref([])
-      const loading = ref(true)
+    emits: ['select-song', 'select-singer'],
+    setup(props, { emit }) {
+      const suggestRef = ref(null)
       const loadingText = ref('')
-      const noResult = ref(false)
       const noResultText = ref('抱歉，找不到您想要的结果')
 
-      watchEffect(() => {
-        searchQuery(props.query, 0, true).then(async res => {
-          console.log(res)
-          singer.value = res.singer
-          songs.value = await processSongs(res.songs)
-          loading.value = false
-          noResult.value = false
-          if (!res.singer && !res.songs.length) {
-            noResult.value = true
-          }
-        })
-      })
+      const { singer, songs, suggestBS, pullUpLoading, loading, noResult, ulRef } = usePullUp(suggestRef, props)
+
+      function selectSong(song) {
+        // console.log('song', song)
+        emit('select-song', song)
+      }
+
+      function selectSinger(singer) {
+        emit('select-singer', singer)
+      }
 
       return {
         singer,
@@ -79,6 +77,12 @@
         loadingText,
         noResult,
         noResultText,
+        suggestRef,
+        suggestBS,
+        pullUpLoading,
+        ulRef,
+        selectSong,
+        selectSinger,
       }
     }
   }

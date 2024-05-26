@@ -42,6 +42,16 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   }
   const clearPlayList = () => { playlist.value = [] }
   const setPlaylistPanelVisible = (state) => { playlistPanelVisible.value = state }
+  const addSongToPlaylist = (song) => {
+    let idx = playlist.value.findIndex(item => item.id === song.id)
+    if (idx !== -1) currentIndex.value = idx
+    else {
+      playlist.value.push(song)
+      currentIndex.value = playlist.value.length - 1
+    }
+    idx = sequenceList.value.findIndex(item => item.id === song.id)
+    if (idx === -1) sequenceList.value.push(song)
+  }
 
   return {
     sequenceList,
@@ -66,5 +76,6 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     deleteSong,
     clearPlayList,
     setPlaylistPanelVisible,
+    addSongToPlaylist,
   }
 })
