@@ -29,6 +29,7 @@ export default function useMode() {
       const index = randomList.findIndex(item => item.mid === currentSong.value.mid)
       musicPlayStore.setPlayList(randomList)
       musicPlayStore.setCurrentIndex(index)
+      console.log('random', randomList, index)
     } else {
       musicPlayStore.setPlayMode(PLAY_MODE.sequence)
       musicPlayStore.setPlayList(musicPlayStore.sequenceList)

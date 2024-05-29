@@ -63,7 +63,7 @@
               <div v-if="lyric" ref="lyricListRef">
                 <p
                   class="text"
-                  :class="{'current': lineSerialNum ===index}"
+                  :class="{'current': lineSerialNum === index}"
                   v-for="(line,index) in lyric.lines"
                   :key="line.num"
                 >
@@ -204,6 +204,8 @@
         const audioEl = audioRef.value
         audioEl.src = newSong.url
         musicPlayStore.setPlayingState(true)
+        console.log(newSong.name)
+        musicPlayStore.addPlayHistory(newSong)
       })
 
       watch(songReady, async (newV) => {
@@ -270,6 +272,7 @@
       }
 
       function ready() {
+        console.log('canplay')
         if (songReady.value) return
         songReady.value = true
       }

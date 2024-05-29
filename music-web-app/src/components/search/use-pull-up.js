@@ -41,14 +41,17 @@ export default function usePullUp(wrapperRef, props) {
       return
     }
     if (props.query) {
+      console.log('refresh 1')
       await nextTick()
       suggestBSVal.refresh()
+      console.log('refresh 2')
       fixedHeight = wrapperRef.value.clientHeight
       ulHeight = ulRef.value.clientHeight
       while (ulHeight < fixedHeight && hasMore) {
         await handler()
         ulHeight = ulRef.value.clientHeight
         fixedHeight = wrapperRef.value.clientHeight
+        console.log(ulHeight, fixedHeight)
       }
     }
   })
@@ -67,6 +70,7 @@ export default function usePullUp(wrapperRef, props) {
   })
 
   async function handler() {
+    console.log('handler')
     if (!hasMore) return
     ulHeight = ulRef.value.clientHeight
     fixedHeight = wrapperRef.value.clientHeight

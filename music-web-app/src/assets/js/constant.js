@@ -3,6 +3,7 @@ export const SONG_KEY = '__song__'
 export const ALBUM_KEY = '__album__'
 export const TOPLIST_KEY = '__toplist__'
 export const HISTORY_KEY = '__history__'
+export const PLAYHISTORY_KEY = '__playhistory__'
 
 export const PLAY_MODE = {
   sequence: 0,

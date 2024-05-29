@@ -33,7 +33,7 @@ export default function useMiniSlider() {
               loop: true,
             },
           })
-          miniSliderVal.on('slidePageChanged', page => {
+          miniSliderVal.on('slidePageChanged', async page => {
             musicPlayStore.setCurrentIndex(page.pageX)
           })
         } else miniSliderVal.refresh()
@@ -44,6 +44,7 @@ export default function useMiniSlider() {
     // 此时都会观测到showSlider的值为true，然后slider切换到与当前播放歌曲匹配的页面
     // 2种情况下slider要有作用，其一当mini播放器出现的时候，slider要到对应的页
     watch(showSlider, async (newV) => {
+      console.log(newV, currentIndex.value)
       if (!newV) return
       if (currentIndex.value < 0 || currentIndex.value >= playlist.value.length) return
       // 如果在playlistPannel中删除了歌曲，那么playlist.vue中v-for渲染slider在DOM中是没问题的

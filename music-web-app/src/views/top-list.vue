@@ -60,7 +60,6 @@
       selectItem(item) {
         this.selectedTop = item
         this.$router.push({ path: `/top-list/${item.id}` })
-        console.log('1', this.selectedTop)
       }
     }
   }
