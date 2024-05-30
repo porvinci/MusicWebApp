@@ -1,7 +1,7 @@
 import { useMusicPlayStore } from '@/store/musicPlay'
 import { computed } from 'vue'
 import storage from 'good-storage'
-import { SONG_KEY } from '@/assets/js/constant'
+import { FAV_KEY } from '@/assets/js/constant'
 
 export default function useFavorite() {
   const musicPlayStore = useMusicPlayStore()
@@ -12,7 +12,7 @@ export default function useFavorite() {
   }
 
   function toggleFavorite(song) {
-    const stoList = storage.get(SONG_KEY, [])
+    const stoList = storage.get(FAV_KEY, [])
     let idx = -1
     stoList.forEach((item, index) => {
       if (item.id === song.id) idx = index
@@ -21,7 +21,7 @@ export default function useFavorite() {
     if (idx !== -1) stoList.splice(idx, 1)
     else stoList.push(song)
     musicPlayStore.setFavList(stoList)
-    storage.set(SONG_KEY, stoList)
+    storage.set(FAV_KEY, stoList)
   }
 
   return {

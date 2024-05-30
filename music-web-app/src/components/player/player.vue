@@ -123,6 +123,7 @@
       @error="error"
       @ended="ended"
       @timeupdate="timeUpdate"
+      preload="auto"
     ></audio>
   </div>
 </template>
@@ -203,8 +204,8 @@
         await nextTick()
         const audioEl = audioRef.value
         audioEl.src = newSong.url
+        audioEl.load()
         musicPlayStore.setPlayingState(true)
-        console.log(newSong.name)
         musicPlayStore.addPlayHistory(newSong)
       })
 
@@ -267,12 +268,13 @@
         const value = currentIndex.value
         const len = playlist.value.length
         if (!len) return
-        const index = value === len - 1 ? 0 : value + 1
+        let index
+        if (musicPlayStore.playMode === PLAY_MODE.random) index = Math.floor(Math.random() * len)
+        else index = value === len - 1 ? 0 : value + 1
         musicPlayStore.setCurrentIndex(index)
       }
 
       function ready() {
-        console.log('canplay')
         if (songReady.value) return
         songReady.value = true
       }

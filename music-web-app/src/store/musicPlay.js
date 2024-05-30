@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import { PLAY_MODE, SONG_KEY, PLAYHISTORY_KEY } from '@/assets/js/constant'
+import { PLAY_MODE, FAV_KEY, PLAYHISTORY_KEY, HISTORY_KEY } from '@/assets/js/constant'
 import storage from 'good-storage'
 
 export const useMusicPlayStore = defineStore('musicPlay', () => {
@@ -10,8 +10,11 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const playing = ref(false) // 播放器的当前播放状态
   const currentIndex = ref(0) // 当前播放歌曲的index
   const fullScreen = ref(false) // 播放器是否要全屏
-  const favList = ref(storage.get(SONG_KEY, []))
+  const favList = ref(storage.get(FAV_KEY, []))
+  console.log('4')
   const playHistory = ref(storage.get(PLAYHISTORY_KEY, []))
+  console.log('5')
+  const searchHistory = ref(storage.session.get(HISTORY_KEY, []))
   const currentTime = ref(0)
   const playlistPanelVisible = ref(false)
   let currentSong = ref({})
@@ -25,11 +28,10 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   }, { deep: true })
 
   const setSequenceList = (list) => {
-    sequenceList.value = list
+    sequenceList.value = JSON.parse(JSON.stringify(list))
   }
   const setPlayList = (list) => {
-    playlist.value = list
-    console.log(playlist.value)
+    playlist.value = JSON.parse(JSON.stringify(list))
   }
   const addPlayList = song => {
     const idx = playlist.value.findIndex(item => item.id === song.id)
@@ -45,17 +47,19 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     currentIndex.value = index
   }
   const setFullScreen = (state) => { fullScreen.value = state }
-  const setFavList = (list) => { favList.value = list }
-  const setPlayHistory = (list) => { playHistory.value = list }
+  const setFavList = (list) => { favList.value = JSON.parse(JSON.stringify(list)) }
   const addPlayHistory = song => {
     const idx = playHistory.value.findIndex(item => item.id === song.id)
-    console.log('a')
     if (idx !== -1) {
       playHistory.value.splice(idx, 1)
-      console.log('b')
     }
     playHistory.value.unshift(song)
-    console.log('c')
+  }
+  const addSearchHistory = hist => {
+    const idx = searchHistory.value.findIndex(item => item === hist)
+    if (idx !== -1) searchHistory.value.splice(idx, 1)
+    searchHistory.value.unshift(hist)
+    storage.session.set(HISTORY_KEY, searchHistory.value)
   }
   const setCurrentTime = (time) => { currentTime.value = time }
   const deleteSong = (song) => {
@@ -87,6 +91,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     currentSong,
     favList,
     playHistory,
+    searchHistory,
     currentTime,
     playlistPanelVisible,
     // setCurrentSong,
@@ -98,8 +103,8 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     setCurrentIndex,
     setFullScreen,
     setFavList,
-    setPlayHistory,
     addPlayHistory,
+    addSearchHistory,
     setCurrentTime,
     deleteSong,
     clearPlayList,

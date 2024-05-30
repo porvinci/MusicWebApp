@@ -29,11 +29,10 @@
         default() {
           return []
         },
-      }
-    },
-    data() {
-      return {
-        showDelete: true,
+      },
+      showDelete: {
+        type: Boolean,
+        default: true,
       }
     },
     emits: ['select', 'delete'],

@@ -2,6 +2,7 @@ import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue'
 import BScroll from '@better-scroll/core'
 import Slide from '@better-scroll/slide'
 import { useMusicPlayStore } from '@/store/musicPlay'
+import { PLAY_MODE } from '@/assets/js/constant'
 BScroll.use(Slide)
 
 export default function useMiniSlider() {
@@ -34,7 +35,13 @@ export default function useMiniSlider() {
             },
           })
           miniSliderVal.on('slidePageChanged', async page => {
-            musicPlayStore.setCurrentIndex(page.pageX)
+            console.log('1', page.pageX)
+            let index = page.pageX
+            if (musicPlayStore.playMode === PLAY_MODE.random) {
+              index = Math.floor(Math.random() * playlist.value.length)
+              console.log('2', index)
+            }
+            musicPlayStore.setCurrentIndex(index)
           })
         } else miniSliderVal.refresh()
       }
@@ -44,7 +51,6 @@ export default function useMiniSlider() {
     // 此时都会观测到showSlider的值为true，然后slider切换到与当前播放歌曲匹配的页面
     // 2种情况下slider要有作用，其一当mini播放器出现的时候，slider要到对应的页
     watch(showSlider, async (newV) => {
-      console.log(newV, currentIndex.value)
       if (!newV) return
       if (currentIndex.value < 0 || currentIndex.value >= playlist.value.length) return
       // 如果在playlistPannel中删除了歌曲，那么playlist.vue中v-for渲染slider在DOM中是没问题的
@@ -56,13 +62,16 @@ export default function useMiniSlider() {
       miniSliderVal.goToPage(currentIndex.value, 0, 0)
     })
     // 其二，mini播放器已经出现，当前歌播放结束播放下一首那么slider也需要切换到对应页
-    watch(currentIndex, (newV) => {
+    watch(currentIndex, async (newV) => {
       if (!showSlider.value) return
       // 最开始点击一首歌时currentIndex变动，playlist变动，等到用户关闭fullScreen此时
       // 早就因为playlist有值而初始化了miniSlider
       // if (!miniSlider.value) return
       if (newV < 0 || newV >= playlist.value.length) return
+      await nextTick()
+      console.log('3', newV)
       miniSliderVal.goToPage(newV, 0, 0)
+      console.log('4')
     })
   })
 

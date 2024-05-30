@@ -8,7 +8,7 @@
     <ul class="suggest-list" ref="ulRef">
       <li
         class="suggest-item"
-        v-if="singer"
+        v-if="singer && showSinger"
         @click="selectSinger(singer)"
       >
         <div class="icon">
@@ -52,6 +52,10 @@
         type: String,
         default: '',
       },
+      showSinger: {
+        type: Boolean,
+        default: true
+      }
     },
     emits: ['select-song', 'select-singer'],
     setup(props, { emit }) {

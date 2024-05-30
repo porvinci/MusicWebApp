@@ -29,7 +29,7 @@ export default function useLyric() {
     lineSerialNum.value = idx === -1 ? lyricTimeList.value.length - 1 : idx - 1
     singleLineLyric.value = lyric.value?.lines[lineSerialNum.value]?.txt
     await nextTick()
-    const targetEl = lyricListRef.value.children[Math.max(lineSerialNum.value - 7, 0)]
+    const targetEl = lyricListRef.value?.children[Math.max(lineSerialNum.value - 7, 0)]
     if (!targetEl) return
     lyricScrollRef.value.scroll.scroll.value.scrollToElement(targetEl, 0)
   })

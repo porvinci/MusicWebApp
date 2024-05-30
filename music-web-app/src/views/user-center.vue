@@ -60,8 +60,6 @@
       return {
         currentIndex: 0,
         musicPlayStore: useMusicPlayStore(),
-        noResultText: '暂无歌曲',
-        noResult: false,
       }
     },
     computed: {
@@ -73,6 +71,12 @@
       },
       currentList() {
         return !this.currentIndex ? this.favoriteList : this.playHistory
+      },
+      noResult() {
+        return !(this.currentList.length > 0)
+      },
+      noResultText() {
+        return this.currentIndex ? '暂未收听歌曲' : '暂无收藏歌曲'
       },
       fullScreen() {
         return this.musicPlayStore.fullScreen
@@ -91,11 +95,9 @@
         this.$router.back()
       },
       selectSong({ song, index }) {
-        console.log('select 1111111111111111')
         this.musicPlayStore.addPlayList(song)
       },
       playAll() {
-        console.log(',')
         if (this.currentIndex === 0) this.musicPlayStore.setPlayList(JSON.parse(JSON.stringify(this.favoriteList)))
         else this.musicPlayStore.setPlayList(JSON.parse(JSON.stringify(this.playHistory)))
         this.musicPlayStore.setCurrentIndex(0)

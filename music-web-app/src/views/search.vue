@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import { ref, watch, nextTick } from 'vue'
+  import { ref, watch, nextTick, computed } from 'vue'
   import { useRouter } from 'vue-router'
   import storage from 'good-storage'
   import { getHotKeys } from '@/service/search.js'
@@ -89,18 +89,12 @@
       const selectedSinger = ref(null)
       const scrollRef = ref(null)
       const confirmRef = ref(null)
-      const searchHistory = ref(storage.session.get(HISTORY_KEY, []))
       const musicPlayStore = useMusicPlayStore()
+      const searchHistory = computed(() => musicPlayStore.searchHistory)
 
       watch(query, async val => {
         val = val.trim()
-        if (val) {
-          searchHistory.value = storage.session.get(HISTORY_KEY, [])
-          const idx = searchHistory.value.findIndex(item => item === val)
-          if (idx !== -1) return
-          searchHistory.value.unshift(val)
-          storage.session.set(HISTORY_KEY, searchHistory.value)
-        }
+        if (val) musicPlayStore.addSearchHistory(val)
         await nextTick()
         scrollRef.value.scroll.scroll.value.refresh()
       })

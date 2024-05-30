@@ -55,6 +55,12 @@
               </li>
             </transition-group>
           </scroll>
+          <div class="list-add">
+            <div class="add" @click="showAddSong">
+              <i class="icon-add"></i>
+              <span class="text">添加歌曲到队列</span>
+            </div>
+          </div>
           <div class="list-footer" @click.stop="hidden">
             <span>关闭</span>
           </div>
@@ -65,6 +71,7 @@
             cancelBtnText="取消"
             @confirm="close"
           ></confirm>
+          <add-song ref="addSongRef"></add-song>
         </div>
       </div>
     </transition>
@@ -75,6 +82,7 @@
   import { useMusicPlayStore } from '@/store/musicPlay'
   import { computed, ref, watch, nextTick } from 'vue'
   import Scroll from '@/components/base/scroll/scroll.vue'
+  import AddSong from '@/components/base/add-song/add-song.vue'
   import Confirm from '@/components/base/confirm/confirm'
   import useMode from './use-mode'
   import useFavorite from './use-favorite'
@@ -84,12 +92,14 @@
     components: {
       Scroll,
       Confirm,
+      AddSong,
     },
     setup() {
       const deleting = ref(false)
       const ulListRef = ref(null)
       const scrollListRef = ref(null)
       const confirmRef = ref(null)
+      const addSongRef = ref(null)
       const musicPlayStore = useMusicPlayStore()
       const currentIndex = computed(() => musicPlayStore.currentIndex)
       const currentSong = computed(() => musicPlayStore.currentSong)
@@ -170,6 +180,10 @@
         musicPlayStore.clearPlayList()
       }
 
+      function showAddSong() {
+        addSongRef.value.showCurVUE()
+      }
+
       return {
         visible,
         playlist,
@@ -194,6 +208,8 @@
         popConfirmBox,
         close,
         deleting,
+        showAddSong,
+        addSongRef,
       }
     }
   }
