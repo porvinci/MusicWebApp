@@ -56,12 +56,12 @@
           >
           </suggest>
         </div>
-        <!-- <message ref="messageRef">
+        <message ref="messageRef">
           <div class="message-title">
             <i class="icon-ok"></i>
             <span class="text">1首歌曲已经添加到播放列表</span>
           </div>
-        </message> -->
+        </message>
       </div>
     </transition>
   </teleport>
@@ -74,6 +74,7 @@
   import SongList from '@/components/base/song-list/song-list.vue'
   import SearchList from '@/components/base/search-list/search-list.vue'
   import Suggest from '@/components/search/suggest.vue'
+  import Message from '@/components/base/message/message.vue'
   import { useMusicPlayStore } from '@/store/musicPlay'
 import { nextTick } from 'vue'
   export default {
@@ -85,6 +86,7 @@ import { nextTick } from 'vue'
       SongList,
       SearchList,
       Suggest,
+      Message,
     },
     data() {
       return {
@@ -131,6 +133,7 @@ import { nextTick } from 'vue'
       },
       selectSongBySuggest(song) {
         this.musicPlayStore.addPlayList(song)
+        this.$refs.messageRef.show()
       }
     }
   }
