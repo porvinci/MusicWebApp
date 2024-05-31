@@ -66,7 +66,6 @@
       const { singer, songs, suggestBS, pullUpLoading, loading, noResult, ulRef } = usePullUp(suggestRef, props)
 
       function selectSong(song) {
-        // console.log('song', song)
         emit('select-song', song)
       }
 

@@ -21,7 +21,6 @@ export default function useLyric() {
     lyric.value = new Lyric(originLyric)
     if (lyric.value.lines.length) lyricTimeList.value = lyric.value.lines.map(item => item.time * 0.001)
     else singleLineLyric.value = pureMusicLyric.value = originLyric.replace(/\[(\d{2}):(\d{2}):(\d{2})\]/g, '')
-    // console.log(originLyric, lyric.value, lyricTimeList.value)
   })
   watch(curTime, async (newV) => {
     if (!fullScreen.value) return

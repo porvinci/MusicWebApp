@@ -2,7 +2,6 @@ import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue'
 import BScroll from '@better-scroll/core'
 import Slide from '@better-scroll/slide'
 import { useMusicPlayStore } from '@/store/musicPlay'
-import { PLAY_MODE } from '@/assets/js/constant'
 BScroll.use(Slide)
 
 export default function useMiniSlider() {
@@ -11,6 +10,7 @@ export default function useMiniSlider() {
   const musicPlayStore = useMusicPlayStore()
   const fullScreen = computed(() => musicPlayStore.fullScreen)
   const playlist = computed(() => musicPlayStore.playlist)
+  // const sequenceList = computed(() => musicPlayStore.sequenceList)
   const currentIndex = computed(() => musicPlayStore.currentIndex)
   const visible = computed(() => musicPlayStore.playlistPanelVisible)
   const showSlider = computed(() => !visible.value && !fullScreen.value && (playlist.value.length > 0))
@@ -35,13 +35,7 @@ export default function useMiniSlider() {
             },
           })
           miniSliderVal.on('slidePageChanged', async page => {
-            console.log('1', page.pageX)
-            let index = page.pageX
-            if (musicPlayStore.playMode === PLAY_MODE.random) {
-              index = Math.floor(Math.random() * playlist.value.length)
-              console.log('2', index)
-            }
-            musicPlayStore.setCurrentIndex(index)
+            musicPlayStore.setCurrentIndex(page.pageX)
           })
         } else miniSliderVal.refresh()
       }
@@ -59,6 +53,7 @@ export default function useMiniSlider() {
       // 更新完slider中的DOM之后跳转到对应的slider页
       await nextTick()
       miniSliderVal.refresh()
+      // const curIndex = sequenceList.value.indexOf(item => item.id === playlist.value[currentIndex.value].id)
       miniSliderVal.goToPage(currentIndex.value, 0, 0)
     })
     // 其二，mini播放器已经出现，当前歌播放结束播放下一首那么slider也需要切换到对应页
@@ -69,9 +64,7 @@ export default function useMiniSlider() {
       // if (!miniSlider.value) return
       if (newV < 0 || newV >= playlist.value.length) return
       await nextTick()
-      console.log('3', newV)
       miniSliderVal.goToPage(newV, 0, 0)
-      console.log('4')
     })
   })
 

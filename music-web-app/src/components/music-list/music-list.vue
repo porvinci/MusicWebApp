@@ -95,7 +95,6 @@
         return !this.loading && !this.songs.length
       },
       bgImageStyle() {
-        // console.log('url', this.pic, 'title', this.title)
         let height = 0
         let paddingTop = '70%'
         let zIndex = 0
@@ -147,7 +146,6 @@
     },
     mounted() {
       this.imageHeight = this.$refs.bgImage.clientHeight
-      // console.log('height', this.$refs.bgImage)
       this.maxTranslateY = this.imageHeight - RESERVED_HEIGHT
     },
     methods: {
@@ -161,9 +159,8 @@
         const musicPlayStore = useMusicPlayStore()
         if (!musicPlayStore.playlist.length) {
           // 第一次唤醒播放器
-          // console.log('1st', this.songs)
-          musicPlayStore.setPlayList(JSON.parse(JSON.stringify(this.songs)))
-          musicPlayStore.setSequenceList(JSON.parse(JSON.stringify(this.songs)))
+          musicPlayStore.setPlayList(this.songs)
+          musicPlayStore.setSequenceList(this.songs)
           musicPlayStore.setCurrentIndex(index)
         } else {
           const mid = musicPlayStore.sequenceList[index].mid
@@ -171,15 +168,13 @@
           musicPlayStore.setCurrentIndex(x)
         }
         musicPlayStore.setFullScreen(true)
-        // musicPlayStore.setPlayingState(true)
-        // console.log('current song', song)
       },
       random() {
         const musicPlayStore = useMusicPlayStore()
         const arr = shuffle(JSON.parse(JSON.stringify(this.songs)))
         musicPlayStore.setPlayList(arr)
+        musicPlayStore.setSequenceList(this.songs)
         musicPlayStore.setCurrentIndex(0)
-        musicPlayStore.setCurrentSong(arr[0])
         musicPlayStore.setPlayMode(PLAY_MODE.random)
       }
     },

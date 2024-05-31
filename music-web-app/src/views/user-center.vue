@@ -96,10 +96,16 @@
       },
       selectSong({ song, index }) {
         this.musicPlayStore.addPlayList(song)
+        this.musicPlayStore.addPlayList(song)
       },
       playAll() {
-        if (this.currentIndex === 0) this.musicPlayStore.setPlayList(JSON.parse(JSON.stringify(this.favoriteList)))
-        else this.musicPlayStore.setPlayList(JSON.parse(JSON.stringify(this.playHistory)))
+        if (this.currentIndex === 0) {
+          this.musicPlayStore.setPlayList(this.favoriteList)
+          this.musicPlayStore.setSequenceList(this.favoriteList)
+        } else {
+          this.musicPlayStore.setPlayList(this.playHistory)
+          this.musicPlayStore.setSequenceList(this.playHistory)
+        }
         this.musicPlayStore.setCurrentIndex(0)
       }
     },

@@ -62,7 +62,6 @@
       const result = await getTopListDetail(this.topItemFromStorage)
       this.songs = await processSongs(result.songs)
       this.loading = false
-      console.log(this.songs)
     },
     setup() {
       const musicPlayStore = useMusicPlayStore()

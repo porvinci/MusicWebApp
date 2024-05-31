@@ -195,7 +195,6 @@
 
       // watch
       watch(currentSong, async (newSong) => {
-        // console.log('curr', currentSong, 'new', newSong, 'url', newSong.url)
         if (!newSong.id || !newSong.url) {
           return
         }
@@ -233,9 +232,7 @@
       })
 
       watch(() => playlist.value, newV => {
-        // console.log('111')
         if (!newV || newV.length === 0) {
-          // console.log('222')
           musicPlayStore.setPlayingState(false)
         }
       }, { deep: true })
@@ -268,9 +265,7 @@
         const value = currentIndex.value
         const len = playlist.value.length
         if (!len) return
-        let index
-        if (musicPlayStore.playMode === PLAY_MODE.random) index = Math.floor(Math.random() * len)
-        else index = value === len - 1 ? 0 : value + 1
+        const index = value === len - 1 ? 0 : value + 1
         musicPlayStore.setCurrentIndex(index)
       }
 

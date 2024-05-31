@@ -23,7 +23,6 @@ export default function useShortcut(props, groupRef) {
   }
 
   async function onShortcutTouchMove(e) {
-    // console.log(e.touches)
     // 当前触摸点相对于整个页面的 Y 坐标
     touch.y2 = e.touches[0].pageY
     const delta = (touch.y2 - touch.y1) / ANCHOR_HEIGHT | 0

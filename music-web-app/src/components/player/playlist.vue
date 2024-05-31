@@ -31,7 +31,7 @@
             >
               <li
                 class="item"
-                v-for="song in playlist"
+                v-for="song in sequenceList"
                 :key="song.id"
                 @click="selectSong(song)"
               >
@@ -122,12 +122,16 @@
         }
       })
 
-      watch(() => playlist.value, newV => {
-        if (!playlist.value.length) musicPlayStore.setPlaylistPanelVisible(false)
+      // watch(() => playlist.value, newV => {
+      //   if (!playlist.value.length) musicPlayStore.setPlaylistPanelVisible(false)
+      // }, { deep: true })
+
+      watch(() => sequenceList.value, newV => {
+        if (!sequenceList.value.length) musicPlayStore.setPlaylistPanelVisible(false)
       }, { deep: true })
 
       async function scrollToTargetEI(song) {
-        const index = playlist.value.findIndex(item => item.id === song.value.id)
+        const index = sequenceList.value.findIndex(item => item.id === song.value.id)
         if (index === -1) return
         await nextTick()
         // console.log('el', ulListRef.value.$el)  <ul>
@@ -161,10 +165,8 @@
         deleting.value = true
         const idx = playlist.value.findIndex(item => item.id === song.id)
         if (idx === -1) return
-        if (idx < currentIndex.value || idx === playlist.value.length - 1) {
-          console.log('末端', idx === playlist.value.length - 1)
-          musicPlayStore.setCurrentIndex(currentIndex.value - 1)
-        }
+        if (idx < currentIndex.value) musicPlayStore.setCurrentIndex(currentIndex.value - 1)
+        if ((idx === currentIndex.value) && (idx === playlist.value.length - 1)) musicPlayStore.setCurrentIndex(currentIndex.value - 1)
         musicPlayStore.deleteSong(song)
         setTimeout(() => { deleting.value = false }, 300)
         // refresh()

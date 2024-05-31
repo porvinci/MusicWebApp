@@ -5,7 +5,6 @@ const relativeCls = 'g-relative'
 
 const noResultDirective = {
   mounted(el, binding) {
-    // console.log('el', el, 'binding', binding)
     // 创建组件对应的DOM对象
     const app = createApp(noResult)
     const instance = app.mount(document.createElement('div'))

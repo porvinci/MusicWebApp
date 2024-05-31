@@ -11,9 +11,7 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const currentIndex = ref(0) // 当前播放歌曲的index
   const fullScreen = ref(false) // 播放器是否要全屏
   const favList = ref(storage.get(FAV_KEY, []))
-  console.log('4')
   const playHistory = ref(storage.get(PLAYHISTORY_KEY, []))
-  console.log('5')
   const searchHistory = ref(storage.session.get(HISTORY_KEY, []))
   const currentTime = ref(0)
   const playlistPanelVisible = ref(false)
@@ -34,14 +32,16 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     playlist.value = JSON.parse(JSON.stringify(list))
   }
   const addPlayList = song => {
-    const idx = playlist.value.findIndex(item => item.id === song.id)
+    let idx = playlist.value.findIndex(item => item.id === song.id)
     if (idx !== -1) currentIndex.value = idx
     else {
       playlist.value.push(song)
       currentIndex.value = playlist.value.length - 1
     }
+    idx = sequenceList.value.findIndex(item => item.id === song.id)
+    if (idx === -1) sequenceList.value.push(song)
   }
-  const setPlayMode = (mode) => { playMode.value = mode } // ; console.log('mode', playMode.value)
+  const setPlayMode = (mode) => { playMode.value = mode }
   const setPlayingState = (state) => { playing.value = state }
   const setCurrentIndex = (index) => {
     currentIndex.value = index
@@ -64,11 +64,18 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
   const setCurrentTime = (time) => { currentTime.value = time }
   const deleteSong = (song) => {
     // 删除playlist中的歌曲
-    const idx = playlist.value.findIndex(item => item.id === song.id)
+    let idx = playlist.value.findIndex(item => item.id === song.id)
     if (idx === -1) return
     playlist.value.splice(idx, 1)
+
+    idx = sequenceList.value.findIndex(item => item.id === song.id)
+    if (idx === -1) return
+    sequenceList.value.splice(idx, 1)
   }
-  const clearPlayList = () => { playlist.value = [] }
+  const clearPlayList = () => {
+    playlist.value = []
+    sequenceList.value = []
+  }
   const setPlaylistPanelVisible = (state) => { playlistPanelVisible.value = state }
   const addSongToPlaylist = (song) => {
     let idx = playlist.value.findIndex(item => item.id === song.id)
@@ -94,7 +101,6 @@ export const useMusicPlayStore = defineStore('musicPlay', () => {
     searchHistory,
     currentTime,
     playlistPanelVisible,
-    // setCurrentSong,
     setSequenceList,
     setPlayList,
     addPlayList,

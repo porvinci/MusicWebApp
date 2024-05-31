@@ -138,7 +138,6 @@ function registerRouter(devServer) {
 
 // 注册推荐列表接口路由
 function registerRecommend(app) {
-  // console.log('-------------', devServer);
   app.get('/api/getRecommend', (req, res) => {
     // 第三方服务接口 url
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
@@ -166,7 +165,6 @@ function registerRecommend(app) {
       data
     }).then((response) => {
       const data = response.data
-      // console.log('------------', data.focus.data.shelf.v_niche[0].v_card);
       if (data.code === ERR_OK) {
         // 处理轮播图数据
         const focusList = data.focus.data.shelf.v_niche[0].v_card
@@ -194,7 +192,6 @@ function registerRecommend(app) {
         }
 
         // 处理推荐歌单数据
-        // console.log('------------', data.recomPlaylist.data.v_hot);
         const albumList = data.recomPlaylist.data.v_hot
         const albums = []
         for (let i = 0; i < albumList.length; i++) {
@@ -254,7 +251,6 @@ function registerSingerList(app) {
       if (data.code === ERR_OK) {
         // 处理歌手列表数据
         const singerList = data.singerList.data.singerlist
-        // console.log(singerList.length); // 80
         // 构造歌手 Map 数据结构
         const singerMap = {
           hot: {
@@ -262,7 +258,6 @@ function registerSingerList(app) {
             list: map(singerList.slice(0, 10))
           }
         }
-        // console.log(singerMap.hot.list);
         singerList.forEach((item) => {
           // 把歌手名转成拼音
           const p = pinyin(item.singer_name)
