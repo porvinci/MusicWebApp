@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const ERR_OK = 0
-const baseURL = process.env.NODE_ENV === 'production' ? 'https://124.70.214.116/' : '/'
+const baseURL = process.env.NODE_ENV === 'production' ? 'https://musicpwa.vercel.app/' : '/'
 
 axios.defaults.baseURL = baseURL
 
