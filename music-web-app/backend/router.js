@@ -113,27 +113,38 @@ function registerRouter(devServer) {
     registerSingerDetail(devServer)
   
     registerSongsUrl(devServer)
+
+    registerLyric(devServer)
+
+    registerAlbum(devServer)
+  
+    registerTopList(devServer)
+  
+    registerTopDetail(devServer)
+  
+    registerHotKeys(devServer)
+  
+    registerSearch(devServer)
   } else {
-    registerRecommend(devServer.app)
+    registerRecommend(devServer)
 
     registerSingerList(devServer.app)
   
     registerSingerDetail(devServer.app)
   
     registerSongsUrl(devServer.app)
+    registerLyric(devServer.app)
+
+    registerAlbum(devServer.app)
+  
+    registerTopList(devServer.app)
+  
+    registerTopDetail(devServer.app)
+  
+    registerHotKeys(devServer.app)
+  
+    registerSearch(devServer.app)
   }
-
-  registerLyric(devServer.app)
-
-  registerAlbum(devServer.app)
-
-  registerTopList(devServer.app)
-
-  registerTopDetail(devServer.app)
-
-  registerHotKeys(devServer.app)
-
-  registerSearch(devServer.app)
 }
 
 // 注册推荐列表接口路由

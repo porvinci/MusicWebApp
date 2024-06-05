@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { register } from './swReg.js'
+// import { register } from './swReg.js'
 import { createPinia } from 'pinia'
 import lazyPlugin from 'vue3-lazy'
 import loadingDirective from '@/components/base/loading/directive'
@@ -14,8 +14,10 @@ import { processSongs } from '@/service/song'
 // 引入全局样式文件
 import '@/assets/scss/index.scss'
 
+import './registerServiceWorker'
+
 // service worker
-register()
+// register()
 
 
 

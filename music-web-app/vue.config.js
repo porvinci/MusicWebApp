@@ -8,15 +8,22 @@ module.exports = {
         additionalData: `
           @import "@/assets/scss/variable.scss";
           @import "@/assets/scss/mixin.scss";
-        `
-      }
-    }
+        `,
+      },
+    },
+  },
+  pwa: {
+    workboxOptions: {
+      skipWaiting: true,
+      clientsClaim: true,
+      mode: 'development', // 开发模式
+    },
   },
   devServer: {
     setupMiddlewares(middlewares, devServer) {
       registerRouter(devServer)
       return middlewares
-    }
+    },
   },
   configureWebpack: (config) => {
     if (process.env.npm_config_report) {
@@ -25,5 +32,5 @@ module.exports = {
     }
   },
   productionSourceMap: false,
-  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 }
