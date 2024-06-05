@@ -126,7 +126,7 @@ function registerRouter(devServer) {
   
     registerSearch(devServer)
   } else {
-    registerRecommend(devServer)
+    registerRecommend(devServer.app)
 
     registerSingerList(devServer.app)
   
