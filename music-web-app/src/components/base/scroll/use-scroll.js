@@ -1,7 +1,6 @@
 import BScroll from '@better-scroll/core'
 import { ObserveDom } from 'better-scroll'
-import { onMounted, onUnmounted, ref } from 'vue'
-// onActivated, onDeactivated,
+import { onMounted, onUnmounted, ref, onActivated, onDeactivated, } from 'vue'
 BScroll.use(ObserveDom)
 
 export default function useScroll(wrapperRef, options, emit) {
@@ -24,14 +23,14 @@ export default function useScroll(wrapperRef, options, emit) {
     scroll.value.destroy()
   })
 
-  // onActivated(() => {
-  //   slider.value.enable()
-  //   slider.value.refresh()
-  // })
+  onActivated(() => {
+    scroll.value.enable()
+    scroll.value.refresh()
+  })
 
-  // onDeactivated(() => {
-  //   slider.value.disable()
-  // })
+  onDeactivated(() => {
+    scroll.value.disable()
+  })
 
   return {
     scroll,

@@ -163,9 +163,8 @@
           musicPlayStore.setSequenceList(this.songs)
           musicPlayStore.setCurrentIndex(index)
         } else {
-          const mid = musicPlayStore.sequenceList[index].mid
-          const x = musicPlayStore.playlist.findIndex(item => item.mid === mid)
-          musicPlayStore.setCurrentIndex(x)
+          // 添加歌曲
+          musicPlayStore.addPlayList(song)
         }
         musicPlayStore.setFullScreen(true)
       },

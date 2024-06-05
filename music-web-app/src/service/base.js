@@ -13,7 +13,5 @@ export function get(url, params) {
     if (serverData.code === ERR_OK) {
       return serverData.result
     }
-  }).catch((e) => {
-    console.log(e)
   })
 }

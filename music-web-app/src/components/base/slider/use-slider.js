@@ -1,8 +1,7 @@
 import BScroll from '@better-scroll/core'
 import Slide from '@better-scroll/slide'
 
-import { onMounted, onUnmounted, ref } from 'vue'
-// onActivated, onDeactivated,
+import { onMounted, onUnmounted, ref, onActivated, onDeactivated } from 'vue'
 
 BScroll.use(Slide)
 
@@ -30,14 +29,14 @@ export default function useSlider(wrapperRef) {
     slider.value.destroy()
   })
 
-  // onActivated(() => {
-  //   slider.value.enable()
-  //   slider.value.refresh()
-  // })
+  onActivated(() => {
+    slider.value.enable()
+    slider.value.refresh()
+  })
 
-  // onDeactivated(() => {
-  //   slider.value.disable()
-  // })
+  onDeactivated(() => {
+    slider.value.disable()
+  })
 
   return {
     slider,

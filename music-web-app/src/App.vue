@@ -1,7 +1,18 @@
 <template>
   <m-header></m-header>
   <tab></tab>
-  <router-view :style="padBotStyle"></router-view>
+  <router-view :style="padBotStyle" v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component"/>
+    </keep-alive>
+  </router-view>
+  <router-view v-slot="{ Component }" name="user" :style="padBotStyle">
+    <transition name="slide">
+      <keep-alive>
+        <component :is="Component"></component>
+      </keep-alive>
+    </transition>
+  </router-view>
   <player></player>
 </template>
 

@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, computed, watch, nextTick, onActivated, onDeactivated } from 'vue'
 import BScroll from '@better-scroll/core'
 import Slide from '@better-scroll/slide'
 import { useMusicPlayStore } from '@/store/musicPlay'
@@ -112,6 +112,15 @@ export default function useMiniSlider() {
 
   onUnmounted(() => {
     if (miniSlider.value) miniSlider.value.destroy()
+  })
+
+  onActivated(() => {
+    miniSlider.value.enable()
+    miniSlider.value.refresh()
+  })
+
+  onDeactivated(() => {
+    miniSlider.value.disable()
   })
 
   return {

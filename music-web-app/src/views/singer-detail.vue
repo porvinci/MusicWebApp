@@ -65,7 +65,6 @@
       // const result = await getSingerDetail(this.$route.params.id)
       const result = await getSingerDetail(this.computedSinger.mid)
       this.songs = await processSongs(result.songs)
-
       this.loading = false
     },
     setup() {

@@ -1,4 +1,4 @@
-import { onMounted, ref, watchEffect, onUnmounted, nextTick } from 'vue'
+import { onMounted, ref, watchEffect, onUnmounted, nextTick, onActivated, onDeactivated } from 'vue'
 import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 import { searchQuery } from '@/service/search.js'
@@ -86,6 +86,15 @@ export default function usePullUp(wrapperRef, props) {
 
   onUnmounted(() => {
     suggestBS.value.destroy()
+  })
+
+  onActivated(() => {
+    suggestBS.value.enable()
+    suggestBS.value.refresh()
+  })
+
+  onDeactivated(() => {
+    suggestBS.value.disable()
   })
 
   return {
