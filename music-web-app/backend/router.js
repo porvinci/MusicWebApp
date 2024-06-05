@@ -149,7 +149,7 @@ function registerRouter(devServer) {
 
 // 注册推荐列表接口路由
 function registerRecommend(app) {
-  app.get('/api/getRecommend', (req, res) => {
+  app.get('/apii/getRecommend', (req, res) => {
     // 第三方服务接口 url
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
@@ -482,7 +482,7 @@ function registerLyric(app) {
 
 // // 注册歌单专辑接口
 function registerAlbum(app) {
-  app.get('/api/getAlbum', (req, res) => {
+  app.get('/apii/getAlbum', (req, res) => {
     const data = {
       req_0: {
         module: 'srf_diss_info.DissInfoServer',
