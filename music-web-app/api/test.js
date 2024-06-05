@@ -1,10 +1,5 @@
-const { createProxyMiddleware } = require('http-proxy-middleware')
-
 module.exports = (req, res) => {
-  const data = {
-      msg: "hello world!"
-  }
-  res.status(200).json(data)
+  res.json('test okk!')
   // let target = ''
 
   // // 代理目标地址
