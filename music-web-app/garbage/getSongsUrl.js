@@ -99,7 +99,10 @@ function mergeSinger(singer) {
   return ret.join('/')
 }
 module.exports = (req, res) => {
-  const mid = req.query.mid
+  console.log('front1', req.query)
+  console.log('mid', req.query['mid[]'])
+  console.log('length', req.query['mid[]'].length)
+  const mid = req.query['mid[]']
 
   let midGroup = []
   // 第三方接口只支持最多处理 100 条数据，所以如果超过 100 条数据，我们要把数据按每组 100 条切割，发送多个请求
@@ -145,13 +148,21 @@ module.exports = (req, res) => {
     // 发送 post 请求
     return post(url, data).then((response) => {
       const data = response.data
+      console.log('data', data)
       if (data.code === ERR_OK) {
+        console.log('data.req_0.data', data.req_0.data)
         const midInfo = data.req_0.data.midurlinfo
         const sip = data.req_0.data.sip
         const domain = sip[sip.length - 1]
+        console.log('midInfo', midInfo)
+        console.log('sip', sip)
+        console.log('domain', domain)
         midInfo.forEach((info) => {
           // 获取歌曲的真实播放 URL
-          urlMap[info.songmid] = domain + info.purl
+          if (info.purl) {
+            console.log('purl', info.purl)
+            urlMap[info.songmid] = domain + info.purl
+          }
         })
       }
     })

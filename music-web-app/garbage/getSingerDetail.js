@@ -76,10 +76,6 @@ function handleSongList(list) {
 
   list.forEach((item) => {
     const info = item.songInfo || item
-    console.log('item', item)
-    console.log('----------------------')
-    console.log('info', info)
-    console.log('=======================')
     if (info.pay.pay_play !== 0 || !info.interval) {
       // 过滤付费歌曲和获取不到时长的歌曲
       return
@@ -110,7 +106,7 @@ module.exports = (req, res) => {
     comm: { ct: 24, cv: 0 },
     singerSongList: {
       method: 'GetSingerSongList',
-      param: { order: 1, singerMid: req.query.mid, begin: 0, num: 2 },
+      param: { order: 1, singerMid: req.query.mid, begin: 0, num: 8 },
       module: 'musichall.song_list_server'
     }
   })

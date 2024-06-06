@@ -1,11 +1,11 @@
 import { get } from './base'
 
 export function getTopList() {
-  return get('/api/getTopList')
+  return get('/apii/getTopList')
 }
 
 export function getTopListDetail(list) {
-  return get('/api/getTopDetail', {
+  return get('/apii/getTopDetail', {
     id: list.id,
     period: list.period,
   })
