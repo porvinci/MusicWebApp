@@ -124,6 +124,7 @@
       @ended="ended"
       @timeupdate="timeUpdate"
       preload="auto"
+      crossorigin="anonymous"
     ></audio>
   </div>
 </template>

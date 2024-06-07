@@ -1,4 +1,3 @@
-// const { defineConfig } = require('@vue/cli-service')
 const registerRouter = require('./backend/router')
 module.exports = {
   css: {
@@ -15,11 +14,32 @@ module.exports = {
   pwa: {
     name: "musicpwa",
     themeColor: "#ffcd32",
+    // workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       skipWaiting: true,
       clientsClaim: true,
-      // mode: 'development', // 开发模式
+      // swSrc: './src/service-worker.js',
       runtimeCaching: [
+        {
+          urlPattern: ({ request }) => request.url.startsWith('https://isure.stream.qqmusic.qq.com'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'Audios',
+            expiration: {
+              maxAgeSeconds: 24 * 60 * 60
+            },
+            rangeRequests: true,
+            // cacheableResponse: {
+            //   statuses: [0, 200]
+            // }
+            // plugins: [
+            //   new RangeRequestsPlugin(), 
+            //   new CacheableResponsePlugin({
+            //     statuses: [0, 200]
+            //   }),
+            // ],
+          }
+        },
         {
           urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getRecommend'),
           handler: "NetworkFirst",

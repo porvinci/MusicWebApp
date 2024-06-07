@@ -14,7 +14,7 @@ import { processSongs } from '@/service/song'
 // 引入全局样式文件
 import '@/assets/scss/index.scss'
 
-import './registerServiceWorker'
+import './rServiceWorker'
 
 // service worker
 // register()
