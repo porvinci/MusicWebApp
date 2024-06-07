@@ -13,10 +13,114 @@ module.exports = {
     },
   },
   pwa: {
+    name: "musicpwa",
+    themeColor: "#ffcd32",
     workboxOptions: {
       skipWaiting: true,
       clientsClaim: true,
-      mode: 'development', // 开发模式
+      // mode: 'development', // 开发模式
+      runtimeCaching: [
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getRecommend'),
+          handler: "NetworkFirst",
+          options: {
+            cacheName: 'Recommend',
+            expiration: {
+              maxAgeSeconds: 3 * 24 * 60 * 60
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getHotKeys'),
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: 'HotKeys',
+            expiration: {
+              maxAgeSeconds: 3 * 24 * 60 * 60
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getSingerList'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'SingerList',
+            expiration: {
+              maxAgeSeconds: 7 * 24 * 60 * 60
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getTopList'),
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: 'TopList',
+            expiration: {
+              maxAgeSeconds: 7 * 24 * 60 * 60
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getAlbum.*'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'Album',
+            expiration: {
+              maxAgeSeconds: 14 * 24 * 60 * 60,
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/search.*'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'Search',
+            expiration: {
+              maxEntries: 8
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getSingerDetail.*'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'SingerDetail',
+            expiration: {
+              maxAgeSeconds: 30 * 24 * 60 * 60,
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getTopDetail.*'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'TopDetail',
+            expiration: {
+              maxAgeSeconds: 7 * 24 * 60 * 60,
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getSongsUrl.*'),
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: 'SongsUrl',
+            expiration: {
+              maxAgeSeconds: 24 * 60 * 60,
+            },
+          }
+        },
+        {
+          urlPattern: new RegExp('https:\/\/musicpwa\.vercel\.app\/apii\/getLyric.*'),
+          handler: "CacheFirst",
+          options: {
+            cacheName: 'Lyric',
+            expiration: {
+              maxAgeSeconds: 30 * 24 * 60 * 60,
+            },
+          }
+        }
+      ]
     },
   },
   devServer: {
