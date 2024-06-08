@@ -1,5 +1,5 @@
 import BScroll from '@better-scroll/core'
-import { ObserveDom } from 'better-scroll'
+import ObserveDom from '@better-scroll/observe-dom'
 import { onMounted, onUnmounted, ref, onActivated, onDeactivated, } from 'vue'
 BScroll.use(ObserveDom)
 

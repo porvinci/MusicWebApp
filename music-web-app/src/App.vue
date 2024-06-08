@@ -14,19 +14,22 @@
     </transition>
   </router-view>
   <player></player>
+  <SpeedInsights/>
 </template>
 
 <script>
   import Header from '@/components/header/header'
   import Tab from '@/components/tab/tab'
   import Player from '@/components/player/player'
+  import { SpeedInsights } from '@vercel/speed-insights/vue'
   import { useMusicPlayStore } from '@/store/musicPlay'
 
   export default {
     components: {
       MHeader: Header,
       Tab,
-      Player
+      Player,
+      SpeedInsights,
     },
     computed: {
       playlist() {

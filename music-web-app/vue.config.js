@@ -1,4 +1,5 @@
 const registerRouter = require('./backend/router')
+const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin')
 module.exports = {
   css: {
     loaderOptions: {
@@ -149,11 +150,31 @@ module.exports = {
       return middlewares
     },
   },
-  configureWebpack: (config) => {
-    if (process.env.npm_config_report) {
-      const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-      config.plugins.push(new BundleAnalyzerPlugin())
-    }
+  // configureWebpack: (config) => {
+  //   if (process.env.npm_config_report) {
+  //     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  //     config.plugins.push(new BundleAnalyzerPlugin())
+  //   }
+  // },
+  configureWebpack: {
+    plugins: [
+      new PreloadWebpackPlugin({
+        rel: 'preload', // 可以是preload或prefetch，这里我们使用preload
+        as(entry) { // 自动推断资源类型
+          if (/\.js$/.test(entry)) return 'script';
+          if (/\.css$/.test(entry)) return 'style';
+          if (/\.woff2?(\?v=\d+\.\d+\.\d+)?$/i.test(entry)) return 'font';
+          if (/\.png|\.jpg|\.jpeg|\.svg|\.gif|\.ico/i.test(entry)) return 'image';
+        },
+        include: 'initial', // 只预加载初始chunk
+        fileBlacklist: [/\.map$/, /hot-update\.js$/], // 排除source map和hot update chunk
+      }),
+      new PreloadWebpackPlugin({
+        rel: 'prefetch',
+        include: 'asyncChunks', // 预获取异步chunk
+        // chunks: ['nonCriticalChunk'], // 针对特定的chunk名称，你可以根据实际情况替换
+      }),
+    ],
   },
   productionSourceMap: false,
   publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
