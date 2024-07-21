@@ -21,6 +21,10 @@ import './rServiceWorker'
 
 
 
+
+
+
+
 // 更新收藏列表及最近播放历史中的播放资源
 let fL = storage.get(FAV_KEY, [])
 if (fL.length > 0) {
